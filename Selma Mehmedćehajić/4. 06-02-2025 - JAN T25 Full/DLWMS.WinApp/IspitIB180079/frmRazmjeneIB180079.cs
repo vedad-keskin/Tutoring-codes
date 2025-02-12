@@ -1,0 +1,245 @@
+﻿using DLWMS.Data;
+using DLWMS.Data.IspitIB180079;
+using DLWMS.Infrastructure;
+using DLWMS.WinApp.Helpers;
+using DLWMS.WinApp.Izvjestaji;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+
+namespace DLWMS.WinApp.IspitIB180079
+{
+    public partial class frmRazmjeneIB180079 : Form
+    {
+        private Student odabraniStudent;
+        DLWMSContext db = new DLWMSContext();
+        List<RazmjeneIB180079> razmjene;
+
+        public frmRazmjeneIB180079(Student odabraniStudent)
+        {
+            InitializeComponent();
+            this.odabraniStudent = odabraniStudent;
+        }
+
+        private void frmRazmjeneIB180079_Load(object sender, EventArgs e)
+        {
+            dgvRazmjene.AutoGenerateColumns = false;
+
+            this.Text = $"Razmjene studenta {odabraniStudent.StudentInfo}";
+
+            cbDrzava.DataSource = db.Drzave.ToList();
+
+
+            // za multithreading
+
+            cbUniverzitetMultithreading.DataSource = db.UniverzitetiIB180079.ToList();
+
+
+            UcitajRazmjene();
+
+        }
+
+        private void UcitajRazmjene()
+        {
+            razmjene = db.RazmjeneIB180079
+                .Include(x => x.Univerzitet.Drzava)
+                .Where(x => x.StudentId == odabraniStudent.Id)
+                .ToList();
+
+
+            if (razmjene != null)
+            {
+                dgvRazmjene.DataSource = null;
+                dgvRazmjene.DataSource = razmjene;
+            }
+
+        }
+
+        private void dgvRazmjene_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var odabranaRazmjena = razmjene[e.RowIndex];
+
+            if (e.ColumnIndex == 5)
+            {
+
+                if (MessageBox.Show($"Da li ste sigurni da želite izbrisati podatke o razmjeni {odabraniStudent.StudentInfo} na {odabranaRazmjena.Univerzitet}", "Upit", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+
+                    db.RazmjeneIB180079.Remove(odabranaRazmjena);
+                    db.SaveChanges();
+
+                    UcitajRazmjene();
+
+                }
+
+
+
+            }
+
+        }
+
+        private void cbDrzava_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var odabranaDrzava = cbDrzava.SelectedItem as Drzava;
+
+            cbUniverzitet.DataSource = db.UniverzitetiIB180079
+                .Where(x => x.DrzavaId == odabranaDrzava.Id)
+                .ToList();
+
+            cbUniverzitet.DisplayMember = "Naziv";
+        }
+
+        private void btnSacuvaj_Click(object sender, EventArgs e)
+        {
+            if (Validiraj())
+            {
+
+                var univerzitet = cbUniverzitet.SelectedItem as UniverzitetiIB180079;
+
+                var etcs = int.Parse(txtECTS.Text);
+
+                var datumPocetak = dtpPocetak.Value;
+                var datumKraj = dtpKraj.Value;
+
+                var okoncana = datumKraj > DateTime.Now ? false : true;
+
+                if (datumKraj < datumPocetak)
+                {
+                    MessageBox.Show($"Datum kraja ne može biti manji od datuma početka", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else if (razmjene.Exists(x =>
+                    (datumPocetak >= x.DatumPocetak && datumPocetak <= x.DatumKraj) || // New start is within an existing range
+                    (datumKraj >= x.DatumPocetak && datumKraj <= x.DatumKraj) || // New end is within an existing range
+                    (datumPocetak <= x.DatumPocetak && datumKraj >= x.DatumKraj) // New range fully contains an existing range
+                 ))
+                {
+                    MessageBox.Show($"Datum je u konfiktu sa ranije unesenom razmjenom", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    var novaRazmjena = new RazmjeneIB180079()
+                    {
+                        StudentId = odabraniStudent.Id,
+                        UniverzitetId = univerzitet.Id,
+                        DatumPocetak = datumPocetak,
+                        DatumKraj = datumKraj,
+                        ECTS = etcs,
+                        Okoncana = okoncana
+                    };
+
+                    db.RazmjeneIB180079.Add(novaRazmjena);
+                    db.SaveChanges();
+
+                    UcitajRazmjene();
+
+                }
+
+
+
+
+
+            }
+        }
+
+        private bool Validiraj()
+        {
+            return Validator.ProvjeriUnos(txtECTS, err, Kljucevi.RequiredField)
+                &&
+                Validator.ProvjeriUnos(cbUniverzitet, err, Kljucevi.RequiredField);
+
+        }
+
+        private void btnGenerisi_Click(object sender, EventArgs e)
+        {
+
+            if (ValidirajMulithreading())
+            {
+
+                var odabraniUniverzitet = cbUniverzitetMultithreading.SelectedItem as UniverzitetiIB180079;
+
+                Thread thread = new Thread(() => GenerisiRazmjene(odabraniUniverzitet));
+                thread.Start();
+
+
+            }
+
+        }
+
+        private void GenerisiRazmjene(UniverzitetiIB180079? odabraniUniverzitet)
+        {
+
+            var broj = int.Parse(txtBroj.Text);
+            var ects = int.Parse(txtECTSMultithreading.Text); // 30
+
+            var info = "";
+
+            var pocetak = new DateTime(2025, 1, 1); // 1.1.2025
+
+
+            for (int i = 0; i < broj; i++)
+            {
+                Thread.Sleep(300);
+
+                var kraj = pocetak.AddDays(ects + (i + 1)); // 31.1.2025
+
+
+                var okoncana = kraj > DateTime.Now ? false : true;
+
+
+                var novaRazmjena = new RazmjeneIB180079()
+                {
+                    StudentId = odabraniStudent.Id,
+                    UniverzitetId = odabraniUniverzitet.Id,
+                    ECTS = ects,
+                    DatumPocetak = pocetak,
+                    DatumKraj = kraj,
+                    Okoncana = okoncana
+
+                };
+
+                db.RazmjeneIB180079.Add(novaRazmjena);
+                db.SaveChanges();
+
+                info += $"{i + 1}. razmjena za {odabraniStudent.StudentInfo} na {odabraniUniverzitet} ({pocetak.ToString("dd.MM.yyyy")} - {kraj.ToString("dd.MM.yyyy")}){Environment.NewLine}";
+
+
+            }
+
+            Action action = () =>
+            {
+                MessageBox.Show($"Uspješno je generisano {broj} razmjena.", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UcitajRazmjene();
+                txtInfo.Text = info;
+
+            };
+            BeginInvoke(action);
+
+
+        }
+
+        private bool ValidirajMulithreading()
+        {
+            return Validator.ProvjeriUnos(txtECTSMultithreading, err, Kljucevi.RequiredField)
+                &&
+                Validator.ProvjeriUnos(txtBroj, err, Kljucevi.RequiredField);
+        }
+
+        private void btnPotvrda_Click(object sender, EventArgs e)
+        {
+
+            var frmIzvjestaj = new frmIzvjestaji(odabraniStudent);
+
+            frmIzvjestaj.ShowDialog();
+
+
+        }
+    }
+}
