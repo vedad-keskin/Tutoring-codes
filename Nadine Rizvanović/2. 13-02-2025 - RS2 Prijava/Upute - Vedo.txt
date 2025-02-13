@@ -1,0 +1,8 @@
+Za mokupe ili prototipe :
+Figma 
+Moqups 
+
+Obavezno :
+Recommender 
+RabbitMQ
+Docker
