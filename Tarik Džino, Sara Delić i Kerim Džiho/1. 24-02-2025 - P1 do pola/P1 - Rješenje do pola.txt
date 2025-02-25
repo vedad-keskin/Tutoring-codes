@@ -5,29 +5,29 @@ using namespace std;
 
 // 1. ALOKACIJA ( new ) 
 
-// ---> ( ) --> jedan integner
+// ako je jedna vrijednost --> ( ) 
 
-// ---> [ ] --> vise od jedne vrijednosti 
+// ako je vise vrijednosti --> [ ] 
 
-// 2. DEREFERENCIRANJE (ispis , za kopiranje)
+// 2. DEREFERENCIRANJE ( ispis , kopiranje )
 
-// ---> ( ) --->  _ECTS -> 000002205A2481E0 , *_ECTS -> 0 
+// ako je jedna vrijednost --> ( ) -->  _ECTS -> 000002205A2481E0 , *_ECTS -> 0 
 
-// ---> [ ] --->  _naziv --> Nema predmeta
+// ako je vise vrijednosti --> [ ] -->  _naziv --> Nema predmeta
 
-// 3. DEALOCIRANJE / DESKTRUKTOR  --> delete nullptr
+// 3. DEALOCIRANJE / DESKTRUKTOR  --> ( delete , nullptr )
 
-// ---> ( ) ---> 		delete _ECTS;
+// ako je jedna vrijednost --> ( ) -->	delete _ECTS;
 
-// ---> [ ] --->        delete[] _naziv;
+// ako je vise vrijednosti --> [ ] -->  delete[] _naziv;
 
 
 
 class Predmet {
-public:             //      dft      // 
-	char* _naziv;  	// Nema predmeta // 
-	int _ocjena;	//      5		 //
-	int* _ECTS;		//      0		 //
+public:             //      dft      //     user def.    //
+	char* _naziv;  	// Nema predmeta // Programiranje II //
+	int _ocjena;	//      5		 //       9			 //
+	int* _ECTS;		//      0		 //       7			 //
 
 
 	// dft. constructor
@@ -126,7 +126,8 @@ public:             //      dft      //
 
 
 
-
+	// destructor
+	// 
 	// TILDA -> alt gr + 1
 	~Predmet() {
 
@@ -141,7 +142,7 @@ public:             //      dft      //
 
 	}
 
-
+	// pr1 nacin ispisa
 
 	void Ispis() {
 
