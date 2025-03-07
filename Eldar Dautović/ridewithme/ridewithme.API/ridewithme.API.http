@@ -1,0 +1,6 @@
+@ridewithme.API_HostAddress = http://localhost:5284
+
+GET {{ridewithme.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

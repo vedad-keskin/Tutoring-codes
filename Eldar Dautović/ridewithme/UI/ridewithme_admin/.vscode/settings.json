@@ -1,0 +1,8 @@
+{
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.codeLensFontFamily": "JetBrains Mono",
+    "debug.console.fontFamily": "JetBrains Mono",
+    "scm.inputFontFamily": "JetBrains Mono",
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "notebook.markup.fontFamily": "JetBrains Mono"
+}
