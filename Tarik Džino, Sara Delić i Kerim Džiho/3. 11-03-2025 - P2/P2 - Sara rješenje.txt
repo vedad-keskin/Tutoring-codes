@@ -1,0 +1,396 @@
+#include <iostream>
+using namespace std;
+
+
+//Kreirati i implementirati
+//1. Defaultni konstruktor 
+//2. Konstruktor koji prima parametre 
+//3. Konstruktor kopije 
+//4. Operator dodjele 
+//5. Destruktor 
+//6. Operator ispisa 
+
+class Datum {
+public:
+	int* _dan, * _mjesec, * _godina;
+	
+	Datum() {	//defaultni konstruktor, ako korisnik nista ne unese, meni je dft. 1.1.2025
+
+		_dan = new int(1);
+		_mjesec = new int(1);
+		_godina = new int(2025);
+
+	}
+
+	Datum(int dan, int mjesec, int godina) {	//konstruktor koji prima parametre, dan mjesec i god su pointeri pa koristimo 'new'
+
+		_dan = new int(dan);
+		_mjesec = new int(mjesec);
+		_godina = new int(godina);
+
+	};
+
+	Datum(const Datum& datum) {		//copy konstruktor, koristimo 'new' opet da dodijelimo nove adrese, kopiramo ostalo
+
+		_dan = new int(*datum._dan);
+		_mjesec = new int(*datum._mjesec);
+		_godina = new int(*datum._dan);
+
+	};
+
+	Datum& operator = (const Datum& datum) {	//operator dodjele, kopiramo destruktor + copy konstruktor
+												//(ne stavljamo adresu na nullptr jer cemo svakako nesto novo upisati na nju)
+		if (this != &datum) {
+
+			delete _dan;
+			delete _mjesec;
+			delete _godina;
+
+			_dan = new int(*datum._dan);
+			_mjesec = new int(*datum._mjesec);
+			_godina = new int(*datum._dan);
+
+
+		}
+		return *this;
+	}
+
+	~Datum() {	//destruktor
+
+		delete _dan; _dan = nullptr;
+		delete _mjesec; _mjesec = nullptr;
+		delete _godina; _godina = nullptr;
+	}
+
+	void Ispis() {
+
+		cout << "dan: " << *_dan << endl;
+		cout << "mjesec: " << *_mjesec << endl;
+		cout << "godina: " << *_godina << endl;
+
+		cout << endl << "======================================" << endl << endl;
+	}
+};
+
+
+//Kreirati i implementirati
+//1. Defaultni konstruktor
+//2. Konstruktor koji prima parametre
+//3. Konstruktor kopije
+//4. Operator dodjele
+//5. Destruktor
+//6. Operator ispisa 
+
+class Kandidat {
+public:
+	char* _imePrezime;
+	char* _JMBG;
+
+	Kandidat() {	//dft konstruktor
+
+		const char* dftimePrezime = "Nema imena";
+		const char* dftJMBG = "Nema JMBG";
+
+		int vel = strlen(dftimePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, dftimePrezime);
+
+		int vel1 = strlen(dftJMBG) + 1;
+		_JMBG = new char[vel1];
+		strcpy_s(_JMBG, vel1, dftJMBG);
+
+	}
+
+	Kandidat(const char* imePrezime, const char* JMBG) {	// kandidat1("Ime Kandidata", "0102003456789");
+
+		int vel = strlen(imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, imePrezime);
+
+		int vel1 = strlen(JMBG) + 1;
+		_JMBG = new char[vel1];
+		strcpy_s(_JMBG, vel1, JMBG);
+
+	}
+
+	Kandidat(const Kandidat& kandidat) {	//copy konstruktor
+
+		int vel = strlen(kandidat._imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, kandidat._imePrezime);
+
+		int vel1 = strlen(kandidat._JMBG) + 1;
+		_JMBG = new char[vel1];
+		strcpy_s(_JMBG, vel1, kandidat._JMBG);
+
+	}
+
+	Kandidat& operator = (const Kandidat& kandidat) {	//operator '='
+
+		if (this != &kandidat) {
+
+			delete[]_imePrezime;
+			delete[]_JMBG;
+
+			int vel = strlen(kandidat._imePrezime) + 1;
+			_imePrezime = new char[vel];
+			strcpy_s(_imePrezime, vel, kandidat._imePrezime);
+
+			int vel1 = strlen(kandidat._JMBG) + 1;
+			_JMBG = new char[vel1];
+			strcpy_s(_JMBG, vel1, kandidat._JMBG);
+
+		}
+
+		return *this;
+	}
+
+	~Kandidat() {
+
+		delete[]_imePrezime; _imePrezime = nullptr;
+		delete[]_JMBG; _JMBG = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << "ime kandidata: " << _imePrezime << endl;
+		cout << "JMBG kandidata: " << _JMBG << endl << endl;
+		cout << "======================================" << endl << endl;
+
+	}
+
+};
+
+
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+class Osoba {
+public:
+	Datum _datumRodjenja;
+	char* _imePrezime;
+	char* _JMBG;
+	char* _Prebivaliste;
+
+	Osoba() : _datumRodjenja(1, 1, 2007) {
+
+		const char* dftImePrezime = "Nema Imena!";
+		const char* dftJMBG = "Nema JMBG!";
+		const char* dftPrebivaliste = "Nema ni to lol";
+
+		int vel = strlen(dftImePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, dftImePrezime);
+
+		int vel1 = strlen(dftJMBG) + 1;
+		_JMBG = new char[vel1];
+		strcpy_s(_JMBG, vel1, dftJMBG);
+
+		int vel2 = strlen(dftPrebivaliste) + 1;
+		_Prebivaliste = new char[vel2];
+		strcpy_s(_Prebivaliste, vel2, dftPrebivaliste);
+
+	}
+
+	Osoba(Datum datumRodjenja, const char* imePrezime, const char* JMBG, const char* Prebivaliste) : _datumRodjenja(datumRodjenja){
+
+		int vel = strlen(imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, imePrezime);
+
+		int vel1 = strlen(JMBG) + 1;
+		_JMBG = new char[vel1];
+		strcpy_s(_JMBG, vel1, JMBG);
+
+		int vel2 = strlen(Prebivaliste) + 1;
+		_Prebivaliste = new char[vel2];
+		strcpy_s(_Prebivaliste, vel2, Prebivaliste);
+
+	}
+
+	Osoba(const Osoba& osoba) : _datumRodjenja(osoba._datumRodjenja){
+
+		int vel = strlen(osoba._imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, osoba._imePrezime);
+
+		int vel1 = strlen(osoba._JMBG) + 1;
+		_JMBG = new char[vel1];
+		strcpy_s(_JMBG, vel1, osoba._JMBG);
+
+		int vel2 = strlen(osoba._Prebivaliste) + 1;
+		_Prebivaliste = new char[vel2];
+		strcpy_s(_Prebivaliste, vel2, osoba._Prebivaliste);
+
+	}
+
+	Osoba& operator =(const Osoba& osoba) {
+
+		if (this != &osoba) {
+			delete[]_imePrezime; _imePrezime = nullptr;
+			delete[]_JMBG; _JMBG = nullptr;
+			delete[]_Prebivaliste; _Prebivaliste = nullptr;
+
+			int vel = strlen(osoba._imePrezime) + 1;
+			_imePrezime = new char[vel];
+			strcpy_s(_imePrezime, vel, osoba._imePrezime);
+
+			int vel1 = strlen(osoba._JMBG) + 1;
+			_JMBG = new char[vel1];
+			strcpy_s(_JMBG, vel1, osoba._JMBG);
+
+			int vel2 = strlen(osoba._Prebivaliste) + 1;
+			_Prebivaliste = new char[vel2];
+			strcpy_s(_Prebivaliste, vel2, osoba._Prebivaliste);
+
+			_datumRodjenja = osoba._datumRodjenja;
+
+		}
+		return *this;
+	}
+
+	~Osoba() {
+
+		delete[]_imePrezime; _imePrezime = nullptr;
+		delete[]_JMBG; _JMBG = nullptr;
+		delete[]_Prebivaliste; _Prebivaliste = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << "Ime: " << _imePrezime << endl;
+		cout << "JMBG: " << _JMBG << endl;
+		cout << "Prebivaliste: " << _Prebivaliste << endl << endl;
+		cout << "======================================" << endl << endl;
+
+	}
+
+};
+
+
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+class GlasackiListic {
+public:
+	Osoba* _glasac;
+	Kandidat* _glasZa;
+
+	GlasackiListic() {
+
+		_glasac = new Osoba(Datum(1, 1, 2025), "Nema imena!", "Nema JMBG!", "Nema prebivaliste!");
+		_glasZa = new Kandidat("Nema kandidata!", "Nema JMBG!");
+
+	}
+
+	GlasackiListic(Osoba* glasac, Kandidat* kandidat) {
+
+		_glasac = new Osoba(*glasac);
+		_glasZa = new Kandidat(*kandidat);
+
+	}
+
+	GlasackiListic(const GlasackiListic& listic) {
+
+		_glasac = new Osoba(*listic._glasac);
+		_glasZa = new Kandidat(*listic._glasZa);
+
+	}
+
+	GlasackiListic& operator=(const GlasackiListic& listic) {
+
+		if (this != &listic) {
+
+			delete _glasac;
+			delete _glasZa;
+
+			_glasac = new Osoba(*listic._glasac);
+			_glasZa = new Kandidat(*listic._glasZa);
+
+		}
+		return *this;
+	}
+
+	~GlasackiListic() {
+
+		delete _glasac; _glasac = nullptr;
+		delete _glasZa; _glasZa = nullptr;
+	}
+
+	void Ispis() {
+
+
+
+	}
+
+};
+
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+
+class Izbori {
+public:
+	char* _glasackoMjesto;
+	GlasackiListic* _glasovi;
+	int _trenutnoGlasova;
+	int _maxBrojGlasova;
+
+
+	bool AddGlasackiListic(GlasackiListic listic)
+	{
+		/*funkcija treba da omoguci dodavanje informacija o novom glasu i tom prilikom:
+		-     onemoguciti da ista osoba glasa vise puta
+		-     onemoguciti glasanje osobama mladjim od 18 godina (uzeti u obzir godinu rodjenja)
+		-     onemoguciti glasanje osobama iz drugih opstina
+		-     u zavisnosti od uspjesnosti operacije funkcija vraca true ili false
+		*/
+	}
+
+
+};
+
+
+
+void main() {
+
+	Datum danDrzavnosti(1, 3, 2025);
+	danDrzavnosti.Ispis();
+
+	/*Kandidat kandidat1("Sara Delic", "0407003154765");
+	kandidat1.Ispis();
+	Kandidat kand2("Tarik Gino", "1354365135322");
+	kand2.Ispis();
+	Kandidat kand3("Kerim Dzihio", "4532547784433");
+	kand3.Ispis();*/
+
+	Datum datumSara(4, 7, 2003);
+	Osoba osoba1(datumSara, "Sara Delic", "0407003154578", "Gorazde");
+	Datum datumKerim(15, 1, 2003);
+	Osoba osoba2(datumKerim, "Kerim Dziho", "1501003124589", "Mostar");
+	Datum datumTarik(12, 8, 2003);
+	Osoba osoba3(datumTarik, "Tarik Dzino", "1208003235689", "Jablanica");
+
+	osoba1.Ispis();
+	osoba2.Ispis();
+	osoba3.Ispis();
+
+	system("pause>0");
+}
