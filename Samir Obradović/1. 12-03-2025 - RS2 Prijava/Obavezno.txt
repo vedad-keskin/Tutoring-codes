@@ -1,0 +1,5 @@
+Biznis Report
+Payment sistem -> Stripe
+Recommender sistem -> jedan od 3 
+RabbitMQ
+Docker
