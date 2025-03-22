@@ -1,0 +1,94 @@
+#include <iostream>
+using namespace std;
+
+
+char* GetNizKaraktera(const char* sadrzaj) {
+
+	int vel = strlen(sadrzaj) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, sadrzaj);
+	return novi;
+
+}
+
+
+class Osoba {
+protected:
+	char* _imePrezime;
+	char* _JMBG;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+};
+
+
+
+class Profesor {
+public:
+	char* _titula;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+};
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int _ECTS;
+	Profesor* _PredmetniProfesor;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+};
+
+
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _PolozeniPredmeti;
+	int _max;
+	int* _trenutno;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+
+
+};
+
+
+
+
+
+
+void main() {
+
+
+
+	system("PAUSE>0");
+}
