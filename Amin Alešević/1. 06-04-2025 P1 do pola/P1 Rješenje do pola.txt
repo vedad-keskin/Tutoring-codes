@@ -1,0 +1,223 @@
+#include <iostream>
+using namespace std;
+
+
+// POKAZIVACI 
+
+// 1. ALOKACIJA ---> new 
+
+// ako nam treba jedna vrijednst ( ) 
+
+// ako nam treba vise vrijednosti [ ] 
+
+// 2. DEFERENCIRANJE ( ISPIS , KOPIRANJA )
+
+// ako je nesto jedna vrijednost ( ) ---> _ECTS = 000001A699398140,
+// *_ECTS = 0 
+
+// ako je nesto niz [ ] --> ne treba dodavati * ispred
+
+// 3. DEALOACIRANJE / DESTRUKTOR 
+
+// DELETE 
+
+// ako je nesto jedna vrijednost ( ) ---> delete _ECTS;
+
+// ako je nesto niz [ ] --> delete[] _naziv;
+
+// NULLPTR svejedno da li je niz ili nije 
+
+// _ECTS = nullptr;
+
+
+class Predmet {
+public:				// DFT. CONSTR. //
+	char* _naziv;  	// Nema naziva	//
+	int _ocjena;	//     5		//
+	int* _ECTS;		//     0		//
+
+
+	// defaultni constructor
+
+	Predmet() {
+
+		_ocjena = 5;
+
+		_ECTS = new int(0);
+
+		//char dftNaziv[] = "Nema naziva";
+		const char* dftNaziv2 = "Nema naziva";
+
+		int vel = strlen(dftNaziv2) + 1;  // 11 
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, dftNaziv2); // 1. gdje pohranjujemo , 2. koliko slova pohranjujemo , 3. sta pohranjujemo
+
+
+	}
+
+	// obicni, user-def constr.
+
+	// 	Predmet predmet1("Pogramiranje II", 9, 7); 
+
+	Predmet(const char* naziv, int ocjena , int ects ) {
+
+		_ocjena = ocjena;
+
+		_ECTS = new int(ects);
+
+		int vel = strlen(naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, naziv);
+
+
+	}
+
+	// copy constr.
+
+	//Predmet predmetKopija2(predmet1); // copy constr. 
+
+	// & znaci da se koristi original 
+	// const --> 
+
+	Predmet(const Predmet& predmet) { // napravial kopija 
+
+		_ocjena = predmet._ocjena;
+
+		_ECTS = new int(*predmet._ECTS);
+
+		int vel = strlen(predmet._naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, predmet._naziv);
+
+
+	}
+
+
+	// operator dodjele
+	// predmetOperatorDodjele = predmet1; // <---- operator dodjele 
+
+
+
+	Predmet& operator = (const Predmet& predmet) {
+
+		if (this != &predmet) {
+
+			delete _ECTS;
+			delete[] _naziv;
+
+			_ocjena = predmet._ocjena;
+
+			_ECTS = new int(*predmet._ECTS);
+
+			int vel = strlen(predmet._naziv) + 1;
+
+			_naziv = new char[vel];
+
+			strcpy_s(_naziv, vel, predmet._naziv);
+		}
+
+
+		return *this;
+
+	}
+
+
+
+
+
+
+
+	// TILDA -> ALT GR + 1 
+
+	// Destuktor
+
+	~Predmet() {
+
+		cout << "DESTRUKTOR SE POZVAO" << endl;
+
+		delete _ECTS;
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+
+	void Ispis() {
+
+		cout << "Naziv predmeta : " << _naziv << endl;
+		cout << "Ocjena predmeta : " << _ocjena << endl;
+		cout << "ECTS predmeta : " << *_ECTS << endl;
+
+	}
+
+
+
+};
+
+
+
+
+
+class Student {
+	char* _imePrezime;
+	Predmet* _polozeni;
+	int _trenutno;
+	int _max;
+public:
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Ispis ili COUT 
+	// 7. Potrebne funkcije
+
+
+
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)		        
+
+
+	}
+
+};
+
+
+
+void main() {
+
+	Predmet predmet0; // <--- dft. constr.
+
+	Predmet predmet1("Pogramiranje II", 9, 7); // user-def. constr. 
+	Predmet predmet2("Matematika II", 6, 5); // user-def. constr. 
+	Predmet predmet3("Web razvoj i dizajn", 7, 6); // user-def. constr. 
+
+
+	//Predmet predmetKopija = predmet1; // copy constr. 
+	//Predmet predmetKopija2(predmet1); // copy constr. 
+
+	Predmet predmetOperatorDodjele;  // <--- dft. constr.
+	predmetOperatorDodjele = predmetOperatorDodjele; // <---- operator dodjele 
+
+
+	predmetOperatorDodjele.Ispis();
+	//predmet1.Ispis();
+	//predmet2.Ispis();
+	//predmet3.Ispis();
+
+
+
+	system("pause>0");
+}
+
