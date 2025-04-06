@@ -1,0 +1,123 @@
+#include<iostream>
+using namespace std;
+
+
+
+class Datum {
+	int* _dan, * _mjesec, * _godina;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Operator poredjenja
+
+
+};
+
+
+class Fudbaler {
+	char* _imePrezime; 
+	char* _pozicija;
+	int _brojDresa;
+	Datum* _datumRodjenja;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+	//8. Operator poredjenja
+
+
+	//Operator += na način da se mijenja broj dresa fudbalera za proslijeđenu vrijednost
+
+
+};
+class Tim {
+	char* _naziv;
+	Fudbaler* _momcad;
+	int* _trenutno;
+	int _max;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+	//8. Operator poredjenja
+
+
+	//Operator ( ) na način da se doda igrač u tim gdje je Fudbaler parametar operatora
+
+
+	const char* GetNazivTima() {
+		return _naziv;
+	}
+
+};
+
+
+class Liga{
+	char* _naziv;
+	Tim* _timovi;
+	int* _trenutno;
+	int _max;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+	//8. Operator poredjenja
+
+
+	//Operator ( ) na način da se da parametar Tim dodaje u niz _timovi
+
+
+	//Operator [ ] na način da se pronalazi Tim gdje je parametar Tim
+ 
+
+	//Operator [ ] na način da se pronalazi Tim gdje je parametar naziv tima
+
+
+};
+
+
+
+void main()
+{
+
+	//Datum datum1(12, 12, 1998);
+	//Datum datum2(1, 15, 1995);
+
+
+	//Fudbaler fudbaler1("Oliver Kahn", "GK", 1, datum2);
+	//Fudbaler fudbaler2("Philipp Lahm", "LB", 21, datum1);
+	//Fudbaler fudbaler3("Franck Ribery", "LMF", 7, datum2);
+	//Fudbaler fudbaler4("Arjen Robben", "RMF", 10, datum2);
+	//Fudbaler fudbaler5("Luca Toni", "CF", 9, datum1);
+	//Fudbaler fudbaler6("Victor Valdez", "GK", 1, datum1);
+	//Fudbaler fudbaler7("Charles Puyol", "CB", 5, datum1);
+	//Fudbaler fudbaler8("Andres Iniesta", "CMF", 8, datum1);
+	//Fudbaler fudbaler9("Ronaldinho", "SS", 10, datum1);
+	//Fudbaler fudbaler10("David Villa", "CF", 9, datum1);
+
+
+
+
+
+	system("pause>0");
+}
