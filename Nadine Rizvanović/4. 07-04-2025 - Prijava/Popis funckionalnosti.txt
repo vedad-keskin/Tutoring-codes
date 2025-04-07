@@ -1,0 +1,31 @@
+Admin :
+Admin Panel
+Biznis Report
+CRUD nad Korisnicima
+CRUD nad Menu 
+CRUD nad Manufacturer
+CRUD nad Filmovi
+CRUD nad statusom filma..
+  active, upcoming , classics 
+CRUD nad Glumcima
+CRUD nad žanrovima
+CRUD nad producent
+CRUD nad produkcijskom kuc.
+CRUD nad projekcijama
+10:0 sala 1 - Film 1
+CRUD nad MovieTypes
+ -- 3D 2D, IMAX ,.. 
+CRUD nad salama 
+CRUD nad sjedištima 
+CRUD nad seatType
+ .. regular, wheelchair, love.. 
+
+
+
+
+Korisnik :
+Korisnicki profil
+Naručiti meni 
+Rezervisati i platit kartu (stripe)
+Recenzija odgledanog filma
+
