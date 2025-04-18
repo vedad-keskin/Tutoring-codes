@@ -1,0 +1,105 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+	if (tekst == nullptr)
+		return nullptr;
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+
+template<class T>
+class Kolekcija {
+public:
+	T* _niz;
+	int _max;
+	int _trenutno;
+	//Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Operator ispisa 
+	// 7. Potrebne funkcije
+
+
+	void AddElement(T el) {
+		// dodaje element u niz, u slucaju dupliranja ili izlaska izvan opsega baciti izuzetak tipa exception
+
+	}
+
+
+	bool Ukloni() {
+		// uklanja zadnji element iz niza
+
+	}
+
+
+	bool RemoveAt(int lokacija) {
+		// uklanja element na određenoj poziciji
+
+	}
+
+
+	void AddElement(T el, int lokacija) {
+		// dodaje element na određenu lokaciju
+
+	}
+
+
+	bool RemoveAt(T el) {
+		// uklanja element koji je jednak proslijeđenom
+
+	}
+
+
+	bool Prazan() {
+		// vrši provjeru da li je niz prazan
+
+	}
+
+
+	T* GetNajmanjiElement() {
+		// vraća najmanji element iz niza i to kao pokazivač
+
+	}
+
+
+};
+
+class Zivotinja {
+private:
+	char* _naziv;
+	int _tezina;
+public:
+	//Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Operator ispisa 
+	// 7. Operatori poredjenja
+
+
+
+
+	//Operator == na način da poredi po vrsti životinje da li su dvije životinje iste
+
+
+	//Operator > na način da poredi težine dviju životinja
+
+
+};
+
+void main() {
+
+
+
+
+	system("pause>0");
+}
