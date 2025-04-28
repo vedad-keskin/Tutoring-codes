@@ -1,0 +1,397 @@
+#include <iostream>
+using namespace std;
+
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+
+	char* temp = new char[vel];
+
+	strcpy_s(temp, vel, tekst);
+
+	return temp;
+
+}
+
+
+// BAZNA KLASA ---> KLASA KOJA SE NASLJEDJUJE
+
+class Osoba {
+protected: // 1. razlika
+	char* _imePrezime;  // --- //
+	char* _JMBG;		// --- //
+public:
+
+	// Osoba osoba0;
+	// Osoba osoba1("Vedad Keskin", "12129981500001");
+
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+	virtual ~Osoba() { // 2. razlika
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	// 3. razlika
+	virtual void Info() = 0; // pure virutal func.  --> cini ovu klasu apstraktnom (cini je pomocnom klasom)
+
+
+	void Ispis() {
+
+		cout << "Ime prezime : " << _imePrezime << endl;
+		cout << "JMBG : " << _JMBG << endl;
+
+	}
+
+	// cout << osoba0;
+	// cout << osoba1;
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+
+		return COUT;
+
+	}
+
+
+};
+
+
+// IZVEDENA KLASA ---> KLASA KOJA NASLJEDI BAZNU KLASU
+
+class Profesor : public Osoba { // 1. korak dati da klasa Osoba bude dostupna u klasi Profesor
+public:
+	char* _titula;
+
+	// 	Profesor profesor1("dr. sc.", "Denis Music", "1231321312");
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---")
+		: Osoba(imeprezime, jmbg) { // 2. korak spojiti konstrukore klase Osoba sa konstruktorom klase Profesor
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak spojiti copy sa copy constr.
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4. korak spojiti op= sa op= 
+
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+
+	~Profesor() {
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	void Info() { // 5. korak
+
+		cout << *this; // pozivamo ispis ove klase
+
+	}
+
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1. NACIN --> popisati sve parametre
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		// 2. NACIN --> pozivati ispis bazne klase
+		//COUT << obj._titula<<" ";
+		//COUT << Osoba(obj);
+
+		return COUT;
+
+	}
+
+
+
+
+};
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // [ ] ili ( ) 
+
+	Predmet(const char* naziv = "---", int ects = 0, Profesor profesor = Profesor() ) {
+
+		_naziv = GetNizKaraktera(naziv);
+		_ECTS = new int(ects);
+		_predmetniProfesor = new Profesor(profesor);
+
+	}
+
+	Predmet(const Predmet& obj) {
+
+		_naziv = GetNizKaraktera(obj._naziv);
+		_ECTS = new int(*obj._ECTS);
+		_predmetniProfesor = new Profesor(*obj._predmetniProfesor);
+
+
+	}
+
+	Predmet& operator = (const Predmet& obj) {
+		if (this != &obj) {
+
+			delete[] _naziv;
+			delete _ECTS;
+			delete _predmetniProfesor;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+			_ECTS = new int(*obj._ECTS);
+			_predmetniProfesor = new Profesor(*obj._predmetniProfesor);
+
+		}
+		return *this;
+	}
+
+	~Predmet() {
+
+		delete[] _naziv;
+		_naziv = nullptr;
+		delete _ECTS;
+		_ECTS = nullptr;
+		delete _predmetniProfesor;
+		_predmetniProfesor = nullptr;
+
+	}
+
+
+	friend ostream& operator << (ostream& COUT, const Predmet& obj) {
+
+		COUT << obj._naziv << " [" << *obj._ECTS << "] - kojeg predaje " << *obj._predmetniProfesor << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+
+// IZVEDENA KLASA ---> KLASA KOJA NASLJEDI BAZNU KLASU
+
+class Student : public Osoba { // 1. korak
+public:
+	char* _brojIndeksa; // [ ] char
+
+	Predmet* _polozeniPredmeti; // [ ] 
+	int* _trenutno; // ( )
+	int _max;
+
+	Student(const char* imeprezime = "---", const char* jmbg = "---", const char* index = "IB00000", int max = 3)
+	   : Osoba(imeprezime,jmbg)   { // 2. korak
+
+		_brojIndeksa = GetNizKaraktera(index);
+
+		_trenutno = new int(0);
+		_max = max;
+
+		_polozeniPredmeti = new Predmet[_max];
+
+	}
+
+	Student(const Student& obj) : Osoba(obj) { // 3. korak
+
+		_brojIndeksa = GetNizKaraktera(obj._brojIndeksa);
+
+		_max = obj._max;
+		_trenutno = new int(*obj._trenutno);
+
+		_polozeniPredmeti = new Predmet[_max];
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			_polozeniPredmeti[i] = obj._polozeniPredmeti[i];
+		}
+
+	}
+
+	Student& operator = (const Student& obj) {
+		if (this != &obj) {
+
+			delete[] _brojIndeksa;
+			delete[] _polozeniPredmeti;
+			delete _trenutno;
+
+			Osoba::operator=(obj); // 4. korak
+
+			_brojIndeksa = GetNizKaraktera(obj._brojIndeksa);
+
+			_max = obj._max;
+			_trenutno = new int(*obj._trenutno);
+
+			_polozeniPredmeti = new Predmet[_max];
+
+			for (int i = 0; i < *_trenutno; i++)
+			{
+				_polozeniPredmeti[i] = obj._polozeniPredmeti[i];
+			}
+
+		}
+		return *this;
+	}
+
+	~Student() {
+
+		delete[] _brojIndeksa;
+		_brojIndeksa = nullptr;
+		delete[] _polozeniPredmeti;
+		_polozeniPredmeti = nullptr;
+		delete _trenutno;
+		_trenutno = nullptr;
+
+	}
+
+
+	// student.DodajPolozeniPredmet(predmet3); --> MATII
+	 
+	bool DodajPolozeniPredmet(Predmet predmet) {
+
+		if (*_trenutno == _max) {
+			cout << "Niz je popunjen" << endl;
+			return false;
+		}
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			if (strcmp ( predmet._naziv , _polozeniPredmeti[i]._naziv) == 0) {
+				cout << "Student je polozio odabrani predmet" << endl;
+				return false;
+			}
+		}
+
+
+		_polozeniPredmeti[*_trenutno] = predmet; // pol[0] = PRII , pol[1] = WRD , pol[2] = MATII
+
+		(*_trenutno)++; // 0 --> 1 --> 2 --> 3
+
+		return true;
+
+	}
+
+
+
+	void Info() { // 5. korak
+		cout << *this;
+	}
+
+
+	friend ostream& operator << (ostream& COUT, const Student& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "] - (" << obj._brojIndeksa << ")" << endl;
+
+		COUT << "POLOZENI PREDMETI STUDENTA : " << endl << endl;
+
+		for (int i = 0; i < *obj._trenutno; i++)
+		{
+			COUT << obj._polozeniPredmeti[i]; // pol[0] , pol[1] 
+			COUT << "==================" << endl<< endl;
+		}
+
+
+		return COUT;
+
+	}
+
+};
+
+
+
+
+
+void main() {
+
+	//Osoba osoba0;
+	//Osoba osoba1("Vedad Keskin", "12129981500001");
+
+	//osoba0.Ispis();
+	//osoba1.Ispis();
+	//cout << osoba0;
+	//cout << osoba1;
+
+	Profesor profesor1("dr. sc.", "Denis Music", "1231321312");
+	Profesor profesor2("dr. sc.", "Elmir Babovic", "1231321312");
+	Profesor profesor3("dr. sc.", "Nina Bijedic", "1231321312");
+	Profesor profesor4("dr. sc.", "Goran Skondric", "1231321312");
+
+	Predmet predmet1("Programiranje II", 7, profesor1);
+	Predmet predmet2("Web razvoj i dizajn", 5, profesor2);
+	Predmet predmet3("Matematika II", 5, profesor3);
+	Predmet predmet4("Operativni sistemi", 4, profesor4);
+
+	Student student("Vedad Keskin", "12129981500001", "IB180079", 3);
+
+	student.DodajPolozeniPredmet(predmet1);
+	student.DodajPolozeniPredmet(predmet2);
+	student.DodajPolozeniPredmet(predmet2);
+	student.DodajPolozeniPredmet(predmet3);
+	student.DodajPolozeniPredmet(predmet4);
+
+	Student studentKopija = student;
+
+	Student studentOperatorDodjele;
+	studentOperatorDodjele = student;
+
+	cout << studentOperatorDodjele;
+
+
+
+	system("PAUSE>0");
+}
