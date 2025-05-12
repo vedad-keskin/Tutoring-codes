@@ -1,0 +1,190 @@
+#include<iostream>
+using namespace std;
+
+class Predmet
+{
+public:
+	int _ocjena;
+	int* _ECTS;
+	char* _imePredmeta;
+
+	Predmet() //deafult constructor
+	{
+		_ocjena = 10;
+		_ECTS = new int(7);
+		const char* ime = "Programiranje II";
+		int vel = strlen(ime) + 1;
+		_imePredmeta = new char[vel];
+		strcpy_s(_imePredmeta, vel, ime);
+	}
+
+	Predmet(int ocjena, int ects, const char* ime) //user-defined constructor
+	{
+		_ocjena = ocjena;
+		_ECTS = new int(ects);
+		int vel = strlen(ime) + 1;
+		_imePredmeta = new char[vel];
+		strcpy_s(_imePredmeta, vel, ime);
+	}
+
+	Predmet(const Predmet& predmet) //copy construcotr
+	{
+		_ocjena = predmet._ocjena;
+		_ECTS = new int(*predmet._ECTS);
+		int vel = strlen(predmet._imePredmeta)+1;
+		_imePredmeta = new char[vel];
+		strcpy_s(_imePredmeta, vel, predmet._imePredmeta);
+	}
+
+	Predmet& operator=(const Predmet& predmet)
+	{
+		if (this!=&predmet)
+		{
+			_ocjena = predmet._ocjena;
+			_ECTS = new int(*predmet._ECTS);
+			int vel = strlen(predmet._imePredmeta) + 1;
+			_imePredmeta = new char[vel];
+			strcpy_s(_imePredmeta, vel, predmet._imePredmeta);
+		}
+		return *this;
+	}
+	void ispis()
+	{
+		cout << "Ime predmeta je: " << _imePredmeta << endl;
+		cout << "Broj ECTS bodova je: " << *_ECTS << endl;
+		cout << "Dobijena ocjena je: " << _ocjena << endl;
+		cout << "----------------------------" << endl;
+	}
+	~Predmet()
+	{
+		delete _ECTS;
+		_ECTS = nullptr;
+		delete[]_imePredmeta;
+		_imePredmeta = nullptr;
+		cout << "Dealokacija uspjesna." << endl;
+	}
+};
+
+class Student
+{
+public:
+	char* _imePrezime;
+	Predmet* _polozeni;
+	int _trenutni;
+	int _max;
+
+	Student()
+	{
+		_max = 5;
+		_trenutni = 1;
+		const char* ime = "Adin Kalem";
+		int vel = strlen(ime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, ime);
+		_polozeni = new Predmet[_max];
+
+	}
+
+	Student(int max, const char* ime, int trenutni)
+	{
+		_max = max;
+		_trenutni = trenutni;
+		int vel = strlen(ime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, ime);
+		_polozeni = new Predmet[_max];
+	}
+
+	Student(const Student& student)
+	{
+		_max = student._max;
+		int vel = strlen(student._imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, student._imePrezime);
+		_trenutni = student._trenutni;
+		_polozeni = new Predmet[_max];
+		for (int i = 0; i < _trenutni; i++)
+		{
+			_polozeni[i] = student._polozeni[i];
+		}
+	}
+	Student& operator=(const Student& student)
+	{
+		if (this!=&student)
+			{
+			delete[]_imePrezime;
+			delete[]_polozeni;
+			_max = student._max;
+			int vel = strlen(student._imePrezime) + 1;
+			_imePrezime = new char[vel];
+			strcpy_s(_imePrezime, vel, student._imePrezime);
+			_trenutni = student._trenutni;
+			_polozeni = new Predmet[_max];
+			for (int i = 0; i < _trenutni; i++)
+			{
+				_polozeni[i] = student._polozeni[i];
+			}
+		}
+		return *this;
+	}
+
+	bool dodajPredmet(const Predmet& predmet)
+	{
+		if (_trenutni<_max)
+		{
+			_polozeni[_trenutni] = predmet;
+			_trenutni++;
+			return true;
+		}
+		return false;
+	}
+
+	~Student()
+	{
+		delete[]_polozeni;
+		_polozeni = nullptr;
+		delete[]_imePrezime;
+		_imePrezime = nullptr;
+		cout << "Dealokacija uspjesna" << endl;
+	}
+
+	void ispis()
+	{
+		cout << "Ime i prezime sudenta je: " << _imePrezime << endl;
+		cout << "Broj polozenih predmeta studenta: " << _trenutni << endl;
+		cout << "-----------------------------" << endl;
+		for (int i = 0; i < _trenutni; i++)
+		{
+			cout << "Predmet " << i + 1 << " :" << endl;
+			_polozeni[i].ispis();
+		}
+	}
+
+};
+
+
+
+int main()
+{
+	Predmet predmet;
+	predmet.ispis();
+
+	Predmet predmet1(10, 7, "Programiranje II");
+	predmet1.ispis();
+	
+	Predmet predmetKopije(predmet1);
+	predmetKopije.ispis();
+
+	Predmet operatorPredmet = predmet1;
+	operatorPredmet.ispis();
+
+	Student adin(5, "Adin Kalem", 0);
+	adin.dodajPredmet(Predmet(8, 10, "Programiranje II"));
+	adin.dodajPredmet(Predmet(7, 8, "Matematika II"));
+	adin.dodajPredmet(Predmet(5, 6, "Baze podataka II"));
+	
+	adin.ispis();
+
+	system("pause");
+	return 0;
+}
