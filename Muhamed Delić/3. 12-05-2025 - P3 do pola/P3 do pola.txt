@@ -1,0 +1,224 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+// BAZNA KLASA -> KLASA KOJA SE NASLJEDJUJE
+
+class Osoba {
+protected: // 1. razlika
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	Osoba(const char* imePrezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imePrezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+	virtual ~Osoba() { // 2. razlika
+
+		cout << "BAZNI DESTRKTOR" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	// JA OPCIJALNO MOGU PROMIJNITI OVU FUNCKIJU U IZVEDENOJ KLASI 
+
+	//virtual void TestF() {
+
+	//	cout << "OSNOVNA VERZIJA" << endl;
+
+	//}
+
+	// MORA IMATI IMPLEMENTACIJU U IZVEDENOJ KLASI 
+
+	// 3. razlika
+	virtual void Info() = 0; // pure virtual function -> ovo nasa klasa postaje apstraktna klasa
+
+
+	void Ispis() {
+
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	}
+
+	// cout << osoba1;
+	
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+	}
+
+
+
+};
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIJEDI BAZNU KLASU 
+
+class Profesor : public Osoba { // 1. korak 
+public:
+	char* _titula;
+
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---",const char* jmbg = "---") 
+		: Osoba(imeprezime,jmbg) { // 2. korak spojiti spojeni konstr. klase Profesor sa klasom Osoba
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak spojiti copy constr. klase Prof sa klasom Osoba
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+			Osoba::operator=(obj); // 4. korak spojiti op = sa op = klase Prof i klase Osoba
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	//void TestF() {
+
+	//	cout << "NAPREDNA VERZIJA" << endl;
+
+	//}
+
+	
+	void Info() { // 5. korak override/promijeniti void Info() funkc.
+		cout << *this;
+	}
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTRUKTOR" << endl;
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+	}
+
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( ) 
+
+
+
+
+
+
+};
+
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIJEDI BAZNU KLASU 
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti; // [ ] 
+	int* _trenutno;
+	int _max;
+
+
+	bool DodajPredmet(Predmet predmet) {
+
+	}
+
+
+};
+
+
+
+void main() {
+
+
+
+
+	Profesor profesor1("dr. sc.", "Denis Music", "1231231231");
+
+	cout << profesor1;
+	profesor1.Info();
+
+	//profesor1.TestF();
+
+	// SPECIJALNI SLUCAJ KOJI NAM ZAHTJEVA DA IMAMO VIRTUAL DEST. BAZNE KLASE
+	//Osoba* osoba = new Profesor("dr. sc.", "Elmir Babovic", "1231231231");
+	//delete osoba;
+
+
+
+
+	//Profesor profesorKopija = profesor1;
+
+	//Profesor profesorOperatorDodjele;
+	//profesorOperatorDodjele = profesor1;
+
+	////osoba0.Ispis();
+	////osoba1.Ispis();
+
+	////cout << osoba0;
+	////cout << osoba1;
+	////cout << profesor1;
+	//cout << profesorOperatorDodjele;
+
+
+
+	system("PAUSE>0");
+}
