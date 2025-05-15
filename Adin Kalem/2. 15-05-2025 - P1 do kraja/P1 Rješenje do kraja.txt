@@ -1,0 +1,224 @@
+#include<iostream>
+using namespace std;
+
+class Predmet
+{
+public:
+	int _ocjena;
+	int* _ECTS;
+	char* _imePredmeta;
+
+	Predmet() //deafult constructor
+	{
+		_ocjena = 10;
+		_ECTS = new int(7);
+		const char* ime = "Programiranje II";
+		int vel = strlen(ime) + 1;
+		_imePredmeta = new char[vel];
+		strcpy_s(_imePredmeta, vel, ime);
+	}
+
+	Predmet(int ocjena, int ects, const char* ime) //user-defined constructor
+	{
+		_ocjena = ocjena;
+		_ECTS = new int(ects);
+		int vel = strlen(ime) + 1;
+		_imePredmeta = new char[vel];
+		strcpy_s(_imePredmeta, vel, ime);
+	}
+
+	Predmet(const Predmet& predmet) //copy construcotr
+	{
+		_ocjena = predmet._ocjena;
+		_ECTS = new int(*predmet._ECTS);
+		int vel = strlen(predmet._imePredmeta) + 1;
+		_imePredmeta = new char[vel];
+		strcpy_s(_imePredmeta, vel, predmet._imePredmeta);
+	}
+
+	Predmet& operator=(const Predmet& predmet)
+	{
+		if (this != &predmet)
+		{
+			_ocjena = predmet._ocjena;
+			_ECTS = new int(*predmet._ECTS);
+			int vel = strlen(predmet._imePredmeta) + 1;
+			_imePredmeta = new char[vel];
+			strcpy_s(_imePredmeta, vel, predmet._imePredmeta);
+		}
+		return *this;
+	}
+	void ispis()
+	{
+		cout << "Ime predmeta je: " << _imePredmeta << endl;
+		cout << "Broj ECTS bodova je: " << *_ECTS << endl;
+		cout << "Dobijena ocjena je: " << _ocjena << endl;
+		cout << "----------------------------" << endl;
+	}
+	~Predmet()
+	{
+		delete _ECTS;
+		_ECTS = nullptr;
+		delete[]_imePredmeta;
+		_imePredmeta = nullptr;
+		cout << "Dealokacija uspjesna." << endl;
+	}
+};
+
+class Student {
+public:
+	char* _imePrezime;
+	Predmet* _polozeni; // [ ] 
+	int _trenutni; // koliko trenutno imamo pohranjuenih predmeta u nizu
+	int _max; // koliko maksimalno mozemo imati predmeta u nizu _polozeni
+
+	Student()
+	{
+		const char* ime = "Adin Kalem";
+		int vel = strlen(ime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, ime);
+
+
+		_max = 3;
+		_trenutni = 0;
+		_polozeni = new Predmet[_max];
+
+	}
+
+	Student(int max, const char* ime)
+	{
+		_max = max;
+		_trenutni = 0;
+		_polozeni = new Predmet[_max];
+
+
+		int vel = strlen(ime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, ime);
+	}
+
+	Student(const Student& student)
+	{
+		int vel = strlen(student._imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, student._imePrezime);
+
+
+		_max = student._max;
+		_trenutni = student._trenutni;
+		_polozeni = new Predmet[_max];
+
+
+		for (int i = 0; i < _trenutni; i++)
+		{
+			_polozeni[i] = student._polozeni[i];
+		}
+	}
+
+	Student& operator=(const Student& student)
+	{
+		if (this != &student)
+		{
+			delete[]_imePrezime;
+			delete[]_polozeni;
+
+
+			_max = student._max;
+			int vel = strlen(student._imePrezime) + 1;
+			_imePrezime = new char[vel];
+			strcpy_s(_imePrezime, vel, student._imePrezime);
+			_trenutni = student._trenutni;
+			_polozeni = new Predmet[_max];
+			for (int i = 0; i < _trenutni; i++)
+			{
+				_polozeni[i] = student._polozeni[i];
+			}
+		}
+		return *this;
+	}
+
+
+	// 		adin.dodajPredmet(Predmet(7, 8, "MATII"));
+
+	void dodajPredmet(Predmet predmet) // MATII
+	{
+		if (_max == _trenutni) {
+			cout << "Niz je popunjen" << endl;
+			return;
+		}
+
+		for (int i = 0; i < _trenutni; i++) // 0 1 
+		{
+			//   pol[1] = MATII            == MATII
+			//                char* == char*
+			// strcmp( naziv1   ,  naziv2 ) == 0 ako vraca 0 isto je , != 0 nije isto
+
+			if (strcmp(_polozeni[i]._imePredmeta  , predmet._imePredmeta) == 0) {
+				cout << "Taj predmet je vec polozen" << endl;
+				return;
+			}
+		}
+
+
+		_polozeni[_trenutni] = predmet; // pol[0] = PRII , pol[1] = MATII
+		// pol[2] = BPII
+
+		_trenutni++; // 0 ---> 1 ---> 2 ---> 3
+
+	}
+
+	~Student()
+	{
+		delete[]_polozeni;
+		_polozeni = nullptr;
+		delete[]_imePrezime;
+		_imePrezime = nullptr;
+		cout << "Dealokacija uspjesna" << endl;
+	}
+
+	void ispis()
+	{
+		cout << "Ime i prezime sudenta je: " << _imePrezime << endl;
+		cout << "Broj polozenih predmeta studenta: " << _trenutni << endl;
+		cout << "-----------------------------" << endl;
+
+		for (int i = 0; i < _trenutni; i++) // 0 1 2
+		{
+			cout << "Predmet " << i + 1 << " :" << endl; // 1. , 2.  
+			_polozeni[i].ispis(); // pol[0] = PRII , pol[1] = MATII
+		}
+
+	}
+
+};
+
+
+
+int main()
+{
+	Predmet predmet;
+	//predmet.ispis();
+
+	Predmet predmet1(10, 7, "Programiranje II");
+	//predmet1.ispis();
+
+	Predmet predmetKopije(predmet1);
+	//predmetKopije.ispis();
+
+	Predmet operatorPredmet = predmet1;
+	//operatorPredmet.ispis();
+
+	Student adin(3, "Adin Kalem");
+
+
+	adin.dodajPredmet(predmet1);
+	adin.dodajPredmet(Predmet(7, 8, "Matematika II"));
+	adin.dodajPredmet(Predmet(7, 8, "Matematika II"));
+	adin.dodajPredmet(Predmet(5, 6, "Baze podataka II"));
+	adin.dodajPredmet(Predmet(5, 7, "Web razvoj i dizajn"));
+
+	adin.ispis();
+
+	system("pause>0");
+}
