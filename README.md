@@ -5,7 +5,6 @@ If you're trying to clone this repository and see an error like:
 fatal: unable to checkout working tree
 error: unable to create file [...]: Filename too long
 
-
 This is a common issue on Windows due to the default 260-character path length limit.
 
 ---
@@ -23,9 +22,7 @@ This is a common issue on Windows due to the default 260-character path length l
 ```bash
 git config --system core.longpaths true
 
-## 🧪 Step 3: Retry Cloning
-
+### Step 3: Retry Cloning
 Now try cloning the repository again:
 
-```bash
 git clone https://github.com/vedad-keskin/Tutoring-codes.git
