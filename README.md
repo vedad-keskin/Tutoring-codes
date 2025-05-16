@@ -22,7 +22,6 @@ This is a common issue on Windows due to the default 260-character path length l
 ```bash
 git config --system core.longpaths true
 
-### Step 3: Retry Cloning
 Now try cloning the repository again:
 
 git clone https://github.com/vedad-keskin/Tutoring-codes.git
