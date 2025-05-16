@@ -18,7 +18,7 @@ public class AcademicYearGetAllEndpoint(ApplicationDbContext db) : MyEndpointBas
                         .Select(c => new AcademicYearGetAllResponse
                         {
                             ID = c.ID,
-                            Description = c.Description,
+                            Name = c.Description,
                         })
                         .ToArrayAsync(cancellationToken);
 
@@ -28,6 +28,6 @@ public class AcademicYearGetAllEndpoint(ApplicationDbContext db) : MyEndpointBas
     public class AcademicYearGetAllResponse
     {
         public required int ID { get; set; }
-        public required string Description { get; set; }
+        public required string Name { get; set; }
     }
 }
