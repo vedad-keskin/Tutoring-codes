@@ -5,6 +5,7 @@ import {
   StudentGetByIdResponse
 } from '../../../../../endpoints/student-endpoints/student-get-by-id-endpoint.service';
 import {MySnackbarHelperService} from '../../../../shared/snackbars/my-snackbar-helper.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-student-semesters-new',
@@ -20,13 +21,27 @@ export class StudentSemestersNewComponent implements OnInit {
   studentId:number=0;
   student: StudentGetByIdResponse | null = null;
 
+  semesterForm: FormGroup;
+
 
   constructor(
     private route: ActivatedRoute,
     private studentGetByIdService:StudentGetByIdEndpointService,
     private snackbar: MySnackbarHelperService,
+    private fb: FormBuilder,
   ) {
     this.studentId = this.route.snapshot.params['id'];
+
+
+    this.semesterForm = this.fb.group({
+      academicYearId: [1, [Validators.required]],
+      studentId: [this.studentId, [Validators.required]],
+      recordedById: [1, [Validators.required]],
+      dateOfEntrollment: [new Date(), [Validators.required]],
+      yearOfStudy: [null, [Validators.required]],
+      price: [null, [Validators.required , Validators.min(50), Validators.max(2000)]],
+      renewal: [null, [Validators.required]],
+    });
 
   }
 
@@ -48,5 +63,9 @@ export class StudentSemestersNewComponent implements OnInit {
         console.error('Error fetching student:', err);
       }
     });
+  }
+
+  saveSemester() {
+
   }
 }
