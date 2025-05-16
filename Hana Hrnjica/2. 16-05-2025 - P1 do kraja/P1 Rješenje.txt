@@ -1,0 +1,353 @@
+#include <iostream>
+using namespace std;
+
+// POKAZIVACI
+
+// 1. ALOKACIJA --> new 
+
+// ( ) ---> kreiraj mi postora u memoriji da pohranim jedno 
+
+// [ ] ---> kreiraj mi postora u memoriji da pohranim vise od jednog
+
+// 2. DEREFERENCIRANJE --> ispis i kopiranje
+
+// ( ) ---> onda mora ici ispred * --> *_ECTS = 0 , _ECTS = 000002210C018740
+
+// [ ] ---> onda ne smije ici ispred * *_naziv = N , _naziv = Nema predmeta
+
+// 3. DESTRUKTOR --> delete , nullptr
+
+// ( ) --> delete _ECTS;
+
+// [ ] --> delete[] _naziv;
+
+
+class Predmet {
+public:			   // dft. constr.  // user-def constr.	//
+	//char _naziv[50]; // Nema predmeta // 					//
+	char* _naziv;  // Nema predmeta // Programiranje II //
+	int _ocjena;   //      5		//       9			//
+	int* _ECTS;	   //      0		//       7			//
+
+
+	// dft. constr.
+
+	Predmet() {
+
+		_ocjena = 5;
+
+		_ECTS = new int(0);
+
+		//string dftNaziv1 = "Nema predmeta";
+		//char dftNaziv2[] = "Nema predmeta"; // 14 char
+		const char* dftNaziv3 = "Nema predmeta"; // read only memory, string literal
+
+		int vel = strlen(dftNaziv3) + 1; // 14
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, dftNaziv3); // 1. gdje zelimo nesto da pohranimo , 2. koliko slova zelimo da prekopiramo , 3. sta zelimo da prekopiramo
+
+
+	}
+
+
+	// Predmet predmet1("Programiranje II", 9, 7); // <--- user-def constr.
+	Predmet(const char* naziv, int ocjena, int ects) {
+
+		_ocjena = ocjena;
+
+		_ECTS = new int(ects);
+
+		int vel = strlen(naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, naziv); // 1. gdje, 2. koliko, 3. sta 
+
+	}
+
+	// Predmet predmetKopija2(predmet1); // <--- copy constr.
+
+	// & salji original
+	// bez & pravi kopija
+	// const kaze da je nesto konstantno i da se ne moze mijenjati 
+
+	Predmet(const Predmet& predmet) { // posalji original
+
+		_ocjena = predmet._ocjena;
+
+		_ECTS = new int(*predmet._ECTS);
+
+		int vel = strlen(predmet._naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, predmet._naziv);
+
+
+	}
+
+	// 	predmetOperatorDodjele = predmet1; // <--- operator dodjele
+
+	Predmet& operator = (const Predmet& predmet) {
+
+		if (this != &predmet) {
+
+			delete _ECTS;
+			delete[] _naziv;
+
+
+			_ocjena = predmet._ocjena;
+
+			_ECTS = new int(*predmet._ECTS);
+
+			int vel = strlen(predmet._naziv) + 1;
+
+			_naziv = new char[vel];
+
+			strcpy_s(_naziv, vel, predmet._naziv);
+		}
+
+
+		return *this;
+
+	}
+
+
+
+
+
+
+
+
+	// Destructor , dealoakacija
+	// TILDA --> alt gr + 1
+	~Predmet() {
+
+		//cout << "DESTURKTOR SE POZVAO" << endl;
+
+		delete _ECTS;
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+
+
+
+	void Ispis() {
+
+		cout << "Naziv predmeta : " << _naziv << endl; // ctrl + d
+		cout << "Ocjena predmeta : " << _ocjena << endl;
+		cout << "ECTS predmeta : " << *_ECTS << endl;
+
+	}
+
+
+
+};
+
+
+
+
+
+class Student {
+	char* _imePrezime;
+
+	Predmet* _polozeni; // [ ] 
+	int _trenutno;      // koliko trenutno imamo predmeta pohranjenih u nizu
+	int _max;           // koliko maksimalmo mozemo imati polozenih predmeta
+public:
+
+
+	Student() {
+
+		const char* dftNaziv = "Nema imena i prezimena";
+		int vel = strlen(dftNaziv) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, dftNaziv);
+
+		_trenutno = 0;
+		_max = 3;
+
+		_polozeni = new Predmet[_max];
+	}
+
+	Student(const char* imePrezime, int max ) {
+
+		int vel = strlen(imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, imePrezime);
+
+		_trenutno = 0;
+		_max = max;
+
+		_polozeni = new Predmet[_max];
+
+	}
+
+	Student(const Student& student) {
+
+		int vel = strlen(student._imePrezime) + 1;
+		_imePrezime = new char[vel];
+		strcpy_s(_imePrezime, vel, student._imePrezime);
+
+		_trenutno = student._trenutno;
+		_max = student._max;
+
+		_polozeni = new Predmet[_max];
+
+		for (int i = 0; i < _trenutno; i++) // i = 0 , 1 , 2
+		{
+			_polozeni[i] = student._polozeni[i];
+		}
+
+	}
+
+	// 	studentOperatorDodjele = student;
+	Student& operator = (const Student& student) {
+
+		if (this != &student) {
+
+			delete[] _polozeni;
+			delete[] _imePrezime;
+
+			int vel = strlen(student._imePrezime) + 1;
+			_imePrezime = new char[vel];
+			strcpy_s(_imePrezime, vel, student._imePrezime);
+
+			_trenutno = student._trenutno;
+			_max = student._max;
+
+			_polozeni = new Predmet[_max];
+
+			for (int i = 0; i < _trenutno; i++) // i = 0 , 1 , 2
+			{
+				_polozeni[i] = student._polozeni[i];
+			}
+
+		}
+		return *this;
+
+	}
+
+	~Student() {
+
+		delete[] _polozeni;
+		_polozeni = nullptr;
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << "Ime i prezime studenta : " << _imePrezime << endl;
+
+		cout << "Polozeni predmeti studenta : " << endl<<endl;
+
+		for (int i = 0; i < _trenutno; i++) // i = 0 1 2
+		{
+			// pol[0] = PRII 
+			// pol[1] = MATII
+			// pol[2] = WRD
+			_polozeni[i].Ispis();
+			cout << endl<< "================" << endl<<endl;
+		}
+
+	}
+
+	// student.AddPolozeniPredmet(predmet1); <--- MATII
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)		        
+		if (_trenutno == _max) {
+
+			cout << "Student ne moze poloziti vise predmeta" << endl;
+			return;
+
+		}
+
+		for (int i = 0; i < _trenutno; i++) // i = 0 , 1
+		{
+			//           MATII == MATII
+			//           char* == char*
+			//    strcmp (   naziv1   ,    naziv2   ) == 0 
+
+
+			if (strcmp ( predmet._naziv , _polozeni[i]._naziv ) == 0) {
+
+				cout << "Student je vec polozio odabrani predmet" << endl;
+				return;
+
+			}
+
+
+		}
+
+
+		 // pol[0] = PRII 
+		 // pol[1] = MATII
+		 // pol[2] = WRD
+
+		_polozeni[_trenutno] = predmet;
+
+		_trenutno++; // 0 ---> 1 ---> 2 ---> 3
+
+	}
+
+};
+
+
+
+void main() {
+
+	Predmet predmet0; // <--- dft. constr.
+
+	Predmet predmet1("Programiranje II", 9, 7); // <--- user-def constr.
+	Predmet predmet2("Matematika II", 6, 4); // <--- user-def constr.
+	Predmet predmet3("Web razvoj i dizajn", 7, 5); // <--- user-def constr.
+	Predmet predmet4("Operativni sistemi", 6, 4); // <--- user-def constr.
+
+
+	Student student("Vedad Keskin", 3);
+
+	student.AddPolozeniPredmet(predmet1);
+	student.AddPolozeniPredmet(predmet2);
+	student.AddPolozeniPredmet(predmet2);
+	student.AddPolozeniPredmet(predmet3);
+	student.AddPolozeniPredmet(predmet4);
+
+	Student studentKopija = student; // copy constr. 
+
+	Student studentOperatorDodjele;
+
+	studentOperatorDodjele = student;
+
+	studentOperatorDodjele.Ispis();
+
+
+
+
+
+
+	//Predmet predmetKopija1 = predmet1; // <--- copy constr.
+	//Predmet predmetKopija2(predmet1);   // <--- copy constr.
+
+	//Predmet predmetOperatorDodjele;  // <--- dft. constr.
+
+	//predmetOperatorDodjele = predmet1; // <--- operator dodjele
+
+	////predmet1.Ispis(); // <--- poziv ispisa
+	////predmet2.Ispis(); // <--- poziv ispisa
+	//predmetOperatorDodjele.Ispis(); // <--- poziv ispisa
+
+
+
+	system("pause>0");
+}
+
