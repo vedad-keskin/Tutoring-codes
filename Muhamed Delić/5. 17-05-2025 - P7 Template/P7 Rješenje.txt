@@ -1,0 +1,379 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+	if (tekst == nullptr)
+		return nullptr;
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+
+template<class T>
+class Kolekcija {
+public:
+	T* _niz;
+	int _max;
+	int _trenutno;
+
+
+	Kolekcija(int max = 3) {
+
+		_max = max;
+		_trenutno = 0;
+
+		_niz = new T[_max];
+
+	}
+	
+	Kolekcija(const Kolekcija& obj) {
+
+		_max = obj._max;
+		_trenutno = obj._trenutno;
+
+		_niz = new T[_max];
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			_niz[i] = obj._niz[i];
+		}
+
+	}
+
+	Kolekcija& operator = (const Kolekcija& obj) {
+		if (this != &obj) {
+
+			delete[] _niz;
+
+			_max = obj._max;
+			_trenutno = obj._trenutno;
+
+			_niz = new T[_max];
+
+			for (int i = 0; i < _trenutno; i++)
+			{
+				_niz[i] = obj._niz[i];
+			}
+
+		}
+		return *this;
+	}
+
+	~Kolekcija() {
+
+		delete[] _niz;
+		_niz = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Kolekcija& obj) {
+		
+		for (int i = 0; i < obj._trenutno; i++)
+		{
+			COUT << obj._niz[i] << endl;
+		}
+
+		return COUT;
+	}
+
+
+	void AddElement(T el) {
+		// Dodaje element tipa T u niz
+		// Onemogućiti izlazak niza izvan opsega bacajem izuzetka tipa Exception
+		// Onemogućiti dupliranje elemenata bacajem izuzetka tipa Exception
+
+		if (_max == _trenutno) {
+			throw exception("Niz je popunjen");
+		}
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			// Zivotinja == Zivotinja 
+			if (el == _niz[i]) {
+				throw exception("Dupliranje nije dozvoljeno");
+			}
+		}
+
+
+		_niz[_trenutno] = el;
+
+		_trenutno++;
+
+
+	}
+
+
+	bool IsEmpty() {
+		// Vršiti provjeru da li je niz prazan
+
+		if (_trenutno == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+
+
+	bool Remove() {
+		// Uklanja zadnji element iz niza
+
+		if (IsEmpty() == true) {
+			return false;
+		}
+
+		_trenutno--;
+
+		return true;
+
+	}
+
+
+	bool RemoveAt(int lokacija) { // 3
+		// Uklanja element na određenoj poziciji
+
+		if (IsEmpty() == true || lokacija < 0 || lokacija > _trenutno) {
+			return false;
+		}
+
+		for (int i = lokacija; i < _trenutno - 1; i++)
+		{
+			_niz[i] = _niz[i + 1];
+		}
+
+		_trenutno--;
+
+		return true;
+
+	}
+
+
+	bool RemoveAt(T el) { // C
+		// Uklanja element koji je jednak proslijeđenom
+
+		if (IsEmpty() == true) {
+			return false;
+		}
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			if (el == _niz[i]) { // C == C ---> niz[i] = i = 2
+
+				for (int j = i; j < _trenutno - 1; j++)
+				{
+					_niz[j] = _niz[j + 1];
+				}
+
+				_trenutno--;
+				return true;
+
+
+
+			}
+		}
+		return false;
+
+
+	}
+
+
+	void InsertAt(T el, int lokacija) {
+		// Dodaje element na određenu lokaciju
+
+		if (_trenutno == _max) {
+			return;
+		}
+		if (lokacija > _trenutno || lokacija < 0) {
+			return;
+		}
+
+		for (int i = _trenutno; i > lokacija; i--)
+		{
+
+			_niz[i] = _niz[i - 1];
+
+		}
+
+		_niz[lokacija] = el;
+
+		_trenutno++;
+
+
+	}
+
+
+	T* GetNajmanjiElement() {
+		// Vraća najmanji element iz niza i to kao pokazivač
+
+		if (IsEmpty() == true) {
+			return nullptr;
+		}
+
+		// 5 16 7 2 8
+
+		T* najmanjiEl = new T(_niz[0]); // 5 
+
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+
+			//          2   >   8
+			if (*najmanjiEl > _niz[i]) {
+
+				*najmanjiEl = _niz[i]; // 2
+			}
+
+		}
+
+		return najmanjiEl;
+
+
+	}
+
+
+};
+
+class Zivotinja {
+private:
+	char* _naziv;
+	int _tezina;
+public:
+
+	Zivotinja(const char* naziv = "---",int tezina = 0 ) {
+
+		_naziv = GetNizKaraktera(naziv);
+		_tezina = tezina;
+
+	}
+
+	Zivotinja(const Zivotinja& obj) {
+
+		_naziv = GetNizKaraktera(obj._naziv);
+		_tezina = obj._tezina;
+
+	}
+
+	Zivotinja& operator = (const Zivotinja& obj) {
+		if (this != &obj) {
+			delete[] _naziv;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+			_tezina = obj._tezina;
+		}
+		return *this;
+	}
+
+	bool operator == (const Zivotinja& obj) {
+		return strcmp(_naziv, obj._naziv) == 0;
+	}
+
+	bool operator > (const Zivotinja & obj) {
+
+		return _tezina > obj._tezina;
+
+	}
+	
+	~Zivotinja() {
+		delete[] _naziv;
+		_naziv = nullptr;
+	}
+
+	friend ostream& operator << (ostream& COUT, const Zivotinja& obj) {
+		COUT << obj._naziv <<" - "<<obj._tezina<<" kg" ;
+		return COUT;
+	}
+
+};
+
+void main() {
+
+
+	Zivotinja zivotinja1("Maca", 3);
+	Zivotinja zivotinja2("Konj", 500);
+	Zivotinja zivotinja3("Cuko", 15);
+	Zivotinja zivotinja4("Zmija", 1);
+	Zivotinja zivotinja5("Tigar", 150);
+
+	Kolekcija<Zivotinja> zooloski(10);
+
+	zooloski.AddElement(zivotinja1);
+	zooloski.AddElement(zivotinja2);
+	zooloski.AddElement(zivotinja3);
+	zooloski.AddElement(zivotinja4);
+	zooloski.AddElement(zivotinja5);
+
+	zooloski.Remove();
+
+	zooloski.RemoveAt(1);
+
+	zooloski.RemoveAt(zivotinja3);
+
+	Zivotinja zivotinja6("Zmaj", 1000);
+
+	zooloski.InsertAt(zivotinja6, 0);
+
+	cout << "Najmanja zivotinja je " << *zooloski.GetNajmanjiElement() << endl;
+
+	cout << zooloski;
+
+	//Kolekcija<char> kolekcijaSlova(10);
+
+	//int ascii = 65; // A = 65 , B = 66 
+
+	//for (int i = 0; i < 8; i++)
+	//{
+	//	kolekcijaSlova.AddElement(i + ascii); // 65 66 67 .. 
+	//}
+
+	//kolekcijaSlova.Remove();
+
+	//kolekcijaSlova.RemoveAt(3);
+
+	//kolekcijaSlova.RemoveAt('C');
+
+	//kolekcijaSlova.InsertAt('Z', 2);
+
+	//cout << "Najmanji element niza je " << *kolekcijaSlova.GetNajmanjiElement() << endl;
+
+	//cout << kolekcijaSlova;
+
+	//// 5 16 7 2 8
+
+	//Kolekcija<int> kolekcijaBrojeva(5);
+
+	//kolekcijaBrojeva.AddElement(5);
+	//kolekcijaBrojeva.AddElement(16);
+	//kolekcijaBrojeva.AddElement(7);
+	//kolekcijaBrojeva.AddElement(2);
+	//kolekcijaBrojeva.AddElement(8);
+
+	//cout << "Najmanji element niza je " << *kolekcijaBrojeva.GetNajmanjiElement() << endl;
+
+	//try {
+	//	// Baciti exception ako se pojavi duplikat
+	//	kolekcijaSlova.AddElement('D');
+
+	//}
+	//catch (exception& err) {
+	//	cout << err.what() << endl;
+	//}
+
+	//try {
+	//	// Baciti exception ako je popunjen niz
+	//	kolekcijaSlova.AddElement('M');
+	//	kolekcijaSlova.AddElement('L');
+
+	//}
+	//catch (exception& err) {
+	//	cout << err.what() << endl;
+	//}
+
+
+
+
+
+	system("pause>0");
+}
