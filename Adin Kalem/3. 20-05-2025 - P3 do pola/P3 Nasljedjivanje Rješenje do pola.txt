@@ -1,0 +1,264 @@
+#include<iostream>
+using namespace std;
+
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+
+	char* temp = new char[vel];
+
+	strcpy_s(temp, vel, tekst);
+
+	return temp;
+}
+
+
+// BAZNA KLASA --> KLASA KOJA SE NASLJEDJUJE 
+
+class Osoba {
+protected: // 1. razlika
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	//              "Denis Music",               "21423423423");
+	Osoba(const char* imePrezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imePrezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+		}
+		return *this;
+	}
+
+	// OPCIJINALNO MOZES OVERRIDATI OVU FUNCKIJU 
+
+	//virtual void Test() {
+
+	//	cout << "OVO JE PRVA VERZIJA NEKE FUNKCIJE" << endl;
+
+	//}
+
+
+
+	// OBAVEZNO MOZES OVERRIDATI OVU FUNCKIJU 
+	
+	// 2. razlika 
+	// kreirali smo apstrakciju 
+	virtual void Info() = 0; // pure virtual function
+
+
+	virtual ~Osoba() { // 3. razlika 
+
+		cout << "POZVAO SE BAZNI DESTRUKTOR" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+
+		return COUT;
+	}
+
+
+};
+
+// IZVEDENA KLASA --> KLASA KOJA NASLIJEDI BAZNU KLASU 
+
+class Profesor : public Osoba { // 1. korak 
+public:
+	char* _titula;
+
+	
+	// Profesor profesor1(     "dr. sc.",            "Denis Music",               "21423423423");
+	Profesor(const char* titula = "prof.", const char* imePrezime = "---", const char* jmbg = "---") 
+		: Osoba(imePrezime,jmbg) { // 2. korak
+
+		_titula = GetNizKaraktera(titula);
+
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+			Osoba::operator=(obj); // 4. korak
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	~Profesor() {
+
+		cout << "POZVAO SE IZVEDENI DESTRUKTOR" << endl;
+
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	//void Test() {
+
+	//	cout << "OVO JE FINALNA VERZIJA NEKE FUNKCIJE" << endl;
+
+	//}
+
+
+	void Info() { // 5. korak
+
+		cout << *this;
+
+	}
+
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1 NACIN 
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		// 2 NACIN
+
+		//COUT << obj._titula << " ";
+		//COUT << Osoba(obj);
+
+
+		return COUT;
+	}
+
+
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( ) 
+
+
+
+
+};
+
+class Student : public Osoba { // 1. korak
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti; // [ ] 
+	int* _trenutno; // (*trenutno)++;
+	int _max;
+
+
+	Student(const char* imePrezime = "---", const char* jmbg = "---", const char* index = "IB00000", int max = 3)
+		:Osoba(imePrezime,jmbg) { // 2. korak
+
+
+
+
+	}
+
+	Student(const Student& obj): Osoba(obj) { // 3. korak
+
+
+
+	}
+
+	Student& operator = (const Student& obj) {
+		if (this != &obj) {
+
+
+			Osoba::operator=(obj); // 4. korak
+
+		}
+		return *this;
+	}
+
+	void Info() { // 5. korak
+
+		cout << *this;
+
+	}
+
+	~Student() {
+
+		delete _trenutno;
+		_trenutno = nullptr;
+		delete[] _polozeniPredmeti;
+		_polozeniPredmeti = nullptr;
+		delete[] _brojIndeksa;
+		_brojIndeksa = nullptr;
+
+
+	}
+
+
+
+};
+
+
+
+
+
+int main()
+{
+
+
+	Profesor profesor1("dr. sc.", "Denis Music", "21423423423");
+
+	cout << profesor1;
+	profesor1.Info();
+
+	// SPECIJALNI SLUCAJ  --> destruktor bude virtual 
+
+	//Osoba* osoba = new Profesor("dr. sc.", "Elmir Babovic", "21423423423");
+	//delete osoba;
+
+
+
+	//Profesor profesorKopija = profesor1;
+
+	//Profesor profesorOperatorDodjele;
+	//profesorOperatorDodjele = profesor1;
+
+	//cout << profesor1;
+
+
+
+	system("pause>0");
+}
