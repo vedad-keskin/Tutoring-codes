@@ -28,7 +28,8 @@ export class StudentSemestersNewComponent implements OnInit {
 
 
   // Nase globalne varijable
-  studentId:number=0;
+  studentId: number = 0;
+
   student: StudentGetByIdResponse | null = null;
   academicYears:any;
 
@@ -46,6 +47,14 @@ export class StudentSemestersNewComponent implements OnInit {
   ) {
     this.studentId = this.route.snapshot.params['id'];
 
+
+    //   academicYearId:number;
+    //   studentId:number;
+    //   recordedById:number;
+    //   dateOfEntrollment:Date;
+    //   yearOfStudy:number;
+    //   price:number;
+    //   renewal:boolean;
 
     this.semesterForm = this.fb.group({
       academicYearId: [1, [Validators.required]],

@@ -54,6 +54,8 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
       map(q=> q.toLowerCase()),
       filter(q=> q.length > 3),
+
+
     ).subscribe((filterValue) => {
       this.fetchStudents(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
     });
