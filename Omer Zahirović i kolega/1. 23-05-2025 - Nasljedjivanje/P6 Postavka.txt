@@ -1,0 +1,155 @@
+#include<iostream>
+using namespace std;
+
+
+
+class Datum {
+	int* _dan, * _mjesec, * _godina;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Operator poredjenja
+
+
+};
+
+
+class Fudbaler {
+	char* _imePrezime;
+	char* _pozicija;
+	int _brojDresa;
+	Datum* _datumRodjenja;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+	//8. Operator poredjenja
+
+
+	//Operator += na način da se mijenja broj dresa fudbalera za proslijeđenu vrijednost
+
+
+};
+class Tim {
+	char* _naziv;
+	Fudbaler* _momcad;
+	int* _trenutno;
+	int _max;
+public:
+	//Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Operator ispisa 
+	// 7. Potrebne funkcije
+	// 8. Operator poredjenja
+
+
+	// Operator ( ) na način da se doda igrač u tim gdje je Fudbaler parametar operatora
+
+
+	const char* GetNazivTima() {
+		return _naziv;
+	}
+
+};
+
+
+class Liga {
+	char* _naziv;
+	Tim* _timovi;
+	int* _trenutno;
+	int _max;
+public:
+	//Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Operator ispisa 
+	// 7. Potrebne funkcije
+	// 8. Operator poredjenja
+
+
+	// Operator ( ) na način da se parametar Tim doda u niz _timovi
+	// Obratiti pažnju na dupliranje timova i na opseg niza
+	   
+
+	// Operator [ ] na način da se vraća true ili false u slučaju da Tim postoji ili ne postoji u nizu _timovi
+
+	bool operator [] (Tim tim) {
+
+	}
+	   
+	   
+	// Operator [ ] na način da se vraća true ili false u slučaju da postoji ili ne postoji tim sa proslijeđenim nazivom u nizu _timovi
+
+	bool operator [] (const char* nazivTima) {
+
+	}
+
+
+};
+
+
+
+void main()
+{
+
+	//Datum datum1(12, 12, 1998);
+	//Datum datum2(1, 15, 1995);
+
+
+	//Fudbaler fudbaler1("Oliver Kahn", "GK", 1, datum2);
+	//Fudbaler fudbaler2("Philipp Lahm", "LB", 21, datum1);
+	//Fudbaler fudbaler3("Franck Ribery", "LMF", 7, datum2);
+	//Fudbaler fudbaler4("Arjen Robben", "RMF", 10, datum2);
+	//Fudbaler fudbaler5("Luca Toni", "CF", 9, datum1);
+	//Fudbaler fudbaler6("Victor Valdez", "GK", 1, datum1);
+	//Fudbaler fudbaler7("Charles Puyol", "CB", 5, datum1);
+	//Fudbaler fudbaler8("Andres Iniesta", "CMF", 8, datum1);
+	//Fudbaler fudbaler9("Ronaldinho", "SS", 10, datum1);
+	//Fudbaler fudbaler10("David Villa", "CF", 9, datum1);
+
+	//Tim tim1("Bayern Munchen", 11);
+
+	//tim1(fudbaler1);
+	//tim1(fudbaler2);
+	//tim1(fudbaler3);
+	//tim1(fudbaler4);
+	//tim1(fudbaler5);
+
+	//Tim tim2("Barcelona", 11);
+	//tim2(fudbaler6);
+	//tim2(fudbaler7);
+	//tim2(fudbaler8);
+	//tim2(fudbaler9);
+	//tim2(fudbaler10);
+
+
+	//Liga liga("Liga Sampiona", 36);
+
+	//liga(tim1);
+	//liga(tim2);
+
+	//cout << liga;
+
+
+
+
+
+	system("pause>0");
+}
