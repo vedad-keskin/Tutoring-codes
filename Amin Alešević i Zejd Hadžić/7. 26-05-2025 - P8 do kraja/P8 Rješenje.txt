@@ -1,0 +1,512 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+    if (tekst == nullptr)
+        return nullptr;
+    int vel = strlen(tekst) + 1;
+    char* novi = new char[vel];
+    strcpy_s(novi, vel, tekst);
+    return novi;
+}
+
+template<class T>
+class Kolekcija {
+public:
+    T* _elementi;
+    int* _trenutno;
+
+    Kolekcija() {
+
+        _trenutno = new int(0);
+
+        _elementi = new T[*_trenutno];
+
+    }
+
+
+
+    Kolekcija(const Kolekcija& obj) {
+
+        _trenutno = new int(*obj._trenutno);
+
+        _elementi = new T[*_trenutno];
+
+        for (int i = 0; i < *_trenutno; i++)
+        {
+
+            _elementi[i] = obj._elementi[i];
+
+        }
+
+    }
+    Kolekcija& operator = (const Kolekcija& obj) {
+        if (this != &obj) {
+
+            delete[] _elementi;
+            delete _trenutno;
+
+            _trenutno = new int(*obj._trenutno);
+
+            _elementi = new T[*_trenutno];
+
+            for (int i = 0; i < *_trenutno; i++)
+            {
+
+                _elementi[i] = obj._elementi[i];
+
+            }
+
+        }
+        return *this;
+    }
+    friend ostream& operator << (ostream& COUT, const Kolekcija& obj) {
+
+
+        for (int i = 0; i < *obj._trenutno; i++)
+        {
+            COUT << obj._elementi[i] << endl;
+
+        }
+        return COUT;
+    }
+ 
+
+
+    ~Kolekcija() {
+        delete[] _elementi; _elementi = nullptr;
+        delete _trenutno; _trenutno = nullptr;
+    }
+
+    // Operator += koji ima za cilj dodati novi element u kolekciju.
+    // Onemoguciti dodavanje istih elemenata. Baciti izuzetak tipa exception, ukoliko element vec postoji
+
+    Kolekcija& operator +=(T el) {
+
+        for (int i = 0; i < *_trenutno; i++)
+        {
+            if (_elementi[i] == el)
+            {
+                throw exception("Element vec postoji u nizu!");
+            }
+        }
+
+        // 1. prebaciti niz u neki temp niz 
+
+        T* temp = _elementi;
+
+        // 2. prosiriti niz da ima jedno dodatno mjesto
+
+        _elementi = new T[*_trenutno + 1];
+
+        // 3. vratiti iz tempa elemente nazad u niz
+
+        for (int i = 0; i < *_trenutno; i++)
+        {
+            _elementi[i] = temp[i];
+        }
+
+        // 3.1 pobrisati temp
+
+        delete[] temp;
+
+        // 4. klasicna pohrana
+
+        _elementi[*_trenutno] = el;
+        (*_trenutno)++;
+
+
+
+        return *this;
+    }
+
+
+
+    // Operator -= koji ima za cilj ukloniti odredjeni element iz kolekcije.
+    // Ako element nije pronadjen, baciti izuzetak tipa exception.
+
+    // kolekcijaSlova -= ('B');
+
+    Kolekcija& operator -= (T el) {
+
+        for (int i = 0; i < *_trenutno; i++)
+        {
+            if (el == _elementi[i]) { // i = 3
+
+                for (int j = i; j < *_trenutno - 1; j++)
+                {
+                    _elementi[j] = _elementi[j + 1];
+                }
+                (*_trenutno)--;
+                return *this;
+
+            }
+        }
+
+        throw exception("Element nije pronadjen");
+
+    }
+
+
+
+
+    // Operator [] dvije verzije
+    // Treba da pronadje i vrati trazeni element. Ako element ne postoji, baciti izuzetak tipa exception
+
+    T& operator[] (T el) {
+
+        for (int i = 0; i < *_trenutno; i++)
+        {
+            if (_elementi[i] == el)
+            {
+                return _elementi[i];
+                
+            }
+        }
+        throw exception("Element nije pronaden!");
+    }
+
+    T& operator[] (int pozicija) {
+
+        if (pozicija < 0 || pozicija > *_trenutno) {
+            throw exception("Pozicija elementa ne postoji");
+        }
+
+
+        return _elementi[pozicija];
+
+    }
+
+
+};
+
+class Artikal {
+protected:
+    char* _kod;
+    char* _naziv;
+    float _cijena;
+    int _kolicinaNaSkladistu;
+public:
+
+    Artikal(const char* kod = "----", const char* naziv = "-----", float cijena = 0, int kolicina = 0) {
+
+        _kod = GetNizKaraktera(kod);
+        _naziv = GetNizKaraktera(naziv);
+        _cijena = cijena;
+        _kolicinaNaSkladistu = kolicina;
+
+
+    }
+    Artikal(const Artikal& obj) {
+        _naziv = GetNizKaraktera(obj._naziv);
+        _kod = GetNizKaraktera(obj._kod);
+        _cijena = obj._cijena;
+        _kolicinaNaSkladistu = obj._kolicinaNaSkladistu;
+    }
+    Artikal& operator = (const Artikal& obj) {
+        if (this != &obj) {
+
+            delete[]_kod;
+            delete[]_naziv;
+
+            _naziv = GetNizKaraktera(obj._naziv);
+            _kod = GetNizKaraktera(obj._kod);
+            _cijena = obj._cijena;
+            _kolicinaNaSkladistu = obj._kolicinaNaSkladistu;
+
+        }
+        return *this;
+    }
+    friend ostream& operator << (ostream& COUT, const Artikal& obj) {
+
+        COUT << obj._naziv << "[ " << obj._kod << " ]" << " --> Cijena: " << obj._cijena << " " << "Kolicina = " << obj._kolicinaNaSkladistu << endl;
+        return COUT;
+    }
+
+    virtual void Info() = 0;
+
+    virtual ~Artikal() {
+        delete[]_kod; _kod = nullptr;
+        delete[]_naziv; _naziv = nullptr;
+    }
+
+    bool operator == (const Artikal& obj) {
+
+        return strcmp(_kod, obj._kod) == 0;
+    }
+
+    void PovecajKolicinu(int kolicina) {
+
+        _kolicinaNaSkladistu += kolicina;
+
+    }
+
+    Artikal& operator += (int kolicina) {
+
+        _kolicinaNaSkladistu += kolicina;
+        return *this;
+
+    }
+
+    void UmanjiKolicinu(int kolicina) {
+
+        if (kolicina > _kolicinaNaSkladistu) {
+            return;
+        }
+
+        _kolicinaNaSkladistu -= kolicina;
+
+    }
+
+    Artikal& operator -= (int kolicina) {
+
+        if (kolicina > _kolicinaNaSkladistu) {
+            return *this;
+        }
+
+        _kolicinaNaSkladistu -= kolicina;
+        return *this;
+
+    }
+
+};
+
+class PrehrambeniArtikal : public Artikal {
+public:
+    float _gramaza;
+
+
+    PrehrambeniArtikal(const char* kod = "----", const char* naziv = "-----", float cijena = 0, int kolicina = 0, float gramaza = 0) : Artikal(kod, naziv, cijena, kolicina) { 
+
+        _gramaza = gramaza;
+    }
+
+    PrehrambeniArtikal(const PrehrambeniArtikal& obj) : Artikal(obj) {
+        _gramaza = obj._gramaza;
+
+    }
+    PrehrambeniArtikal& operator = (const PrehrambeniArtikal& obj) {
+        if (this != &obj) {
+
+            Artikal::operator=(obj);
+
+            _gramaza = obj._gramaza;
+
+        }
+        return *this;
+    }
+
+    void Info() { // 5. korak
+        cout << *this;
+    }
+
+    friend ostream& operator << (ostream& COUT, const PrehrambeniArtikal& obj) {
+        COUT << obj._naziv << " [" << obj._kod << "] - " << obj._cijena << " KM, gramaze " << obj._gramaza << "g" << endl;
+        COUT << "Kolicina na skladistu : " << obj._kolicinaNaSkladistu << " kom" << endl;
+        return COUT;
+    }
+
+};
+
+class Odjeca : public Artikal {
+public:
+
+    char* _velicina; // XS, S, M, L ..
+    char* _materijal; // pamuk, svila ..
+
+    Odjeca(const char* kod = "----", const char* naziv = "-----", float cijena = 0, int kolicina = 0, const char* velicina = "---", const char* materijal = "---")
+        : Artikal(kod, naziv, cijena, kolicina) {
+
+        _velicina = GetNizKaraktera(velicina);
+        _materijal = GetNizKaraktera(materijal);
+    }
+    Odjeca(const Odjeca& obj) : Artikal(obj) {
+        _velicina = GetNizKaraktera(obj._velicina);
+        _materijal = GetNizKaraktera(obj._materijal);
+    }
+    Odjeca& operator = (const Odjeca& obj) {
+        if (this != &obj) {
+
+            delete[]_velicina;
+            delete[]_materijal;
+
+            Artikal::operator=(obj);
+
+            _velicina = GetNizKaraktera(obj._velicina);
+            _materijal = GetNizKaraktera(obj._materijal);
+
+        }
+        return *this;
+    }
+
+    void Info() {
+        cout << *this;
+    }
+
+    friend ostream& operator << (ostream& COUT, const Odjeca& obj) {
+        COUT << obj._naziv << " [" << obj._kod << "] - " << obj._cijena << " KM, velicine " << obj._velicina << " i materijala " << obj._materijal << endl;
+        COUT << "Kolicina na skladistu : " << obj._kolicinaNaSkladistu << " kom" << endl;
+        return COUT;
+    }
+
+    ~Odjeca() {
+        delete[]_velicina; _velicina = nullptr;
+        delete[]_materijal; _materijal = nullptr;
+    }
+
+};
+
+class Prodavnica {
+public:
+    char* _naziv;
+    char* _adresa;
+
+    Kolekcija<Odjeca> _odjeca;
+    Kolekcija<PrehrambeniArtikal> _prehrana;
+
+    Prodavnica(const char* naziv = "----", const char* adresa = "----") {
+
+        _naziv = GetNizKaraktera(naziv);
+        _adresa = GetNizKaraktera(adresa);
+    }
+
+    Prodavnica(const Prodavnica& obj) {
+        _naziv = GetNizKaraktera(obj._naziv);
+        _adresa = GetNizKaraktera(obj._adresa);
+
+        _odjeca = obj._odjeca;
+        _prehrana = obj._prehrana;
+
+    }
+
+    Prodavnica& operator = (const Prodavnica& obj) {
+        if (this != &obj) {
+
+
+            delete[]_naziv;
+            delete[]_adresa;
+
+
+            _naziv = GetNizKaraktera(obj._naziv);
+            _adresa = GetNizKaraktera(obj._adresa);
+
+            _odjeca = obj._odjeca;
+            _prehrana = obj._prehrana;
+
+        }
+        return *this;
+    }
+
+    friend ostream& operator << (ostream& COUT, const Prodavnica& obj) {
+        COUT << "Naziv prodavnice: " << obj._naziv << "  Adresa prodavnice: " << obj._adresa << endl;
+
+        COUT << "ODJEVNI PREDMETI : " << endl;
+        COUT << obj._odjeca << endl;
+
+        COUT << "PREHRAMBENI PREDMETI : " << endl;
+        COUT << obj._prehrana << endl;
+
+        return COUT;
+    }
+
+
+    ~Prodavnica() {
+
+        delete[]_naziv; _naziv = nullptr;
+        delete[]_adresa; _adresa = nullptr;
+    }
+
+    bool DodajOdjecu(Odjeca odjeca)
+    {
+
+        _odjeca += odjeca;
+       
+        return true;
+
+    }
+
+    bool DodajPrehrambeniArtikal(PrehrambeniArtikal prehrana)
+    {
+
+        //_prehrana += (prehrana);
+        _prehrana.operator+=(prehrana);
+
+        return true;
+
+    }
+
+    bool UvecajStanjeNaSkladistu(PrehrambeniArtikal prehrana, int kolicina)
+    {
+        // Funkcija ima za cilj da uveca stanje na skladistu za proslijedjeni artikal
+
+        //_prehrana[prehrana].operator+=(kolicina);
+        _prehrana[prehrana].PovecajKolicinu(kolicina);
+
+        return true;
+    }
+
+    bool UvecajStanjeNaSkladistu(Odjeca odjeca, int kolicina)
+    {
+        // Funkcija ima za cilj da uveca stanje na skladistu za proslijedjeni artikal
+
+        _odjeca[odjeca].operator+=(kolicina);
+
+        return true;
+
+
+    }
+
+    bool UmanjiStanjeNaSkladistu(PrehrambeniArtikal prehrana, int kolicina)
+    {
+        // Funkcija ima za cilj da umanji stanje na skladistu za proslijedjeni artikal
+
+        _prehrana[prehrana].UmanjiKolicinu(kolicina);
+
+        return true;
+
+    }
+
+    bool UmanjiStanjeNaSkladistu(Odjeca odjeca, int kolicina)
+    {
+        // Funkcija ima za cilj da umanji stanje na skladistu za proslijedjeni artikal
+
+        _odjeca[odjeca].operator-=(kolicina);
+
+        return true;
+
+    }
+};
+
+void main()
+{
+
+    PrehrambeniArtikal hrana1("SIF0001", "Banane", 1.90, 10, 300);
+    PrehrambeniArtikal hrana2("SIF0002", "Bombone", 1.10, 20, 300);
+    PrehrambeniArtikal hrana3("SIF0003", "Mlijeko", 2.40, 30, 1000);
+
+    Odjeca odjeca1 ("SIF0004", "Dzemper", 45, 7, "M", "Vuna");
+    Odjeca odjeca2 ("SIF0005", "Majica", 45, 7, "M", "Vuna");
+    Odjeca odjeca3 ("SIF0006", "Sorc", 45, 7, "M", "Vuna");
+
+    Prodavnica prodavnica("Bingo", "Vrapcici bb");
+
+    prodavnica.DodajOdjecu(odjeca1);
+    prodavnica.DodajOdjecu(odjeca2);
+    prodavnica.DodajOdjecu(odjeca3);
+
+    prodavnica.DodajPrehrambeniArtikal(hrana1);
+    prodavnica.DodajPrehrambeniArtikal(hrana2);
+    prodavnica.DodajPrehrambeniArtikal(hrana3);
+
+    prodavnica.UvecajStanjeNaSkladistu(hrana1, 1000);
+    prodavnica.UvecajStanjeNaSkladistu(odjeca1, 30);
+
+    prodavnica.UmanjiStanjeNaSkladistu(hrana1, 10);
+    prodavnica.UmanjiStanjeNaSkladistu(odjeca1, 2);
+
+    cout << prodavnica;
+
+
+
+    system("PAUSE>0");
+}
