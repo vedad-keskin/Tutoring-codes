@@ -24,7 +24,7 @@ public class SemesterGetByStudentIdEndpoint(ApplicationDbContext db) : MyEndpoin
                         .Select(c => new SemesterGetByStudentIdResponse
                         {
                             ID = c.ID,
-                            //                                        2023-2025
+                            //                                        2024-25
                             AcademicYearName = $"{c.AcademicYear.StartDate.Year}-{c.AcademicYear.EndDate.Year}",
                             StudyYear = c.StudyYear,
                             Renewal = c.Renewal,
