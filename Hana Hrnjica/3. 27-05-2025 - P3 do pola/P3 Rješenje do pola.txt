@@ -1,0 +1,194 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+
+// BAZNA KLASA -> KLASA KOJA SE NASLJEDJUJE --> 3 razlike ..
+
+class Osoba {
+protected: // 1. razlika
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	//              "Denis Music",                "1231232112");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+
+	virtual void Info() = 0; // pure virtual func. --> nasa klasa postaje apstraktna --> 2. razlika 
+
+
+	virtual ~Osoba() { // 3. razlika 
+
+		cout << "BAZNI DESTRUKTOR SE POZVAO" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << obj._imePrezime << " ["<<obj._JMBG<<"]" << endl;
+
+		return COUT;
+	}
+
+
+};
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIJEDJI BAZNU KLASU --> 5. korak
+
+class Profesor : public Osoba { // 1. korak
+public:
+	char* _titula;
+
+	
+	// Profesor profesor1(      "dr. sc.",           "Denis Music",                "1231232112");
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---")
+		: Osoba(imeprezime,jmbg) { // 2. korak spojiti spojeni constr. Osobe sa spojenim constr. klase Profesor
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak spojiti copy sa copy klase Osoba
+
+		_titula = GetNizKaraktera(obj._titula);
+
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4. korak spojiti op = sa op = klase Osoba
+
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTRUKTOR SE POZVAO" << endl;
+
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+
+	void Info() { // 5. korak
+
+		cout << *this;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1 NACIN
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		// 2 NACIN
+		//COUT << obj._titula << " ";
+		//COUT << Osoba(obj);
+
+
+		return COUT;
+	}
+
+
+
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( )
+
+
+
+};
+
+class Student { // <-- nasljedjuje Osoba
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti; // [ ] 
+	int* _trenutno;
+	int _max;
+
+
+};
+
+
+
+
+void main() {
+
+
+	Profesor profesor1("dr. sc.", "Denis Music", "1231232112");
+
+	//Profesor profesorKopija = profesor1;
+
+	//Profesor profesorOperatorDodjele;
+	//profesorOperatorDodjele = profesor1;
+
+
+	// SPECIJALNI SLUCAJ
+	//Osoba* profesor2 = new Profesor("dr. sc.", "Elmir Babovic", "1231232112");
+	//delete profesor2;
+
+
+
+	cout << profesor1;
+	profesor1.Info();
+
+
+
+
+	
+	system("pause>0");
+}
