@@ -1,0 +1,106 @@
+#include <iostream>
+using namespace std;
+
+class Datum {
+public:
+	int* _dan, * _mjesec, * _godina;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+
+
+};
+
+class Kandidat {
+public:
+	char* _imePrezime;
+	char* _JMBG;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+};
+
+class Glasac {
+public:
+	Datum _datumRodjenja;
+	char* _imePrezime;
+	char* _JMBG;
+	char* _prebivaliste;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+};
+
+class GlasackiListic {
+public:
+	Glasac* _glasac;
+	Kandidat* _kandidat;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+
+};
+
+
+class Izbori {
+public:
+	char* _glasackoMjesto;
+	GlasackiListic* _glasovi;
+	int _trenutnoGlasova;
+	int _maxBrojGlasova;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+
+
+	bool AddGlasackiListic(GlasackiListic listic)
+	{
+		/*funkcija treba da omoguci dodavanje informacija o novom glasu i tom prilikom:
+		-     onemoguciti da se doda vise listica nego sto je dozvoljeno
+		-     onemoguciti da ista osoba glasa vise puta
+		-     onemoguciti glasanje osobama mladjim od 18 godina (uzeti u obzir godinu rodjenja)
+		-     onemoguciti glasanje osobama iz drugih opstina
+		-     u zavisnosti od uspjesnosti operacije funkcija vraca true ili false
+		*/
+	}
+
+
+};
+
+
+
+void main() {
+
+
+
+	system("pause>0");
+}
+
