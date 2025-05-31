@@ -1,0 +1,214 @@
+#include <iostream>
+using namespace std;
+
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+// BAZNA KLASA -> KLASA KOJA SE NASLJEDUJE --> 3. razlike
+
+class Osoba {
+protected: // 1. razlika
+	char* _imePrezime;	   // --- // 
+	char* _JMBG;		   // --- // 
+public:
+
+	//                "Denis Music",             "13123123");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+		}
+		return *this;
+	}
+
+	virtual ~Osoba() { // 3. razlika 
+
+		cout << "POZVAO SE BAZNI DESTRUKTOR" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+		
+	}
+
+	// kada zelis opcijonalno da neku funkciju promijenis 
+
+	//virtual void Test() {
+
+	//	cout << "NEKA POCETNA IMPLEMENTACIJA " << endl;
+
+	//}
+
+
+	// 2. razlika 
+
+	// kada MORAS promijeniti ovu funckiju 
+
+	virtual void Info() = 0; // nema implementaciju --> pure virtual func. --> napravi apstraktnom 
+
+
+	void Ispis() {
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+	}
+
+	// 	cout << osoba1;
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+	}
+
+
+};
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIJEDI BAZNU KLASU --> 5. koraka
+
+class Profesor : public Osoba { // 1. korak
+public:
+	char* _titula;
+
+	// Profesor profesor1(        "dr. sc.",            "Denis Music",             "13123123");
+
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") 
+		: Osoba(imeprezime,jmbg) { // 2. korak
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+			Osoba::operator=(obj); // 4. korak
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	~Profesor() {
+
+		cout << "POZVAO SE IZVEDENI DESTRUKTOR" << endl;
+
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	//void Test() {
+
+	//	cout << "NEKA NAPREDNA IMPLEMENTACIJA " << endl;
+
+	//}
+
+	void Info() { // 5. korak
+
+		cout << *this;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1 NACIN
+		COUT << obj._titula <<" "<< obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		// 2 NACIN
+		//COUT << obj._titula << " ";
+		//COUT << Osoba(obj);
+
+
+		return COUT;
+	}
+
+
+};
+
+
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor;
+
+
+
+};
+
+
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+
+
+
+};
+
+
+
+
+
+
+void main() {
+
+
+
+	Profesor profesor1("dr. sc.", "Denis Music", "13123123");
+
+	cout << profesor1;
+	profesor1.Info();
+
+	// SPECIJALNI SLUCAJ 
+
+	//Osoba* profesor = new Profesor("dr. sc.", "Elmir Babovic", "13123123");
+	//delete profesor;
+
+
+
+
+	system("PAUSE>0");
+}
