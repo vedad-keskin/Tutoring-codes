@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
-  StudentGetByIdEndpointService
+  StudentGetByIdEndpointService, StudentGetByIdResponse
 } from '../../../../endpoints/student-endpoints/student-get-by-id-endpoint.service';
 import {MySnackbarHelperService} from '../../../shared/snackbars/my-snackbar-helper.service';
 import {
@@ -20,7 +20,8 @@ export class StudentSemestersComponent implements OnInit {
   // Nase varijable
 
   studentId:number= 0;
-  student:any;
+  // student:any;
+  student: StudentGetByIdResponse | null = null;
   displayedColumns: string[] = ['id', 'academicYear', 'studyYear', 'renewal','winterSemester','recordedBy'];
 
   semesters:any;
@@ -75,6 +76,13 @@ export class StudentSemestersComponent implements OnInit {
         console.error('Error fetching semesters:', err);
       }
     });
+
+
+  }
+
+  navigateToNewSemester() {
+
+    this.router.navigate(['/admin/students/semesters/new', this.studentId]);
 
 
   }

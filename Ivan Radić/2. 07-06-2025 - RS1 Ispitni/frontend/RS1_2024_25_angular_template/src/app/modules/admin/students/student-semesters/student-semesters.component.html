@@ -1,7 +1,10 @@
 <p>Student ID: {{studentId}}</p>
+<!--
 <p>Student Name: {{student.firstName}}</p>
 <p>Student Last Name: {{student.lastName}}</p>
-
+-->
+<p>Student Name: {{student?.firstName ?? "Nema imena"}}</p>
+<p>Student Last Name: {{student?.lastName ?? "Nema prezimena"}}</p>
 
 <table [dataSource]="semesters!" class="mat-elevation-z8" mat-table matSort>
 
@@ -43,3 +46,6 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;" [class.obrisano]="row.isDeleted"></mat-row>
 </table>
+
+<button color="primary" mat-raised-button (click)="navigateToNewSemester()">ENROLL IN WINTER SEMESTER</button>
+
