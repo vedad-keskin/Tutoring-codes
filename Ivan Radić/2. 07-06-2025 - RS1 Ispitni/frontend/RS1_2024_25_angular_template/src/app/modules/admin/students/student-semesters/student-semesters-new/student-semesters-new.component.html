@@ -13,7 +13,7 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <app-my-input-text myControlName="studyYear" myLabel="Godina Studija" myPlaceholder="Enter year of study"></app-my-input-text>
+    <app-my-input-text myControlName="studyYear" (input)="YearChanged($event)" myLabel="Godina Studija" myPlaceholder="Enter year of study"></app-my-input-text>
 
     <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="Ak Godina"></app-my-dropdown>
 

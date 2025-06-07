@@ -36,6 +36,9 @@ export class StudentSemestersNewComponent implements OnInit  {
   student: StudentGetByIdResponse | null = null;
   semesterForm: FormGroup;
   academicYears:any;
+  loggedInUserId:number = 0;
+  semesters:any;
+
 
 
 
@@ -51,15 +54,29 @@ export class StudentSemestersNewComponent implements OnInit  {
 
     this.studentId = this.route.snapshot.params['id'];
 
+
+    const authData = localStorage.getItem('my-auth-token');
+
+    if(authData){
+
+      const JSONAuth = JSON.parse(authData);
+
+      this.loggedInUserId = JSONAuth.myAuthInfo.userId;
+
+
+    }
+
+
+
     this.semesterForm = this.fb.group({
 
       studyYear: [null, [Validators.required]],
-      renewal: [false, [Validators.required]],
+      renewal: [{value:false ,  disabled:true }, [Validators.required]],
       dateOfEnrollment: [new Date(), [Validators.required]],
-      price: [null, [Validators.required , Validators.min(50), Validators.max(2000)  ]],
+      price: [ {value:null ,  disabled:true }, [Validators.required , Validators.min(50), Validators.max(2000)  ]],
       academicYearId: [1, [Validators.required]],
       studentId: [ this.studentId , [Validators.required]],
-      recordedById: [ 1 , [Validators.required]],
+      recordedById: [ this.loggedInUserId , [Validators.required]],
 
     });
 
@@ -70,6 +87,25 @@ export class StudentSemestersNewComponent implements OnInit  {
 
     this.fetchStudent();
     this.fetchAcademicYears();
+    this.fetchSemesters();
+
+  }
+
+  private fetchSemesters() {
+
+    this.semesterGetAllByStudentIdService.handleAsync(this.studentId).subscribe({
+      next: (data) => {
+
+        this.semesters = data;
+
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error fetching semesters. Please try again.', 5000);
+        console.error('Error fetching semesters:', err);
+      }
+    });
+
+
   }
 
   private fetchStudent() {
@@ -97,6 +133,9 @@ export class StudentSemestersNewComponent implements OnInit  {
 
     const semesterData: SemesterUpdateOrInsertRequest = {
       ...this.semesterForm.value,
+      price: this.semesterForm.get('price')?.value,
+      renewal : this.semesterForm.get('renewal')?.value,
+
     };
 
     this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
@@ -124,6 +163,33 @@ export class StudentSemestersNewComponent implements OnInit  {
         console.error('Error restoring student:', err);
       }
     });
+
+
+  }
+
+  YearChanged($event: any) {
+
+    const StudyYear: number = parseInt($event.target.value, 10);
+
+    if(this.semesters.some((x:any) => x.studyYear == StudyYear) ){
+
+      this.semesterForm.patchValue({
+
+        price:400,
+        renewal:true,
+
+      })
+
+    }else{
+
+      this.semesterForm.patchValue({
+
+        price:1800,
+        renewal:false,
+
+      })
+
+    }
 
 
   }
