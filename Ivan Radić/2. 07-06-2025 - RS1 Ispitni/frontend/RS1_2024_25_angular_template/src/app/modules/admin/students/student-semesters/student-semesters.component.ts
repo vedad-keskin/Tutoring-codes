@@ -4,6 +4,9 @@ import {
   StudentGetByIdEndpointService
 } from '../../../../endpoints/student-endpoints/student-get-by-id-endpoint.service';
 import {MySnackbarHelperService} from '../../../shared/snackbars/my-snackbar-helper.service';
+import {
+  SemesterGetAllByStudentIdEndpoint
+} from '../../../../endpoints/semester-endpoints/semester-get-all-by-student-id-endpoint.service';
 
 @Component({
   selector: 'app-student-semesters',
@@ -18,11 +21,16 @@ export class StudentSemestersComponent implements OnInit {
 
   studentId:number= 0;
   student:any;
+  displayedColumns: string[] = ['id', 'academicYear', 'studyYear', 'renewal','winterSemester','recordedBy'];
+
+  semesters:any;
+
 
   constructor(    private route: ActivatedRoute,
                   private router: Router,
                   private studentGetByIdService:StudentGetByIdEndpointService,
                   private snackbar: MySnackbarHelperService,
+                  private semesterGetAllByStudentIdService:SemesterGetAllByStudentIdEndpoint
 
   ) {
 
@@ -33,7 +41,7 @@ export class StudentSemestersComponent implements OnInit {
   ngOnInit(): void {
 
     this.fetchStudent();
-
+    this.fetchSemesters();
     }
 
 
@@ -48,6 +56,23 @@ export class StudentSemestersComponent implements OnInit {
       error: (err) => {
         this.snackbar.showMessage('Error restoring student. Please try again.', 5000);
         console.error('Error restoring student:', err);
+      }
+    });
+
+
+  }
+
+  private fetchSemesters() {
+
+    this.semesterGetAllByStudentIdService.handleAsync(this.studentId).subscribe({
+      next: (data) => {
+
+        this.semesters = data;
+
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error fetching semesters. Please try again.', 5000);
+        console.error('Error fetching semesters:', err);
       }
     });
 
