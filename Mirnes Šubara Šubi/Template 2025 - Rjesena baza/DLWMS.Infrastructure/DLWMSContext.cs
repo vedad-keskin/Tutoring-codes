@@ -1,5 +1,5 @@
 ﻿using DLWMS.Data;
-
+using DLWMS.Data.IspitIB180079;
 using Microsoft.EntityFrameworkCore;
 
 using System.Configuration;
@@ -21,6 +21,9 @@ namespace DLWMS.Infrastructure
         public DbSet<Grad> Gradovi { get; set; }
         public DbSet<Drzava> Drzave { get; set; }
         public DbSet<AkademskaGodina> AkademskeGodine { get; set; }
+        public DbSet<StipendijeIB180079> StipendijeIB180079 { get; set; }
+        public DbSet<StipendijeGodineIB180079> StipendijeGodineIB180079 { get; set; }
+        public DbSet<StudentiStipendijeIB180079> StudentiStipendijeIB180079 { get; set; }
 
     }
 }

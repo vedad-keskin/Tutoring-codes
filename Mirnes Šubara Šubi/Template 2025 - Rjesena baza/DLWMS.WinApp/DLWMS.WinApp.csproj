@@ -66,8 +66,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IB220321\" />
-  </ItemGroup>
-
 </Project>
