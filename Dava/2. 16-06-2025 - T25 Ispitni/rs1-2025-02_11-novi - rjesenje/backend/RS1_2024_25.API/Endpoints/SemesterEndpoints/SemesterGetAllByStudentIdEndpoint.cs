@@ -42,11 +42,7 @@ public class SemesterGetAllByStudentIdEndpoint(ApplicationDbContext db) : MyEndp
         public int StudyYear { get; set; }
         public bool Renewal { get; set; }
         public DateTime DateOfEnrollment { get; set; }
-
         public string RecordedByName { get; set; }
-
-
-
 
     }
 }
