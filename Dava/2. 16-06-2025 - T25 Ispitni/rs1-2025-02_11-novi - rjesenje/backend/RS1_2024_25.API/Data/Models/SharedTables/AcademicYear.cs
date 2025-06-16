@@ -12,8 +12,8 @@ namespace RS1_2024_25.API.Data.Models.SharedTables;
 public partial class AcademicYear : SharedTableBase
 {
 
-    public DateOnly StartDate { get; set; }
-    public DateOnly EndDate { get; set; }
+    public DateOnly StartDate { get; set; } // 2023
+    public DateOnly EndDate { get; set; } // 2024
     public string Description { get; set; } = string.Empty;
 
 }
