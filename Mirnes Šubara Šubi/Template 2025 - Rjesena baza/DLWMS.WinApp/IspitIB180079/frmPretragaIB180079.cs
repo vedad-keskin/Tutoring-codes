@@ -53,7 +53,7 @@ namespace DLWMS.WinApp.IspitIB180079
 
             var stipendija = cbStipendije.SelectedItem as StipendijeIB180079 ?? new StipendijeIB180079();
 
-            var studentiStipendije = db.StudentiStipendijeIB180079
+            studentiStipendije = db.StudentiStipendijeIB180079
                 .Include(x => x.Student)
                 .Include(x => x.StipendijaGodina.Stipendija)
                 .Where(x => x.StipendijaGodina.Godina == godina)
@@ -67,6 +67,8 @@ namespace DLWMS.WinApp.IspitIB180079
                 dgvStudentiStipendije.DataSource = studentiStipendije;
             }
 
+            this.Text = $"Broj prikazanih studenata : {studentiStipendije.Count()}";
+
             //if(studentiStipendije.Count() == 0)
             //{
 
@@ -77,23 +79,54 @@ namespace DLWMS.WinApp.IspitIB180079
         private void dgvStudentiStipendije_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            //var odabranaStudentStipedija1 = studentiStipendije[e.RowIndex];
-            var odabranaStudentStipedija2 = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
+            var odabranaStudentStipedija1 = studentiStipendije[e.RowIndex];
+            //var odabranaStudentStipedija2 = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
 
             if (e.ColumnIndex == 5)
             {
 
-                if (MessageBox.Show("Da li ste sigurni da želite obrisati odabranu stipendiju?","Pitanje",MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBox.Show("Da li ste sigurni da želite obrisati odabranu stipendiju?", "Pitanje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
 
-                    db.StudentiStipendijeIB180079.Remove(odabranaStudentStipedija2);
+                    db.StudentiStipendijeIB180079.Remove(odabranaStudentStipedija1);
                     db.SaveChanges();
+
                     UcitajStudentiStipendije();
 
                 }
 
 
             }
+        }
+
+        private void btnDodajStipendiju_Click(object sender, EventArgs e)
+        {
+            var frmAddStipendija = new frmStipendijaAddEditIB180079();
+
+            if (frmAddStipendija.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiStipendije();
+            }
+
+        }
+
+        private void dgvStudentiStipendije_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(e.ColumnIndex != 5)
+            {
+                var odabranaStudentStipendija = studentiStipendije[e.RowIndex];
+
+
+                var frmEditStipendija = new frmStipendijaAddEditIB180079(odabranaStudentStipendija);
+
+                if (frmEditStipendija.ShowDialog() == DialogResult.OK)
+                {
+                    UcitajStudentiStipendije();
+                }
+
+            }
+
         }
     }
 }

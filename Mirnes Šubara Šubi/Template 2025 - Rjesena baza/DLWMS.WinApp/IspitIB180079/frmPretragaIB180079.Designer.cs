@@ -39,6 +39,8 @@
             IznosInfo = new DataGridViewTextBoxColumn();
             UkupnoInfo = new DataGridViewTextBoxColumn();
             Ukloni = new DataGridViewButtonColumn();
+            btnStipendijeGodine = new Button();
+            btnDodajStipendiju = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvStudentiStipendije).BeginInit();
             SuspendLayout();
             // 
@@ -95,6 +97,7 @@
             dgvStudentiStipendije.Size = new Size(1015, 291);
             dgvStudentiStipendije.TabIndex = 2;
             dgvStudentiStipendije.CellContentClick += dgvStudentiStipendije_CellContentClick;
+            dgvStudentiStipendije.CellDoubleClick += dgvStudentiStipendije_CellDoubleClick;
             // 
             // Student
             // 
@@ -151,11 +154,32 @@
             Ukloni.UseColumnTextForButtonValue = true;
             Ukloni.Width = 125;
             // 
+            // btnStipendijeGodine
+            // 
+            btnStipendijeGodine.Location = new Point(822, 42);
+            btnStipendijeGodine.Name = "btnStipendijeGodine";
+            btnStipendijeGodine.Size = new Size(205, 29);
+            btnStipendijeGodine.TabIndex = 3;
+            btnStipendijeGodine.Text = "Stipendije po godinama";
+            btnStipendijeGodine.UseVisualStyleBackColor = true;
+            // 
+            // btnDodajStipendiju
+            // 
+            btnDodajStipendiju.Location = new Point(655, 42);
+            btnDodajStipendiju.Name = "btnDodajStipendiju";
+            btnDodajStipendiju.Size = new Size(161, 29);
+            btnDodajStipendiju.TabIndex = 3;
+            btnDodajStipendiju.Text = "Dodaj stipendiju";
+            btnDodajStipendiju.UseVisualStyleBackColor = true;
+            btnDodajStipendiju.Click += btnDodajStipendiju_Click;
+            // 
             // frmPretragaIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1039, 380);
+            Controls.Add(btnDodajStipendiju);
+            Controls.Add(btnStipendijeGodine);
             Controls.Add(dgvStudentiStipendije);
             Controls.Add(cbStipendije);
             Controls.Add(cbGodina);
@@ -182,5 +206,7 @@
         private DataGridViewTextBoxColumn IznosInfo;
         private DataGridViewTextBoxColumn UkupnoInfo;
         private DataGridViewButtonColumn Ukloni;
+        private Button btnStipendijeGodine;
+        private Button btnDodajStipendiju;
     }
 }
