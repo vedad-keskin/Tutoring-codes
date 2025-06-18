@@ -113,7 +113,7 @@ namespace DLWMS.WinApp.IspitIB180079
         private void dgvStudentiStipendije_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex != 5)
+            if (e.ColumnIndex != 5)
             {
                 var odabranaStudentStipendija = studentiStipendije[e.RowIndex];
 
@@ -124,6 +124,19 @@ namespace DLWMS.WinApp.IspitIB180079
                 {
                     UcitajStudentiStipendije();
                 }
+
+            }
+
+        }
+
+        private void btnStipendijeGodine_Click(object sender, EventArgs e)
+        {
+            var frmStipendije = new frmStipendijeIB180079();
+
+            if(frmStipendije.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajStudentiStipendije();
 
             }
 

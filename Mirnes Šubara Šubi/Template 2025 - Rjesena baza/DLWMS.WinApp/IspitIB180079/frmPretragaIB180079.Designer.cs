@@ -162,6 +162,7 @@
             btnStipendijeGodine.TabIndex = 3;
             btnStipendijeGodine.Text = "Stipendije po godinama";
             btnStipendijeGodine.UseVisualStyleBackColor = true;
+            btnStipendijeGodine.Click += btnStipendijeGodine_Click;
             // 
             // btnDodajStipendiju
             // 
