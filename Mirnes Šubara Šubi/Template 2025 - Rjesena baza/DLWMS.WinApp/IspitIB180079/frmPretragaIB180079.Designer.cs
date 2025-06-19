@@ -66,7 +66,7 @@
             // 
             cbGodina.DropDownStyle = ComboBoxStyle.DropDownList;
             cbGodina.FormattingEnabled = true;
-            cbGodina.Items.AddRange(new object[] { "2025", "2024", "2023", "2022", "2021" });
+            cbGodina.Items.AddRange(new object[] { "2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018" });
             cbGodina.Location = new Point(12, 43);
             cbGodina.Name = "cbGodina";
             cbGodina.Size = new Size(227, 28);

@@ -109,5 +109,89 @@ namespace DLWMS.WinApp.IspitIB180079
 
 
         }
+
+        private async void btnGenerisi_Click(object sender, EventArgs e)
+        {
+            // 1. DIO
+            // -- postavlja thread
+            // -- pokrece thread
+            // -- sve sto ima combo box 
+
+
+            await Task.Run(() => GenerisiStipendije());
+
+            //Thread thread = new Thread(() => GenerisiStipendije());
+            //thread.Start();
+
+
+        }
+
+        private void GenerisiStipendije()
+        {
+            // 2. DIO 
+            // -- pohrane
+            // -- kalkulacije
+            // -- sleep
+
+            var odabranaStipendijaGodina = dgvStipendijeGodine.SelectedRows[0].DataBoundItem as StipendijeGodineIB180079;
+
+            var sviStudenti = db.Studenti.ToList();
+
+            var info = "";
+
+            var redniBroj = 0;
+
+            for (int i = 0; i < sviStudenti.Count(); i++)
+            {
+                if (!db.StudentiStipendijeIB180079.Include(x=> x.StipendijaGodina).ToList().Exists(x=> x.StudentId == sviStudenti[i].Id && x.StipendijaGodina.Godina == odabranaStipendijaGodina.Godina))
+                {
+                    Thread.Sleep(300); 
+
+
+                    var novaStudentStipendija = new StudentiStipendijeIB180079()
+                    {
+                        StudentId = sviStudenti[i].Id,
+                        StipendijaGodinaId = odabranaStipendijaGodina.Id
+
+                    };
+
+                    db.StudentiStipendijeIB180079.Add(novaStudentStipendija);
+                    db.SaveChanges();
+
+                    redniBroj++;
+
+                    info += $"{redniBroj}. {odabranaStipendijaGodina} stipendija u iznosu od {odabranaStipendijaGodina.Iznos} dodata {sviStudenti[i]} {Environment.NewLine}";
+
+
+                }
+
+
+            }
+
+
+            Action action = () =>
+            {
+                // 3. DIO
+                // -- mbox 
+                // -- info
+                // -- ucitavanja
+
+                if(redniBroj == 0)
+                {
+                    MessageBox.Show("Ne postoji student kojem je moguće dodati odabranu stipendiju", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else{ 
+
+                    MessageBox.Show("Stipendije su uspješno generisane","Informacija",MessageBoxButtons.OK,MessageBoxIcon.Information);
+
+                    txtInfo.Text = info;
+                }
+
+
+            };
+            BeginInvoke(action);
+
+
+        }
     }
 }

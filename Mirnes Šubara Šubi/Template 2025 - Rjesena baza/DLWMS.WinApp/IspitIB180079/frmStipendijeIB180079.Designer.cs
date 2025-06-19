@@ -187,6 +187,7 @@
             btnGenerisi.TabIndex = 5;
             btnGenerisi.Text = "Generiši stipendije >>>>>";
             btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
             // 
             // btnPotvrda
             // 
