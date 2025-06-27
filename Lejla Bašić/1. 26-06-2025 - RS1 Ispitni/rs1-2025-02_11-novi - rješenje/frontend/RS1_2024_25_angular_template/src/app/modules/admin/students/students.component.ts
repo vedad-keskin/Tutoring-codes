@@ -54,7 +54,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
       map(q=> q.toLowerCase()),
       filter(q=> q.length > 3),
-      
+
 
 
     ).subscribe((filterValue) => {
@@ -133,13 +133,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   openStudentSemesters(id:number) {
-    this.dialog.open(MyDialogSimpleComponent, {
-      width: '350px',
-      data: {
-        title: 'Ispitni zadatak',
-        message: 'Implementirajte matičnu knjigu?'
-      }
-    });
+
+    this.router.navigate(['/admin/students/semesters', id]);
+
   }
 
   toggleDeleted() {
