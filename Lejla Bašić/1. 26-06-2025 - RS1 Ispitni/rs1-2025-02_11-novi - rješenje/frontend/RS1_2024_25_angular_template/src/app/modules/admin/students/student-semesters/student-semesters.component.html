@@ -7,3 +7,46 @@
 
 <p>Student Name: {{student?.firstName ?? "N/A"}}</p>
 <p>Student Last Name: {{student?.lastName ?? "N/A"}}</p>
+
+
+<!-- TABELA SEMESTARA -->
+
+<table [dataSource]="semesters!" class="mat-elevation-z8" mat-table matSort>
+
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+    <mat-cell *matCellDef="let semester">{{ semester.id }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="academicYear">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Academic Year</mat-header-cell>
+    <mat-cell *matCellDef="let semester">{{ semester.academicYearName }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="studyYear">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Year of Study</mat-header-cell>
+    <mat-cell *matCellDef="let semester">{{ semester.studyYear }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="renewal">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Renewal</mat-header-cell>
+    <mat-cell *matCellDef="let semester">{{ semester.renewal }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="winterSemester">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Winter Semester</mat-header-cell>
+    <mat-cell *matCellDef="let semester">{{ semester.dateOfEnrollemnt | date:'yyyy-MM-dd' }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="recordedBy">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>RecordedBy</mat-header-cell>
+    <mat-cell *matCellDef="let semester">{{ semester.recordedByName }}</mat-cell>
+  </ng-container>
+
+
+
+
+  <!-- Table Header and Rows -->
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+</table>
