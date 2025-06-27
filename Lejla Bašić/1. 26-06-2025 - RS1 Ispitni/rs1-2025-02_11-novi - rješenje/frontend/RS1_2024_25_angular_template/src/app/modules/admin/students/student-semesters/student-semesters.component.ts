@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
-  StudentGetByIdEndpointService
+  StudentGetByIdEndpointService, StudentGetByIdResponse
 } from '../../../../endpoints/student-endpoints/student-get-by-id-endpoint.service';
 import {MySnackbarHelperService} from '../../../shared/snackbars/my-snackbar-helper.service';
 
@@ -16,7 +16,8 @@ export class StudentSemestersComponent implements OnInit {
 
   // Nase varijable
   studentId:number = 0;
-  student:any;
+  //student:any;
+  student: StudentGetByIdResponse | null = null;
 
 
   constructor(   private route: ActivatedRoute,
