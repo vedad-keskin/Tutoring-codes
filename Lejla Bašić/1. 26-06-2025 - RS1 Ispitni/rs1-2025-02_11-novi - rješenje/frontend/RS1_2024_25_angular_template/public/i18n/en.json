@@ -11,5 +11,9 @@
     "PASSWORD_PLACEHOLDER": "Enter password",
     "SAVE_LOGIN": "Save login",
     "BUTTON": "Login"
+  },
+  "SEMESTER": {
+    "YEAROFSTUDY": "Year of Study"
+
   }
 }

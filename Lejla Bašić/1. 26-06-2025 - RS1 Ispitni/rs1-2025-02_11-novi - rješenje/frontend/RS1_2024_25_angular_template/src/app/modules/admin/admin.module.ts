@@ -47,6 +47,7 @@ import { StudentSemestersNewComponent } from './students/student-semesters/stude
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -100,7 +101,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatDatepickerInput,
     MatDatepickerToggle,
     MatDatepicker,
-    MatNativeDateModule
+    MatNativeDateModule,
+    TranslatePipe,
     // Omogućava pristup svemu što je eksportovano iz SharedModule
   ],
   providers: []

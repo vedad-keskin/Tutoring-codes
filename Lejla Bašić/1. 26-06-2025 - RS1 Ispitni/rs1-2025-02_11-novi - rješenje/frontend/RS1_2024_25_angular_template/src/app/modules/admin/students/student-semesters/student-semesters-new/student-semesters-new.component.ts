@@ -141,8 +141,9 @@ export class StudentSemestersNewComponent implements OnInit {
         this.router.navigate(['/admin/students/semesters',this.studentId]);
       },
       error: (error) => {
+        this.snackbar.showMessage('Academic Year already in use.');
 
-        console.error('Error saving semester', error);
+        console.error('Academic Year already in use');
       },
     });
 
@@ -158,6 +159,7 @@ export class StudentSemestersNewComponent implements OnInit {
 
       },
       error: (err) => {
+
         console.error('Error fetching academic years:', err);
       }
     });
