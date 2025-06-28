@@ -36,6 +36,8 @@ export class StudentSemestersNewComponent implements OnInit {
   semesterForm: FormGroup;
   academicYears:any;
 
+  loggedInUserId:number = 0;
+
 
   constructor(   private route: ActivatedRoute,
                  private router: Router,
@@ -50,11 +52,22 @@ export class StudentSemestersNewComponent implements OnInit {
 
     this.studentId = route.snapshot.params['id'];
 
+    const AuthData = localStorage.getItem('my-auth-token');
+
+    if(AuthData){
+
+      const JSONAuth = JSON.parse(AuthData);
+
+      this.loggedInUserId = JSONAuth.myAuthInfo.userId;
+
+    }
+
+
     this.semesterForm = this.fb.group({
 
       academicYearId: [1, [Validators.required]],
       studentId: [this.studentId, [Validators.required]],
-      recordedById: [1, [Validators.required]],
+      recordedById: [this.loggedInUserId, [Validators.required]],
       dateOfEnrollemnt: [new Date(), [Validators.required]],
       studyYear: [null, [Validators.required]],
       price: [null, [Validators.required, Validators.min(50), Validators.max(2000)  ]],
