@@ -120,7 +120,7 @@ namespace DLWMS.WinApp.IspitIB180079
         {
             var frmStipendije = new frmStipendijeIB180079();
 
-            if(frmStipendije.ShowDialog() == DialogResult.OK)
+            if (frmStipendije.ShowDialog() == DialogResult.OK)
             {
 
                 UcitajStudentiStipendije();
@@ -128,6 +128,21 @@ namespace DLWMS.WinApp.IspitIB180079
             }
 
 
+        }
+
+        private void dgvStudentStipendije_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            var odabranaStudentStipendija = studentiStipendije[e.RowIndex];
+
+            var frmEditStipendija = new frmStipendijaAddEditIB180079(odabranaStudentStipendija);
+
+            if (frmEditStipendija.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajStudentiStipendije();
+
+            }
         }
     }
 }

@@ -46,6 +46,7 @@
             groupBox1 = new GroupBox();
             txtInfo = new TextBox();
             btnGenerisi = new Button();
+            btnReport = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvStipendijeGodine).BeginInit();
             ((System.ComponentModel.ISupportInitialize)err).BeginInit();
             groupBox1.SuspendLayout();
@@ -207,11 +208,22 @@
             btnGenerisi.UseVisualStyleBackColor = true;
             btnGenerisi.Click += btnGenerisi_Click;
             // 
+            // btnReport
+            // 
+            btnReport.Location = new Point(794, 347);
+            btnReport.Name = "btnReport";
+            btnReport.Size = new Size(174, 29);
+            btnReport.TabIndex = 7;
+            btnReport.Text = "Potvrda";
+            btnReport.UseVisualStyleBackColor = true;
+            btnReport.Click += btnReport_Click;
+            // 
             // frmStipendijeIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(980, 621);
+            Controls.Add(btnReport);
             Controls.Add(btnGenerisi);
             Controls.Add(groupBox1);
             Controls.Add(dgvStipendijeGodine);
@@ -253,5 +265,6 @@
         private Button btnGenerisi;
         private GroupBox groupBox1;
         private TextBox txtInfo;
+        private Button btnReport;
     }
 }

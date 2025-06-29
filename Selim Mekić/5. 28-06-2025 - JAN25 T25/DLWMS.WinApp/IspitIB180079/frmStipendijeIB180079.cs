@@ -1,6 +1,7 @@
 ﻿using DLWMS.Data.IspitIB180079;
 using DLWMS.Infrastructure;
 using DLWMS.WinApp.Helpers;
+using DLWMS.WinApp.Izvjestaji;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -179,14 +180,14 @@ namespace DLWMS.WinApp.IspitIB180079
                 // -- ucitavanja
                 // -- info
 
-                if(redniBroj == 0)
+                if (redniBroj == 0)
                 {
                     MessageBox.Show("Nema studenata koji zadovoljaju potrebe multithreadinga", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
 
-                  MessageBox.Show("Uspješno su generisane stipendije", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Uspješno su generisane stipendije", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
 
@@ -201,6 +202,17 @@ namespace DLWMS.WinApp.IspitIB180079
         private void frmStipendijeIB180079_FormClosed(object sender, FormClosedEventArgs e)
         {
             DialogResult = DialogResult.OK;
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            var odabranaStipendijaGodina = dgvStipendijeGodine.SelectedRows[0].DataBoundItem as StipendijeGodineIB180079;
+
+
+            var frmIzvjestaj = new frmIzvjestaji(odabranaStipendijaGodina);
+
+            frmIzvjestaj.ShowDialog();
+
         }
     }
 }
