@@ -56,12 +56,18 @@ namespace DLWMS.WinApp.IspitIB180079
 
             var odabranaStipendija = cbStipendija.SelectedItem as StipendijeIB180079 ?? new StipendijeIB180079();
 
+            var imePrezime = txtImePrezime.Text.ToLower();
+
+            var datumOd = dtpDatumOd.Value;
+            var datumDo = dtpDatumDo.Value;
 
             studentiStipendije = db.StudentiStipendijeIB180079
                 .Include(x => x.Student)
                 .Include(x => x.StipendijaGodina.Stipendija)
                 .Where(x => x.StipendijaGodina.Godina == odabranaGodina)
                 .Where(x => x.StipendijaGodina.StipendijaId == odabranaStipendija.Id)
+                .Where(x => x.Student.Ime.ToLower().Contains(imePrezime) || x.Student.Prezime.ToLower().Contains(imePrezime))
+                .Where(x=> x.Student.DatumRodjenja >= datumOd && x.Student.DatumRodjenja <= datumDo )
                 .ToList();
 
 
@@ -130,6 +136,22 @@ namespace DLWMS.WinApp.IspitIB180079
             {
                 UcitajStudentiStipendije();
             }
+        }
+
+        private void txtImePrezime_TextChanged(object sender, EventArgs e)
+        {
+            UcitajStudentiStipendije();
+        }
+
+        private void dtpDatumOd_ValueChanged(object sender, EventArgs e)
+        {
+            UcitajStudentiStipendije();
+
+        }
+
+        private void dtpDatumDo_ValueChanged(object sender, EventArgs e)
+        {
+            UcitajStudentiStipendije();
         }
     }
 }

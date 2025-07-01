@@ -34,6 +34,7 @@
             cbStipendija = new ComboBox();
             dgvStudentiStipendija = new DataGridView();
             Student = new DataGridViewTextBoxColumn();
+            Datum = new DataGridViewTextBoxColumn();
             GodinaInfo = new DataGridViewTextBoxColumn();
             StipendijaInfo = new DataGridViewTextBoxColumn();
             IznosInfo = new DataGridViewTextBoxColumn();
@@ -41,6 +42,13 @@
             Ukloni = new DataGridViewButtonColumn();
             btnStipendije = new Button();
             btnDodaj = new Button();
+            txtImePrezime = new TextBox();
+            label3 = new Label();
+            label4 = new Label();
+            dtpDatumOd = new DateTimePicker();
+            dtpDatumDo = new DateTimePicker();
+            label5 = new Label();
+            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvStudentiStipendija).BeginInit();
             SuspendLayout();
             // 
@@ -88,13 +96,13 @@
             dgvStudentiStipendija.AllowUserToAddRows = false;
             dgvStudentiStipendija.AllowUserToDeleteRows = false;
             dgvStudentiStipendija.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentiStipendija.Columns.AddRange(new DataGridViewColumn[] { Student, GodinaInfo, StipendijaInfo, IznosInfo, UkupnoInfo, Ukloni });
+            dgvStudentiStipendija.Columns.AddRange(new DataGridViewColumn[] { Student, Datum, GodinaInfo, StipendijaInfo, IznosInfo, UkupnoInfo, Ukloni });
             dgvStudentiStipendija.Location = new Point(12, 77);
             dgvStudentiStipendija.Name = "dgvStudentiStipendija";
             dgvStudentiStipendija.ReadOnly = true;
             dgvStudentiStipendija.RowHeadersWidth = 51;
             dgvStudentiStipendija.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvStudentiStipendija.Size = new Size(1045, 337);
+            dgvStudentiStipendija.Size = new Size(1318, 337);
             dgvStudentiStipendija.TabIndex = 2;
             dgvStudentiStipendija.CellContentClick += dgvStudentiStipendija_CellContentClick;
             // 
@@ -106,6 +114,15 @@
             Student.MinimumWidth = 6;
             Student.Name = "Student";
             Student.ReadOnly = true;
+            // 
+            // Datum
+            // 
+            Datum.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Datum.DataPropertyName = "Datum";
+            Datum.HeaderText = "Datum rođenja";
+            Datum.MinimumWidth = 6;
+            Datum.Name = "Datum";
+            Datum.ReadOnly = true;
             // 
             // GodinaInfo
             // 
@@ -155,7 +172,7 @@
             // 
             // btnStipendije
             // 
-            btnStipendije.Location = new Point(856, 42);
+            btnStipendije.Location = new Point(1129, 43);
             btnStipendije.Name = "btnStipendije";
             btnStipendije.Size = new Size(201, 29);
             btnStipendije.TabIndex = 3;
@@ -165,7 +182,7 @@
             // 
             // btnDodaj
             // 
-            btnDodaj.Location = new Point(649, 42);
+            btnDodaj.Location = new Point(922, 43);
             btnDodaj.Name = "btnDodaj";
             btnDodaj.Size = new Size(201, 29);
             btnDodaj.TabIndex = 3;
@@ -173,16 +190,84 @@
             btnDodaj.UseVisualStyleBackColor = true;
             btnDodaj.Click += btnDodaj_Click;
             // 
+            // txtImePrezime
+            // 
+            txtImePrezime.Location = new Point(446, 42);
+            txtImePrezime.Name = "txtImePrezime";
+            txtImePrezime.Size = new Size(172, 27);
+            txtImePrezime.TabIndex = 4;
+            txtImePrezime.TextChanged += txtImePrezime_TextChanged;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(455, 19);
+            label3.Name = "label3";
+            label3.Size = new Size(79, 20);
+            label3.TabIndex = 0;
+            label3.Text = "Stipendija:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(446, 19);
+            label4.Name = "label4";
+            label4.Size = new Size(108, 20);
+            label4.TabIndex = 0;
+            label4.Text = "Ime ili prezime";
+            // 
+            // dtpDatumOd
+            // 
+            dtpDatumOd.Location = new Point(666, 15);
+            dtpDatumOd.Name = "dtpDatumOd";
+            dtpDatumOd.Size = new Size(250, 27);
+            dtpDatumOd.TabIndex = 5;
+            dtpDatumOd.Value = new DateTime(2000, 7, 1, 19, 1, 0, 0);
+            dtpDatumOd.ValueChanged += dtpDatumOd_ValueChanged;
+            // 
+            // dtpDatumDo
+            // 
+            dtpDatumDo.Location = new Point(666, 45);
+            dtpDatumDo.Name = "dtpDatumDo";
+            dtpDatumDo.Size = new Size(250, 27);
+            dtpDatumDo.TabIndex = 5;
+            dtpDatumDo.ValueChanged += dtpDatumDo_ValueChanged;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(624, 22);
+            label5.Name = "label5";
+            label5.Size = new Size(32, 20);
+            label5.TabIndex = 0;
+            label5.Text = "Od:";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(624, 49);
+            label6.Name = "label6";
+            label6.Size = new Size(32, 20);
+            label6.TabIndex = 0;
+            label6.Text = "Do:";
+            // 
             // frmPretragaIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1069, 426);
+            ClientSize = new Size(1342, 426);
+            Controls.Add(dtpDatumDo);
+            Controls.Add(dtpDatumOd);
+            Controls.Add(txtImePrezime);
             Controls.Add(btnDodaj);
             Controls.Add(btnStipendije);
             Controls.Add(dgvStudentiStipendija);
             Controls.Add(cbStipendija);
             Controls.Add(cbGodina);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "frmPretragaIB180079";
@@ -200,13 +285,21 @@
         private ComboBox cbGodina;
         private ComboBox cbStipendija;
         private DataGridView dgvStudentiStipendija;
+        private Button btnStipendije;
+        private Button btnDodaj;
+        private TextBox txtImePrezime;
+        private Label label3;
+        private Label label4;
         private DataGridViewTextBoxColumn Student;
+        private DataGridViewTextBoxColumn Datum;
         private DataGridViewTextBoxColumn GodinaInfo;
         private DataGridViewTextBoxColumn StipendijaInfo;
         private DataGridViewTextBoxColumn IznosInfo;
         private DataGridViewTextBoxColumn UkupnoInfo;
         private DataGridViewButtonColumn Ukloni;
-        private Button btnStipendije;
-        private Button btnDodaj;
+        private DateTimePicker dtpDatumOd;
+        private DateTimePicker dtpDatumDo;
+        private Label label5;
+        private Label label6;
     }
 }

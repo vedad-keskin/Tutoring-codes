@@ -19,7 +19,7 @@ namespace DLWMS.Data.IspitIB180079
         public int IznosInfo => StipendijaGodina?.Iznos ?? 0;
         public int UkupnoInfo => GodinaInfo == DateTime.Now.Year.ToString() ? IznosInfo * DateTime.Now.Month : IznosInfo * 12;
 
-
+        public DateTime Datum => Student?.DatumRodjenja ?? DateTime.Now;
 
     }
 }

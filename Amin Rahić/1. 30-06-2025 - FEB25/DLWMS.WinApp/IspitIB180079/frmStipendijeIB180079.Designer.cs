@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -41,7 +42,14 @@
             Iznos = new DataGridViewTextBoxColumn();
             Ukupno = new DataGridViewTextBoxColumn();
             Aktivan = new DataGridViewCheckBoxColumn();
+            err = new ErrorProvider(components);
+            groupBox1 = new GroupBox();
+            txtInfo = new TextBox();
+            btnGenerisi = new Button();
+            chbAktivan = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dgvStipendijeGodine).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)err).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -75,6 +83,7 @@
             // 
             cbGodina.DropDownStyle = ComboBoxStyle.DropDownList;
             cbGodina.FormattingEnabled = true;
+            cbGodina.Items.AddRange(new object[] { "2025", "2024", "2023", "2022", "2021" });
             cbGodina.Location = new Point(12, 49);
             cbGodina.Name = "cbGodina";
             cbGodina.Size = new Size(234, 28);
@@ -104,6 +113,7 @@
             btnDodaj.TabIndex = 3;
             btnDodaj.Text = "Dodaj";
             btnDodaj.UseVisualStyleBackColor = true;
+            btnDodaj.Click += btnDodaj_Click;
             // 
             // dgvStipendijeGodine
             // 
@@ -118,6 +128,7 @@
             dgvStipendijeGodine.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStipendijeGodine.Size = new Size(990, 286);
             dgvStipendijeGodine.TabIndex = 4;
+            dgvStipendijeGodine.CellDoubleClick += dgvStipendijeGodine_CellDoubleClick;
             // 
             // Godina
             // 
@@ -164,11 +175,58 @@
             Aktivan.ReadOnly = true;
             Aktivan.Width = 125;
             // 
+            // err
+            // 
+            err.ContainerControl = this;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Location = new Point(12, 410);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(990, 224);
+            groupBox1.TabIndex = 5;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator info";
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(6, 26);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(978, 192);
+            txtInfo.TabIndex = 0;
+            // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(18, 375);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(212, 29);
+            btnGenerisi.TabIndex = 6;
+            btnGenerisi.Text = "Generiši stipendije >>>>>";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // chbAktivan
+            // 
+            chbAktivan.AutoSize = true;
+            chbAktivan.Location = new Point(902, 51);
+            chbAktivan.Name = "chbAktivan";
+            chbAktivan.Size = new Size(80, 24);
+            chbAktivan.TabIndex = 7;
+            chbAktivan.Text = "Aktivan";
+            chbAktivan.UseVisualStyleBackColor = true;
+            chbAktivan.CheckedChanged += chbAktivan_CheckedChanged;
+            // 
             // frmStipendijeIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1014, 381);
+            ClientSize = new Size(1014, 646);
+            Controls.Add(chbAktivan);
+            Controls.Add(btnGenerisi);
+            Controls.Add(groupBox1);
             Controls.Add(dgvStipendijeGodine);
             Controls.Add(btnDodaj);
             Controls.Add(txtIznos);
@@ -179,8 +237,12 @@
             Controls.Add(label1);
             Name = "frmStipendijeIB180079";
             Text = "Upravljanje stipendijama";
+            FormClosed += frmStipendijeIB180079_FormClosed;
             Load += frmStipendijeIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStipendijeGodine).EndInit();
+            ((System.ComponentModel.ISupportInitialize)err).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -200,5 +262,10 @@
         private DataGridViewTextBoxColumn Iznos;
         private DataGridViewTextBoxColumn Ukupno;
         private DataGridViewCheckBoxColumn Aktivan;
+        private ErrorProvider err;
+        private Button btnGenerisi;
+        private GroupBox groupBox1;
+        private TextBox txtInfo;
+        private CheckBox chbAktivan;
     }
 }
