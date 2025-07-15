@@ -1,7 +1,7 @@
 <h2>Student Management</h2>
 
 <button color="primary" mat-raised-button routerLink="./new">New Student</button>
-<button color="primary" mat-raised-button (click)="toggleDeleted()">Prikaži/Sakrij obrisane”</button>
+<button color="primary" mat-raised-button (click)="toggleDeleted()">Prikaži/Sakrij obrisane</button>
 
 
 <div class="search-container">
@@ -32,6 +32,12 @@
   <ng-container matColumnDef="studentNumber">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Student Number</mat-header-cell>
     <mat-cell *matCellDef="let student">{{ student.studentNumber }}</mat-cell>
+  </ng-container>
+
+  <!-- Time Deleted Column -->
+  <ng-container matColumnDef="timeDeleted">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Time Deleted</mat-header-cell>
+    <mat-cell *matCellDef="let student">{{ student.timeDeleted | date:'HH:mm:ss' }}</mat-cell>
   </ng-container>
 
   <!-- Actions Column -->

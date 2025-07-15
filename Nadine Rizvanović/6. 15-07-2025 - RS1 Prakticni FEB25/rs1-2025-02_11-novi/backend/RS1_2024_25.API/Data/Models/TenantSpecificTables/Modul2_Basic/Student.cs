@@ -40,4 +40,6 @@ public class Student : TenantSpecificTable
     public string? ContactMobilePhone { get; set; }
     public string? ContactPrivateEmail { get; set; }
     public bool IsDeleted { get; internal set; }
+    public DateTime? TimeDeleted { get; set; }
+
 }
