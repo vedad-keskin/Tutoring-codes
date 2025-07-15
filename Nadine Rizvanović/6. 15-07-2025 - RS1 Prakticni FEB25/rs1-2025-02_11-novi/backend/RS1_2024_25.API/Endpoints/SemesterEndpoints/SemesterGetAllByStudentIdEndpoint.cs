@@ -22,7 +22,7 @@ public class SemesterGetAllByStudentIdEndpoint(ApplicationDbContext db) : MyEndp
                         .Select(c => new SemesterGetAllByStudentIdResponse
                         {
                             ID = c.ID,
-                            AcademicYearDescription = c.AcademicYear.Description,
+                            AcademicYearDescription = $"{c.AcademicYear.StartDate.Year}-{c.AcademicYear.EndDate.Year % 100}",
                             YearOfStudy = c.YearOfStudy,
                             Renewal = c.Renewal,
                             DateOfEntrollment = c.DateOfEntrollment,
