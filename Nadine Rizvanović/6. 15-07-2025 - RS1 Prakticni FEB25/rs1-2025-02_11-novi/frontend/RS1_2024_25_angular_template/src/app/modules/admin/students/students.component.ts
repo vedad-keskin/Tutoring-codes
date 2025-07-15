@@ -12,7 +12,7 @@ import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
 import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-students',
@@ -54,6 +54,8 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
       map(q=> q.toLowerCase()),
       filter(q=> q.length > 3),
+      tap(q=> console.log(this.dataSource.data.length))
+
 
 
     ).subscribe((filterValue) => {
@@ -86,7 +88,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
         );
         this.paginator.length = data.totalCount;
+
+
+
       },
+
       error: (err) => {
         this.snackbar.showMessage('Error fetching students. Please try again.', 5000);
         console.error('Error fetching students:', err);
