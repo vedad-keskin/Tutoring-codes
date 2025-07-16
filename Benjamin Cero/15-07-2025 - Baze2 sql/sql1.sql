@@ -1,13 +1,13 @@
-CREATE DATABASE IB180079
+ÔªøCREATE DATABASE IB180079
 GO
 USE IB180079
 
 --2a) Prodavaci
---ï ProdavacID, cjelobrojna vrijednost i primarni kljuË, autoinkrement
---ï Ime, 50 UNICODE karaktera (obavezan unos)
---ï Prezime, 50 UNICODE karaktera (obavezan unos)
---ï OpisPosla, 50 UNICODE karaktera (obavezan unos)
---ï EmailAdresa, 50 UNICODE 
+--‚Ä¢ ProdavacID, cjelobrojna vrijednost i primarni klju√®, autoinkrement
+--‚Ä¢ Ime, 50 UNICODE karaktera (obavezan unos)
+--‚Ä¢ Prezime, 50 UNICODE karaktera (obavezan unos)
+--‚Ä¢ OpisPosla, 50 UNICODE karaktera (obavezan unos)
+--‚Ä¢ EmailAdresa, 50 UNICODE 
 
 CREATE TABLE Prodavaci
 (
@@ -19,11 +19,11 @@ EmailAdresa NVARCHAR(50)
 )
 
 --2b) Proizvodi
---ï ProizvodID, cjelobrojna vrijednost i primarni kljuË, autoinkrement
---ï Naziv, 50 UNICODE karaktera (obavezan unos)
---ï SifraProizvoda, 25 UNICODE karaktera (obavezan unos)
---ï Boja, 15 UNICODE karaktera
---ï NazivKategorije, 50 UNICODE (obavezan unos)
+--‚Ä¢ ProizvodID, cjelobrojna vrijednost i primarni klju√®, autoinkrement
+--‚Ä¢ Naziv, 50 UNICODE karaktera (obavezan unos)
+--‚Ä¢ SifraProizvoda, 25 UNICODE karaktera (obavezan unos)
+--‚Ä¢ Boja, 15 UNICODE karaktera
+--‚Ä¢ NazivKategorije, 50 UNICODE (obavezan unos)
 
 CREATE TABLE Proizvodi
 (
@@ -35,15 +35,15 @@ NazivKategorije NVARCHAR(50) NOT NULL
 )
 
 --2c) ZaglavljeNarudzbe
---ï NarudzbaID, cjelobrojna vrijednost i primarni kljuË, autoinkrement
---ï DatumNarudzbe, polje za unos datuma i vremena (obavezan unos)
---ï DatumIsporuke, polje za unos datuma i vremena
---ï KreditnaKarticaID, cjelobrojna vrijednost
---ï ImeKupca, 50 UNICODE (obavezan unos)
---ï PrezimeKupca, 50 UNICODE (obavezan unos)
---ï NazivGrada, 30 UNICODE (obavezan unos)
---ï ProdavacID, cjelobrojna vrijednost i strani kljuË
---ï NacinIsporuke, 50 UNICODE (obavezan unos)
+--‚Ä¢ NarudzbaID, cjelobrojna vrijednost i primarni klju√®, autoinkrement
+--‚Ä¢ DatumNarudzbe, polje za unos datuma i vremena (obavezan unos)
+--‚Ä¢ DatumIsporuke, polje za unos datuma i vremena
+--‚Ä¢ KreditnaKarticaID, cjelobrojna vrijednost
+--‚Ä¢ ImeKupca, 50 UNICODE (obavezan unos)
+--‚Ä¢ PrezimeKupca, 50 UNICODE (obavezan unos)
+--‚Ä¢ NazivGrada, 30 UNICODE (obavezan unos)
+--‚Ä¢ ProdavacID, cjelobrojna vrijednost i strani klju√®
+--‚Ä¢ NacinIsporuke, 50 UNICODE (obavezan unos)
 
 CREATE TABLE ZaglavljeNarudzbe
 (
@@ -59,12 +59,12 @@ NacinIsporuke NVARCHAR(50) NOT NULL
 )
 
 --c) DetaljiNarudzbe
---ï NarudzbaID, cjelobrojna vrijednost, obavezan unos i strani kljuË
---ï ProizvodID, cjelobrojna vrijednost, obavezan unos i strani kljuË
---ï Cijena, novËani tip (obavezan unos),
---ï Kolicina, skraÊeni cjelobrojni tip (obavezan unos),
---ï Popust, novËani tip (obavezan unos)
---ï OpisSpecijalnePonude, 255 UNICODE (obavezan unos)
+--‚Ä¢ NarudzbaID, cjelobrojna vrijednost, obavezan unos i strani klju√®
+--‚Ä¢ ProizvodID, cjelobrojna vrijednost, obavezan unos i strani klju√®
+--‚Ä¢ Cijena, nov√®ani tip (obavezan unos),
+--‚Ä¢ Kolicina, skra√¶eni cjelobrojni tip (obavezan unos),
+--‚Ä¢ Popust, nov√®ani tip (obavezan unos)
+--‚Ä¢ OpisSpecijalnePonude, 255 UNICODE (obavezan unos)
 
 CREATE TABLE DetaljiNarudzbe
 (
@@ -77,13 +77,13 @@ Popust MONEY NOT NULL,
 OpisSpecijalnePonude NVARCHAR(255) NOT NULL
 )
 
---3a. Iz baze podataka AdventureWorks u svoju bazu podataka prebaciti sljedeÊe podatke:
+--3a. Iz baze podataka AdventureWorks u svoju bazu podataka prebaciti sljede√¶e podatke:
 --a) U tabelu Prodavaci dodati :
---ï BusinessEntityID (SalesPerson) -> ProdavacID
---ï FirstName -> Ime
---ï LastName -> Prezime
---ï JobTitle (Employee) -> OpisPosla
---ï EmailAddress (EmailAddress) -> EmailAdresa
+--‚Ä¢ BusinessEntityID (SalesPerson) -> ProdavacID
+--‚Ä¢ FirstName -> Ime
+--‚Ä¢ LastName -> Prezime
+--‚Ä¢ JobTitle (Employee) -> OpisPosla
+--‚Ä¢ EmailAddress (EmailAddress) -> EmailAdresa
 
 SET IDENTITY_INSERT Prodavaci ON
 INSERT INTO Prodavaci(ProdavacID, Ime ,Prezime, OpisPosla, EmailAdresa)
@@ -97,13 +97,13 @@ FROM AdventureWorks2022.Sales.SalesPerson AS SP
 	 ON EA.BusinessEntityID = P.BusinessEntityID
 SET IDENTITY_INSERT Prodavaci OFF
 
---3. Iz baze podataka AdventureWorks u svoju bazu podataka prebaciti sljedeÊe podatke:
+--3. Iz baze podataka AdventureWorks u svoju bazu podataka prebaciti sljede√¶e podatke:
 --3b) U tabelu Proizvodi dodati sve proizvode
---ï ProductID -> ProizvodID
---ï Name -> Naziv
---ï ProductNumber -> SifraProizvoda
---ï Color -> Boja
---ï Name (ProductCategory) -> NazivKategorije
+--‚Ä¢ ProductID -> ProizvodID
+--‚Ä¢ Name -> Naziv
+--‚Ä¢ ProductNumber -> SifraProizvoda
+--‚Ä¢ Color -> Boja
+--‚Ä¢ Name (ProductCategory) -> NazivKategorije
 
 
 SET IDENTITY_INSERT Proizvodi ON
@@ -116,16 +116,16 @@ FROM AdventureWorks2022.Production.Product AS P
 	 ON PS.ProductCategoryID = PC.ProductCategoryID
 SET IDENTITY_INSERT Proizvodi OFF
 
---3c) U tabelu ZaglavljeNarudzbe dodati sve narudûbe
---ï SalesOrderID -> NarudzbaID
---ï OrderDate -> DatumNarudzbe
---ï ShipDate -> DatumIsporuke
---ï CreditCardID -> KreditnaKarticaID
---ï FirstName (Person) -> ImeKupca
---ï LastName (Person) -> PrezimeKupca
---ï City (Address) -> NazivGrada
---ï SalesPersonID (SalesOrderHeader) -> ProdavacID
---ï Name (ShipMethod) -> NacinIsporuke
+--3c) U tabelu ZaglavljeNarudzbe dodati sve narud≈æbe
+--‚Ä¢ SalesOrderID -> NarudzbaID
+--‚Ä¢ OrderDate -> DatumNarudzbe
+--‚Ä¢ ShipDate -> DatumIsporuke
+--‚Ä¢ CreditCardID -> KreditnaKarticaID
+--‚Ä¢ FirstName (Person) -> ImeKupca
+--‚Ä¢ LastName (Person) -> PrezimeKupca
+--‚Ä¢ City (Address) -> NazivGrada
+--‚Ä¢ SalesPersonID (SalesOrderHeader) -> ProdavacID
+--‚Ä¢ Name (ShipMethod) -> NacinIsporuke
 
 SET IDENTITY_INSERT ZaglavljeNarudzbe ON
 INSERT INTO ZaglavljeNarudzbe(NarudzbaID, DatumNarudzbe ,DatumIsporuke, KreditnaKarticaID, ImeKupca, PrezimeKupca, NazivGrada, ProdavacID, NacinIsporuke)
@@ -141,13 +141,13 @@ FROM AdventureWorks2022.Sales.SalesOrderHeader AS SOH
 	 ON SOH.ShipMethodID = SM.ShipMethodID
 SET IDENTITY_INSERT ZaglavljeNarudzbe OFF
 
---3d) U tabelu DetaljiNarudzbe dodati sve stavke narudûbe
---ï SalesOrderID -> NarudzbaID
---ï ProductID -> ProizvodID
---ï UnitPrice -> Cijena
---ï OrderQty -> Kolicina
---ï UnitPriceDiscount -> Popust
---ï Description (SpecialOffer) -> OpisSpecijalnePonude
+--3d) U tabelu DetaljiNarudzbe dodati sve stavke narud≈æbe
+--‚Ä¢ SalesOrderID -> NarudzbaID
+--‚Ä¢ ProductID -> ProizvodID
+--‚Ä¢ UnitPrice -> Cijena
+--‚Ä¢ OrderQty -> Kolicina
+--‚Ä¢ UnitPriceDiscount -> Popust
+--‚Ä¢ Description (SpecialOffer) -> OpisSpecijalnePonude
 
 
 INSERT INTO DetaljiNarudzbe(NarudzbaID, ProizvodID ,Cijena, Kolicina, Popust, OpisSpecijalnePonude)
@@ -157,3 +157,67 @@ FROM AdventureWorks2022.Sales.SalesOrderDetail AS SOD
 	 ON SOD.SpecialOfferID = SOP.SpecialOfferID
 	 INNER JOIN AdventureWorks2022.Sales.SpecialOffer AS SO
 	 ON SOP.SpecialOfferID = SO.SpecialOfferID
+
+
+USE AdventureWorks2022
+
+--1) (6 bodova) Kreirati upit koji ƒáe prikazati ukupan broj uposlenika po odjelima. Potrebno je prebrojati samo one uposlenike koji su trenutno aktivni, odnosno rade na datom odjelu. Takoƒëer, samo uzeti u obzir one uposlenike koji imaju vi≈°e od 10 godina radnog sta≈æa (ne ukljuƒçujuƒái graniƒçnu vrijednost). Rezultate sortirati prema broju uposlenika u opadajuƒáem redoslijedu. (AdventureWorks2017)
+
+SELECT D.Name, COUNT(E.BusinessEntityID) AS 'Broj uposlenika'
+FROM HumanResources.Department AS D
+     INNER JOIN HumanResources.EmployeeDepartmentHistory AS EDH
+	 ON EDH.DepartmentID = D.DepartmentID
+	 INNER JOIN HumanResources.Employee AS E
+	 ON E.BusinessEntityID = EDH.BusinessEntityID
+WHERE EDH.EndDate IS NULL AND DATEDIFF(YEAR, E.HireDate, GETDATE() ) > 10
+GROUP BY D.Name
+ORDER BY 2 DESC
+
+
+--2) Ispisati teritorij i broj narud≈æbi po teritorijima, uzeti u obzir onu narudzbu koja je placena kreditnom karticom (AdventureWorks2017)
+
+SELECT ST.Name, COUNT(SOH.SalesOrderID) AS 'Broj naru≈æbi'
+FROM Sales.SalesTerritory AS ST
+     INNER JOIN Sales.SalesOrderHeader AS SOH
+	 ON ST.TerritoryID = SOH.TerritoryID
+WHERE SOH.CreditCardID IS NOT NULL
+GROUP BY ST.Name
+
+
+
+--3) Prikazati proizvode koji pripadaju kategoriji bikes, imaju vise od 30 narudzbi i nemaju broj u imenu (AdventureWorks2017)
+
+SELECT P.Name
+FROM Production.Product AS P
+     INNER JOIN Production.ProductSubcategory AS PS
+	 ON PS.ProductSubcategoryID = P.ProductSubcategoryID
+	 INNER JOIN Production.ProductCategory AS PC
+	 ON PC.ProductCategoryID = PS.ProductCategoryID
+	 INNER JOIN Sales.SalesOrderDetail AS SOD
+	 ON SOD.ProductID = P.ProductID
+WHERE PC.Name = 'Bikes' AND P.Name NOT LIKE '%[0-9]%' --PC.Name LIKE '%Bikes%'
+GROUP BY P.Name
+HAVING COUNT(SOD.ProductID) > 30
+
+--4) Prikazati narud≈æbu koja je najmanje dana bila u prodaji, i ako ima vise narud≈æbi sa istim vrijednostima, prikazati i njih (AdventureWorks)
+
+SELECT TOP 1 WITH TIES SOD.SalesOrderID, DATEDIFF(DAY, P.SellStartDate, P.SellEndDate) AS 'Dani u prodaji'
+FROM Production.Product AS P
+     INNER JOIN Sales.SalesOrderDetail AS SOD
+	 ON SOD.ProductID = P.ProductID
+WHERE P.SellEndDate IS NOT NULL
+ORDER BY 2 ASC
+
+
+--5) (7 bodova) Kreirati upit kojim ƒáe se prikazati proizvod koji je najvi≈°e dana bio u prodaji (njegova prodaja je prestala) a pripada kategoriji bicikala. Proizvodu se poƒçetkom i po prestanku prodaje bilje≈æi datum. Ukoliko postoji vi≈°e proizvoda sa istim vremenskim periodom kao i prvi, prikazati ih u rezultatima upita.
+
+
+SELECT TOP 1 WITH TIES P.Name, DATEDIFF(DAY, P.SellStartDate, P.SellEndDate) AS 'Dana u prodaji'
+FROM Production.Product AS P
+     INNER JOIN Production.ProductSubcategory AS PS
+	 ON PS.ProductSubcategoryID = P.ProductSubcategoryID
+	 INNER JOIN Production.ProductCategory AS PC
+	 ON PC.ProductCategoryID = PS.ProductCategoryID
+WHERE P.SellEndDate IS NOT NULL AND PC.Name = 'Bikes'
+ORDER BY 2 DESC
+
