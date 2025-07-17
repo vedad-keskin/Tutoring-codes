@@ -58,7 +58,7 @@ public class SemesterUpdateOrInsertEndpoint(ApplicationDbContext db) : MyEndpoin
         if (db.Semesters.ToList().Exists(x=> x.StudentId == request.StudentId && x.AcademicYearId == request.AcademicYearId))
         {
 
-            return BadRequest("Semester not found");
+            return BadRequest("Academic Year already exists.");
 
         }
 
