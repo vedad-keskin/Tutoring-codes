@@ -71,8 +71,8 @@ export class StudentSemestersNewComponent implements OnInit  {
       recordedById: [this.loggedInUserId, [Validators.required]],
       dateOfEnrollment: [new Date(), [Validators.required]],
       yearOfStudy: [null, [Validators.required]],
-      price: [null, [Validators.required, Validators.max(2000), Validators.min(50) ]],
-      renewal: [false, [Validators.required]],
+      price: [ {value: null , disabled: true} , [Validators.required, Validators.max(2000), Validators.min(50) ]],
+      renewal: [{value: false , disabled: true}, [Validators.required]],
 
     });
 
@@ -127,7 +127,7 @@ export class StudentSemestersNewComponent implements OnInit  {
     if (this.semesterForm.invalid) return;
 
     const semesterData: SemesterUpdateOrInsertRequest = {
-      ...this.semesterForm.value,
+      ...this.semesterForm.getRawValue(),
     };
 
     this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
@@ -137,7 +137,9 @@ export class StudentSemestersNewComponent implements OnInit  {
       },
       error: (error) => {
 
-        console.error('Error saving semester', error);
+        this.snackbar.showMessage('Academic Year already exists.', 5000);
+
+        console.error('Academic Year already exists.');
       },
     });
 
@@ -157,6 +159,34 @@ export class StudentSemestersNewComponent implements OnInit  {
         console.error('Error fetching academic years:', err);
       }
     });
+
+  }
+
+  yearOfStudyChanged($event: any) {
+
+    const studyYear = parseInt($event.target.value);
+
+    if(this.semesters.some((x:any)=> x.yearOfStudy == studyYear )){
+
+
+      this.semesterForm.patchValue(
+        {
+          price:400,
+          renewal:true,
+        }
+      )
+
+    }else{
+
+      this.semesterForm.patchValue(
+        {
+          price:1800,
+          renewal:false,
+        }
+      )
+
+    }
+
 
   }
 }

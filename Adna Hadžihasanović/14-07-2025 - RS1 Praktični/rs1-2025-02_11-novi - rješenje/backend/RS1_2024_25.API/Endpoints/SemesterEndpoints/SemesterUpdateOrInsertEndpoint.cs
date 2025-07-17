@@ -54,6 +54,16 @@ public class SemesterUpdateOrInsertEndpoint(ApplicationDbContext db) : MyEndpoin
         semester.Renewal = request.Renewal;
         semester.YearOfStudy = request.YearOfStudy;
 
+
+        if (db.Semesters.ToList().Exists(x=> x.StudentId == request.StudentId && x.AcademicYearId == request.AcademicYearId))
+        {
+
+            return BadRequest("Semester not found");
+
+        }
+
+
+
         // Save changes to the database
         await db.SaveChangesAsync(cancellationToken);
 
