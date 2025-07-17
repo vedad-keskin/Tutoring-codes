@@ -221,3 +221,64 @@ FROM Production.Product AS P
 WHERE P.SellEndDate IS NOT NULL AND PC.Name = 'Bikes'
 ORDER BY 2 DESC
 
+
+--6) Prikazuje prosječnu vrijednost narudžbi po godinama za svaki teritorij. Uzimaju se u obzir samo narudžbe koje su plaćene kreditnom karticom. Rezultat prikazuje teritorije sortirane uzlazno po imenu teritorija, dok su godine sortirane silazno (najnovije prvo) Prosječna vrijednost narudžbi je zaokružena na dvije decimale
+
+SELECT ST.Name, YEAR(SOH.OrderDate) AS 'Godina naružbe' , ROUND(AVG(SOH.SubTotal),2) AS 'Prosjek narudžbe'
+FROM Sales.SalesTerritory AS ST
+     INNER JOIN Sales.SalesOrderHeader AS SOH
+	 ON SOH.TerritoryID = ST.TerritoryID
+WHERE SOH.CreditCardID IS NOT NULL
+GROUP BY ST.Name, YEAR(SOH.OrderDate)
+ORDER BY 1 ASC, 2 DESC
+
+--7) Prikazati naziv odjela na kojem radi najviše uposlenika starijih od 65 godina
+
+SELECT TOP 1 D.Name, COUNT(E.BusinessEntityID) AS 'Broj uposlenika'
+FROM HumanResources.Employee AS E
+     INNER JOIN HumanResources.EmployeeDepartmentHistory AS EDH
+	 ON EDH.BusinessEntityID = E.BusinessEntityID
+	 INNER JOIN HumanResources.Department AS D
+	 ON D.DepartmentID = EDH.DepartmentID
+WHERE DATEDIFF(YEAR, E.BirthDate, GETDATE()) > 65
+GROUP BY D.Name
+ORDER BY 2 DESC
+
+--8) Prikazati 10 količinski najvećih stavki prodaje. Uključiti broj narudžbe, naziv proizvoda, datum narudžbe i naručenu količinu. Ukoliko postoji više stavki sa istom količinom kao posljednja na listi, proširiti listu i uključiti i te stavke (Pubs)
+
+USE pubs
+
+SELECT TOP 10 WITH TIES S.ord_num, T.title, S.ord_date, S.qty
+FROM sales AS S
+     INNER JOIN titles AS T
+	 ON S.title_id = T.title_id
+ORDER BY 4 DESC
+
+--9) (6 bodova) Kreirati upit kojim će se prikazati ukupan broj porizvoda po kategoriajma. Uslov je da se prikazu samo one kategorije kojima ne pripada vise od 30 proizvoda, a sadrze broj u bilo kojoj od rijeci i ne nalaze se u prodaji.
+
+USE AdventureWorks2022
+
+SELECT PC.Name, COUNT(P.ProductID) AS 'Ukupan broj proizvoda'
+FROM Production.Product AS P
+     INNER JOIN Production.ProductSubcategory AS PS
+	 ON PS.ProductSubcategoryID = P.ProductSubcategoryID
+	 INNER JOIN Production.ProductCategory AS PC
+	 ON PC.ProductCategoryID = PS.ProductCategoryID
+WHERE P.Name LIKE '%[0-9]%' AND P.SellEndDate IS NOT NULL
+GROUP BY PC.Name
+HAVING COUNT(P.ProductID) <= 30
+
+--10) Menadzmentu trebaju svi proizvodi koji vise nisu u prodaji. Trebaju se uzeti prozivodi koji su se prodali vise od 100 puta i ne pripadaju kateogriji Bikes. Rezultati se trebaju ispisati u obliku "laptop 300kom" prodano (AdventureWorks)
+
+
+SELECT P.Name +' ' + CAST(SUM(SOD.OrderQty) AS NVARCHAR)+'kom' AS 'Prodani proizvodi'
+FROM Production.Product AS P
+     INNER JOIN Sales.SalesOrderDetail AS SOD
+	 ON SOD.ProductID = P.ProductID
+	 INNER JOIN Production.ProductSubcategory AS PS
+	 ON PS.ProductSubcategoryID = P.ProductSubcategoryID
+	 INNER JOIN Production.ProductCategory AS PC
+	 ON PC.ProductCategoryID = PS.ProductCategoryID
+WHERE P.SellEndDate IS NOT NULL AND PC.Name NOT LIKE '%Bikes%'
+GROUP BY P.Name
+HAVING SUM(SOD.OrderQty) > 100
