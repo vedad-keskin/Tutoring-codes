@@ -282,3 +282,42 @@ FROM Production.Product AS P
 WHERE P.SellEndDate IS NOT NULL AND PC.Name NOT LIKE '%Bikes%'
 GROUP BY P.Name
 HAVING SUM(SOD.OrderQty) > 100
+
+
+--11) (11 bodova) Napisati upit koji će prikazati sljedeće podatke o proizvodima: naziv proizvoda, naziv kompanije dobavljača, količinu na skladištu, te kreiranu šifru proizvoda. Šifra se sastoji od sljedećih vrijednosti: (Northwind)
+--1) Prva dva slova naziva proizvoda
+--2) Karakter /
+--3) Prva dva slova druge riječi naziva kompanije dobavljača, uzeti u obzir one kompanije koje u nazivu imaju 2 ili 3 riječi
+--4) ID proizvoda, po pravilu ukoliko se radi o jednoznamenkom broju na njega dodati slovo 'a', u suprotnom uzeti obrnutu vrijednost broja Npr. Za proizvod sa nazivom Chai i sa dobavljačem naziva Exotic Liquids, šifra će btiti Ch/Li1a
+
+USE Northwind
+
+SELECT P.ProductName, S.CompanyName, P.UnitsInStock, SUBSTRING(P.ProductName,1,2) + '/' +
+IIF(LEN(S.CompanyName) - LEN(REPLACE(S.CompanyName, ' ', '' )) IN (1,2) , SUBSTRING(S.CompanyName ,  CHARINDEX(' ',S.CompanyName) + 1, 2) ,'' ) + IIF(P.ProductID < 10 , CAST(P.ProductID AS NVARCHAR) + 'a' , REVERSE(P.ProductID) ) AS 'Sifra'
+FROM Products AS P 
+     INNER JOIN Suppliers AS S
+	 ON S.SupplierID = P.SupplierID
+
+
+--12) prikazati ime proizvode, koliko ga ima na stanju i koliko je puta prodat,
+--i ukupna vrijednost proizvoda sa popustom.
+--- Tamo gdje je količina na skladištu 0 staviti "proizvoda nema na skladištu",
+--- tamo gdje je prodata količina 0 staviti "proizvod nije prodat"
+--- tamo gdje je ukupna vrijednost NULL staviti "stavka nije prodana" (AdventureWorks2017)
+
+USE AdventureWorks2022
+
+SELECT P.Name, IIF(PPI.Quantity = 0,'proizvoda nema na skladištu' , CAST(PPI.Quantity AS NVARCHAR) ) AS 'Količina na skladištu',
+IIF(COUNT(SOD.OrderQty) = 0, 'proizvod nije prodat', CAST(COUNT(SOD.OrderQty) AS NVARCHAR)) AS 'Prodana količina',
+IIF(SUM(LineTotal) IS NULL,'stavka nije prodana', CAST( SUM(LineTotal) AS NVARCHAR) ) AS 'Ukupna vrijednost s popustom'
+FROM Production.Product AS P
+     INNER JOIN Production.ProductInventory AS PPI
+	 ON PPI.ProductID = P.ProductID
+	 FULL OUTER JOIN Sales.SalesOrderDetail AS SOD
+	 ON SOD.ProductID = P.ProductID
+GROUP BY P.Name, PPI.Quantity
+ORDER BY 3 DESC
+
+
+
+
