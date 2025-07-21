@@ -48,6 +48,8 @@ export class Cities3Component implements OnInit, AfterViewInit {
     this.searchSubject.pipe(
       debounceTime(300), // Vrijeme čekanja (300ms)
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
+
+
     ).subscribe((filterValue) => {
       this.fetchCities(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
     });
