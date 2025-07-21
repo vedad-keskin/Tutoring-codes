@@ -531,3 +531,141 @@ WHERE YEAR(SOH.OrderDate) = 2011 AND PC.Name = 'Components'
 GROUP BY P.NAME
 ORDER BY 2 DESC
 
+
+USE IB180079
+
+--21) (3 boda) U kreiranoj bazi kreirati index kojim će se ubrzati pretraga prema sifri i nazivu proizvoda. Napisati upit za poptuno iskorištenje indeksa
+
+CREATE INDEX I_Search_Proizvodi
+ON Proizvodi(Naziv, SifraProizvoda)
+
+SELECT P.Naziv, P.SifraProizvoda
+FROM Proizvodi AS P
+WHERE P.Naziv LIKE '%[0-9]%' AND P.SifraProizvoda LIKE '%-%'
+
+--22) (7 bodova) U kreiranoj bazi kreirati proceduru sp_search_products kojom će se vratiti podaci o proizvodima na osnovu kategorije kojoj pripadaju ili težini. Korisnici ne moraju unijeti niti jedan od parametara ali u tom slučaju procedura ne vraća niti jedan od zapisa. Korisnicima unosom već prvog slova kategorije se trebaju osvježiti zapisi, a vrijednost unesenog parametra težina će vratiti one proizvode čija težina je veća od unesene vrijednosti.
+
+CREATE PROCEDURE sp_search_products
+(
+@NazivKategorije NVARCHAR(50) = NULL,
+@Boja NVARCHAR(15) = NULL
+)
+AS
+BEGIN 
+     SELECT*
+	 FROM Proizvodi AS P
+	 WHERE P.NazivKategorije LIKE @NazivKategorije + '%' OR P.Boja LIKE @Boja + '%'   --OR P.Tezina > @Tezina
+END
+
+GO
+
+EXEC sp_search_products 'Clothing', 'White'
+EXEC sp_search_products @Boja = 'White'
+EXEC sp_search_products
+
+-- UPDATE PROCEDURA
+
+CREATE PROCEDURE sp_edit_proizvod
+(
+    @ProizvodID INT,
+	@Naziv NVARCHAR(50) = NULL,
+	@SifraProizvoda NVARCHAR(25) = NULL,
+	@Boja NVARCHAR(15) = NULL,
+	@NazivKategorije NVARCHAR(50) = NULL
+)
+AS 
+BEGIN 
+      UPDATE Proizvodi
+	  SET 
+	      Naziv = ISNULL(@Naziv, Naziv),
+	      SifraProizvoda = ISNULL(@SifraProizvoda, SifraProizvoda),
+		  Boja = ISNULL(@Boja, Boja),
+		  NazivKategorije = ISNULL(@NazivKategorije, NazivKategorije)
+	  WHERE ProizvodID = @ProizvodID
+END
+
+EXEC sp_edit_proizvod @ProizvodID = 680, @Naziv = 'Točak', @SifraProizvoda = 'FR-FR-FR'
+
+SELECT*
+FROM Proizvodi
+
+
+--23) (4 bodova) U kreiranoj bazi kreirati proceduru sp_insert_ZaglavljeNarudzbe kojom ce se omoguciti kreiranje nove narudzbe. OBAVEZNO kreirati testni slucaj. (Novokreirana baza).
+
+SELECT*
+INTO TestniSlucaj
+FROM ZaglavljeNarudzbe
+
+CREATE PROCEDURE sp_insert_ZaglavljeNarudzbe
+(
+    @DatumNarudzbe DATETIME,
+	@DatumIsporuke DATETIME = NULL,
+	@KreditnaKarticaID INT = NULL,
+	@ImeKupca NVARCHAR(50),
+	@PrezimeKupca NVARCHAR(50),
+	@NazivGrada NVARCHAR(30),
+	@ProdavacID INT = NULL,
+	@NacinIsporuke NVARCHAR(50)
+)
+AS
+BEGIN
+     INSERT INTO TestniSlucaj(DatumNarudzbe,DatumIsporuke,KreditnaKarticaID,ImeKupca,PrezimeKupca,NazivGrada,ProdavacID,NacinIsporuke)
+	 VALUES(@DatumNarudzbe,@DatumIsporuke,@KreditnaKarticaID,@ImeKupca,@PrezimeKupca,@NazivGrada,@ProdavacID,@NacinIsporuke)
+END
+
+EXEC sp_insert_ZaglavljeNarudzbe '2025-07-07 00:00:00:000','2025-07-07 00:00:00:000', 2323,'Vedad', 'Keskin', 'Paprasko',279,'Postom'
+
+
+
+SELECT*
+FROM TestniSlucaj
+
+--24) (6 bodova) kreirati pogled v_detalji gdje je korisniku potrebno prikazati identifikacijski broj narudzbe, --spojeno ime i prezime kupca, grad isporuke, ukupna vrijednost narudzbe sa popustom i bez popusta, te u dodatnom polju informacija da li je narudzba placena karticom ("Placeno karticom" ili "Nije placeno karticom"). Rezultate sortirati prema vrijednosti narudzbe sa popustom u opadajucem redoslijedu. OBAVEZNO kreirati testni slucaj. (Novokreirana baza)
+
+SELECT*
+INTO ZaglavljeNarudzbeTEST
+FROM ZaglavljeNarudzbe
+
+SELECT*
+INTO DetaljiNarudzbeTEST
+FROM DetaljiNarudzbe
+
+CREATE VIEW v_detalji1
+AS
+SELECT ZN.NarudzbaID, ZN.ImeKupca + ' ' + ZN.PrezimeKupca AS 'Ime prezime', ZN.NazivGrada, DN.Cijena * DN.Kolicina AS 'Cijena bez popusta', DN.Cijena * DN.Kolicina * (1- DN.Popust) AS 'Cijena sa popustom', IIF(ZN.KreditnaKarticaID IS NULL, 'Nije placeno karticom' ,'Placeno karticom') AS 'Informacija'
+FROM ZaglavljeNarudzbeTEST AS ZN
+     INNER JOIN DetaljiNarudzbeTEST AS DN
+	 ON DN.NarudzbaID = ZN.NarudzbaID
+
+
+SELECT*
+FROM v_detalji
+ORDER BY 5 DESC
+
+
+--25) Kreirati funckiju f_detalji u formi tabele gdje korisniku slanjem parametra indetifikacijski broj narudzbe ce biti ispisano spojeno ime i prezime kupca, grad isporuke, ukupna vrijednost narudzbe sa popsutom, te prouka da li je poruka da li je narudzba placena karticom ("Placeno karticom" ili "Nije placeno karticom")
+
+CREATE FUNCTION f_detalji4
+(
+    @NarudzbaID INT
+)
+RETURNS TABLE
+AS 
+RETURN 
+SELECT  
+    ZN.ImeKupca + ' ' + ZN.PrezimeKupca AS 'Ime i prezime',
+    ZN.NazivGrada,
+    SUM(DN.Cijena * DN.Kolicina * (1 - DN.Popust)) AS 'Ukupna vrijednost',
+    IIF(ZN.KreditnaKarticaID IS NULL, 'nije placeno karticom', 'placeno karticom') AS 'Nacin placanja'
+FROM ZaglavljeNarudzbe AS ZN
+INNER JOIN DetaljiNarudzbe AS DN ON DN.NarudzbaID = ZN.NarudzbaID
+WHERE ZN.NarudzbaID = @NarudzbaID
+GROUP BY ZN.ImeKupca, ZN.PrezimeKupca, ZN.NazivGrada, ZN.KreditnaKarticaID;
+
+SELECT*
+FROM f_detalji4(43736)
+
+
+SELECT*
+FROM ZaglavljeNarudzbe AS ZN
+WHERE ZN.NarudzbaID = 43736
