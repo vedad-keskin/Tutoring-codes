@@ -318,6 +318,216 @@ FROM Production.Product AS P
 GROUP BY P.Name, PPI.Quantity
 ORDER BY 3 DESC
 
+--13) Ispisati kategorije i ukupan broj proizvoda koje sadrže. Uzeti u obzir one kategorije koje imaju preko 50 proizvoda, uzeti u obzir one proizvode koji imaju 3 riječi u imenu i barem jedan broj.
+
+USE AdventureWorks2022
+
+SELECT PC.Name, COUNT(P.ProductID) AS 'Broj proizvoda'
+FROM Production.Product AS P
+     INNER JOIN Production.ProductSubcategory AS PS
+	 ON PS.ProductSubcategoryID = P.ProductSubcategoryID
+	 INNER JOIN Production.ProductCategory AS PC
+	 ON PC.ProductCategoryID = PS.ProductCategoryID
+WHERE P.Name LIKE '%[0-9]%' AND LEN(P.Name) - LEN(REPLACE(P.Name,' ','')) = 2
+GROUP BY PC.Name
+HAVING COUNT(P.ProductID) > 50
 
 
+--14) Osobe podijeliti u dvije grupe, one koji imaju vanredne prihode, a nemaju redovne i one koji imaju redovne, a nemaju vanredne. Prikazati ime i prezime zajedno, grad, adresu i ukupan iznos prihoda (koristiti i redovne i vanredne prihode), dodati jednu kolonu zvanu 'Opis'. Opis u kojoj za ove samo sa redovnim prihodima pisati 'Iskljucivo redovni', a za ove samo sa vanrednim pisati 'Iskljucivo vanredni'. Sortirati opis abecedno i ukupni iznos prihoda opadajuće (prihodi)
+
+USE prihodi
+
+SELECT Q1.[Ime i prezime], Q1.Grad, Q1.Adresa, Q1.[Ukupan iznos vandrednog], Q1.[Ukupan iznos		redovnog], 'Isključivo redovni' AS 'Opis'
+FROM(
+	SELECT O.Ime + ' ' + O.PrezIme AS 'Ime i prezime', G.Grad, O.Adresa, SUM	(VP.IznosVanrednogPrihoda) AS 'Ukupan iznos vandrednog', SUM(RP.Bruto) AS 'Ukupan iznos		redovnog'
+	     FROM Osoba as O
+		 INNER JOIN Grad AS G
+		 ON O.GradID = G.GradID
+		 INNER JOIN RedovniPrihodi AS RP
+		 ON RP.OsobaID = O.OsobaID
+		 LEFT OUTER JOIN VanredniPrihodi AS VP
+		 ON VP.OsobaID = O.OsobaID
+	GROUP BY O.Ime + ' ' + O.PrezIme, G.Grad, O.Adresa
+	HAVING SUM(VP.IznosVanrednogPrihoda) IS NULL
+	) AS Q1
+UNION
+SELECT Q2.[Ime i prezime], Q2.Grad, Q2.Adresa, Q2.[Ukupan iznos vandrednog], Q2.[Ukupan iznos	   redovnog], 'Isključivo vandredni' AS 'Opis'
+FROM (
+	SELECT O.Ime + ' ' + O.PrezIme AS 'Ime i prezime', G.Grad, O.Adresa,  SUM   (VP.IznosVanrednogPrihoda) AS 'Ukupan iznos vandrednog', SUM(RP.Bruto) AS 'Ukupan iznos	   redovnog'
+	     FROM Osoba as O
+		 INNER JOIN Grad AS G
+		 ON O.GradID = G.GradID
+		 LEFT OUTER JOIN RedovniPrihodi AS RP
+		 ON RP.OsobaID = O.OsobaID
+		 INNER JOIN VanredniPrihodi AS VP
+		 ON VP.OsobaID = O.OsobaID
+	GROUP BY O.Ime + ' ' + O.PrezIme, G.Grad, O.Adresa
+	HAVING SUM(RP.Bruto) IS NULL
+	) AS Q2
+ORDER BY 6 ASC, 4 DESC, 5 DESC
+
+-- Drugi nacin da je jedna kolona za ukupan iznos
+
+SELECT Q1.[Ime i prezime], Q1.Grad, Q1.Adresa, Q1.[Ukupan iznos redovnog] AS 'Ukupan iznos', 'Isključivo redovni' AS 'Opis'
+FROM(
+	SELECT O.Ime + ' ' + O.PrezIme AS 'Ime i prezime', G.Grad, O.Adresa, SUM	(VP.IznosVanrednogPrihoda) AS 'Ukupan iznos vandrednog', SUM(RP.Bruto) AS 'Ukupan iznos redovnog'
+	     FROM Osoba as O
+		 INNER JOIN Grad AS G
+		 ON O.GradID = G.GradID
+		 INNER JOIN RedovniPrihodi AS RP
+		 ON RP.OsobaID = O.OsobaID
+		 LEFT OUTER JOIN VanredniPrihodi AS VP
+		 ON VP.OsobaID = O.OsobaID
+	GROUP BY O.Ime + ' ' + O.PrezIme, G.Grad, O.Adresa
+	HAVING SUM(VP.IznosVanrednogPrihoda) IS NULL
+	) AS Q1
+UNION
+SELECT Q2.[Ime i prezime], Q2.Grad, Q2.Adresa, Q2.[Ukupan iznos vandrednog] AS 'Ukupan iznos' ,  'Isključivo vandredni' AS 'Opis'
+FROM (
+	SELECT O.Ime + ' ' + O.PrezIme AS 'Ime i prezime', G.Grad, O.Adresa,  SUM   (VP.IznosVanrednogPrihoda) AS 'Ukupan iznos vandrednog', SUM(RP.Bruto) AS 'Ukupan iznos redovnog'
+	     FROM Osoba as O
+		 INNER JOIN Grad AS G
+		 ON O.GradID = G.GradID
+		 LEFT OUTER JOIN RedovniPrihodi AS RP
+		 ON RP.OsobaID = O.OsobaID
+		 INNER JOIN VanredniPrihodi AS VP
+		 ON VP.OsobaID = O.OsobaID
+	GROUP BY O.Ime + ' ' + O.PrezIme, G.Grad, O.Adresa
+	HAVING SUM(RP.Bruto) IS NULL
+	) AS Q2
+ORDER BY 5 ASC, 4 DESC
+
+
+--15) Prikazati nazive odjela na kojima TRENUTNO radi najviše i najmanje uposlenika (AdventureWorks)
+
+USE AdventureWorks2022
+
+SELECT*
+FROM (
+	SELECT TOP 1 D.Name, COUNT(E.BusinessEntityID) AS 'Broj uposlenika'
+	FROM HumanResources.Employee AS E
+	     INNER JOIN HumanResources.EmployeeDepartmentHistory AS EDH
+		 ON EDH.BusinessEntityID = E.BusinessEntityID
+		 INNER JOIN HumanResources.Department AS D
+		 ON D.DepartmentID = EDH.DepartmentID
+	WHERE EDH.EndDate IS NULL
+	GROUP BY D.Name
+	ORDER BY 2 DESC
+	) AS Q1
+UNION
+SELECT*
+FROM (
+	SELECT TOP 1 D.Name, COUNT(E.BusinessEntityID) AS 'Broj uposlenika'
+	FROM HumanResources.Employee AS E
+	     INNER JOIN HumanResources.EmployeeDepartmentHistory AS EDH
+		 ON EDH.BusinessEntityID = E.BusinessEntityID
+		 INNER JOIN HumanResources.Department AS D
+		 ON D.DepartmentID = EDH.DepartmentID
+	WHERE EDH.EndDate IS NULL
+	GROUP BY D.Name
+	ORDER BY 2 ASC
+	) AS Q2
+
+USE pubs
+
+--16) Šifra se sastoji od sljedećih vrijednosti:
+-- 1. Prezime po pravilu (prezime od 6 karaktera -> uzeti prva 4 karaktera; 
+--    prezime od 10 karaktera -> uzeti prva 6 karaktera; 
+--    za sve ostale slučajeve uzeti prva dva karaktera)
+-- 2. Ime prva 2 karaktera
+-- 3. Karakter '/'
+-- 4. ZIP po pravilu (2 karaktera sa desne strane ukoliko je zadnja cifra u opsegu 0–5;
+--    u suprotnom 2 karaktera sa lijeve strane)
+-- 5. Karakter '/'
+-- 6. State (obrnuta vrijednost)
+-- 7. Phone (brojevi između space i karaktera '-')
+-- Primjeri:
+-- za autora sa id-om 486-29-1786 šifra je: LoCh/30/AC585
+-- za autora sa id-om 998-72-3564 šifra je: RingAl/52/TU826
+
+SELECT A.au_fname + ' ' + A.au_lname AS 'Ime i prezime', T.title, A.phone, A.zip,
+    CASE
+        WHEN LEN(A.au_lname) = 6 THEN SUBSTRING(A.au_lname, 1, 4)
+		WHEN LEN(A.au_lname) = 10 THEN SUBSTRING(A.au_lname, 1, 6)
+        ELSE SUBSTRING(A.au_lname, 1, 2)
+    END 
+	+  SUBSTRING(A.au_fname, 1, 2) + '/' +
+	CASE
+        WHEN SUBSTRING(A.zip,len(A.zip),1) BETWEEN 0 AND 5 THEN SUBSTRING(A.zip,LEN(A.zip)-1,2) --SUBSTRING(REVERSE(A.zip),1,2)
+		WHEN LEN(A.au_lname) = 10 THEN SUBSTRING(A.au_lname, 1, 6)
+        ELSE SUBSTRING(A.au_lname, 1, 2)
+    END 
+	+ '/' + 
+	REVERSE(A.state) + 
+	SUBSTRING(A.phone,5,3)
+	AS 'Sifra'
+FROM authors AS A
+     INNER JOIN titleauthor AS TA
+	 ON TA.au_id = A.au_id
+	 INNER JOIN titles AS T
+	 ON T.title_id = TA.title_id
+
+USE Northwind
+
+--17) (8 bodova) Kreirati upit kojim će se prikazati koliko ukupno je naručeno komada proizvoda za svaku narudžbu pojedinačno, te ukupnu vrijednost narudžbe sa i bez popusta. Uzeti u obzir samo one narudžbe kojima je od datuma narudžbe do datuma isporuke proteklo manje od 7 dana (uključujući graničnu vrijednost), a isporučene su kupcima koji žive na području Madrida, Münchena ili Seattlea. Rezultate upita sortirati po broju komada u opadajućem redoslijedu, a vrijednosti je potrebno zaokružiti na dvije decimale. (Northwind)
+
+SELECT O.OrderID, SUM(OD.Quantity) 'Količina po narudžbi', ROUND(SUM(OD.Quantity * OD.UnitPrice),2) 'Cijena bez popusta', ROUND(SUM(OD.Quantity * OD.UnitPrice * (1- OD.Discount )),2) 'Cijena sa popustom'
+FROM Orders AS O
+     INNER JOIN [Order Details] AS OD 
+	 ON OD.OrderID = O.OrderID
+WHERE DATEDIFF(DAY,O.OrderDate,O.ShippedDate) <= 7 AND O.ShipCity IN ('Madrid','München','Seattle')
+GROUP BY O.OrderID
+ORDER BY 2 DESC
+
+--18) (9 bodova) Kreirati upit koji će prikazati sve osobe ženskog spola koje imaju samo redovne prihode (nemaju vanredne). Upitom je potrebno prikazati ime i prezime osobe, naziv poslodavca, godinu u kojoj je prihod ostvaren, naziv redovnog prihoda, vrijednost neto príhoda, Rezultate upita sortirati prema godinama u opadajućem redoslijedu, prema nazivu redovnog prihoda u rastućem i prema visini neto prihoda u opadajućem redoslijedu. (Prihodi)
+
+USE prihodi
+
+SELECT O.Ime + ' ' + O.PrezIme AS 'Ime prezime', P.Naziv, RP.Godina, TRP.NazivRedovnogPrihoda, RP.Neto
+FROM Osoba AS O
+     INNER JOIN Poslodavac AS P
+	 ON P.PoslodavacID = O.PoslodavacID
+	 INNER JOIN RedovniPrihodi AS RP
+	 ON RP.OsobaID = O.OsobaID
+	 INNER JOIN TipRedovnogPrihoda AS TRP
+	 ON TRP.TipRedovnogPrihodaID = RP.TipRedovnogPrihodaID
+	 LEFT OUTER JOIN VanredniPrihodi AS VP
+	 ON VP.OsobaID = O.OsobaID
+WHERE O.Spol = 'F' AND VP.VanredniPrihodiID IS NULL
+ORDER BY 3 DESC, 4 ASC, 5 DESC
+
+
+USE pubs
+--19) Prikazati naslove i ukupnu prodaju za one naslove čiji su autori napisali vise od 2 knjige (pubs)
+
+SELECT T.title, SUM(S.qty) AS 'Kolicina prodaje'
+FROM titles as T
+	INNER JOIN sales AS S
+	ON T.title_id = S.title_id
+	INNER JOIN titleauthor AS TA
+	ON TA.title_id = T.title_id
+	INNER JOIN authors AS A
+	ON A.au_id = TA.au_id
+GROUP BY T.title
+HAVING COUNT(TA.title_id) >= 2
+
+
+
+USE AdventureWorks2022
+
+--20) (8 bodova) Kreirati upit kojim će se pronaći najprodavaniji proizvod u 2011 godini, a pripada kategoriji komponenata. Ulogu najprodavanijeg nosi onaj kojeg je najveći broj komada prodat. (AdventureWorks2017)
+
+SELECT TOP 1 P.Name, SUM(SOD.OrderQty) AS 'Prodana količina' 
+	FROM Production.Product AS P
+	INNER JOIN Sales.SalesOrderDetail AS SOD
+	ON P.ProductID = SOD.ProductID
+	INNER JOIN SALES.SalesOrderHeader AS SOH
+	ON SOD.SalesOrderID = SOH.SalesOrderID
+	INNER JOIN Production.ProductSubcategory AS PSC
+	ON PSC.ProductSubcategoryID = P.ProductSubcategoryID
+	INNER JOIN Production.ProductCategory AS PC
+	ON PSC.ProductCategoryID = PC.ProductCategoryID
+WHERE YEAR(SOH.OrderDate) = 2011 AND PC.Name = 'Components'
+GROUP BY P.NAME
+ORDER BY 2 DESC
 
