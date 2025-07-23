@@ -36,6 +36,7 @@ export class StudentSemestersNewComponent implements OnInit {
 
   semesterForm: FormGroup;
   academicYears:any;
+  loggedInUserId: number = 0;
 
 
   constructor(
@@ -51,15 +52,26 @@ export class StudentSemestersNewComponent implements OnInit {
 
     this.studentId = route.snapshot.params['id'];
 
+    const AuthData = localStorage.getItem('my-auth-token');
+
+    if(AuthData){
+
+      const JSONAuth = JSON.parse(AuthData);
+
+      this.loggedInUserId = JSONAuth.myAuthInfo.userId;
+
+    }
+
+
     this.semesterForm = this.fb.group({
 
       studentId: [this.studentId, [Validators.required]],
       academicYearId: [1, [Validators.required]],
-      recordedById: [1, [Validators.required]],
+      recordedById: [this.loggedInUserId, [Validators.required]],
       dateOfEnrollment: [new Date(), [Validators.required]],
       yearOfStudy: [null, [Validators.required]],
-      price: [null, [Validators.required, Validators.min(50), Validators.max(2000)]],
-      renewal: [false, [Validators.required]],
+      price: [ {value: null, disabled: true}, [Validators.required, Validators.min(50), Validators.max(2000)]],
+      renewal: [{value: false, disabled: true}, [Validators.required]],
 
     });
 
@@ -111,7 +123,7 @@ export class StudentSemestersNewComponent implements OnInit {
     if (this.semesterForm.invalid) return;
 
     const semesterData: SemesterUpdateOrInsertRequest = {
-      ...this.semesterForm.value,
+      ...this.semesterForm.getRawValue(),
     };
 
     this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
@@ -141,6 +153,35 @@ export class StudentSemestersNewComponent implements OnInit {
         console.error('Error fetching academic years:', err);
       }
     });
+
+
+  }
+
+  YearChanged($event: any) {
+
+    const studyYear: number = parseInt($event.target.value, 10);
+
+    if(this.semesters.some((x:any)=> x.yearOfStudy == studyYear  )){
+
+      this.semesterForm.patchValue(
+        {
+          price: 400,
+          renewal: true
+        }
+
+      )
+
+    }else{
+
+      this.semesterForm.patchValue(
+        {
+          price: 1800,
+          renewal: false
+        }
+
+      )
+
+    }
 
 
   }

@@ -21,24 +21,14 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <app-my-input-text myControlName="yearOfStudy" myLabel="Godina studija" myPlaceholder="Enter year of study"></app-my-input-text>
+    <app-my-input-text myControlName="yearOfStudy" (input)="YearChanged($event)" myLabel="Godina studija" myPlaceholder="Enter year of study"></app-my-input-text>
 
     <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="Ak godina"></app-my-dropdown>
 
     <app-my-input-text myControlName="price" myLabel="Cijena školarine" myPlaceholder="Enter price"></app-my-input-text>
 
     <mat-checkbox formControlName="renewal">Obnova godine</mat-checkbox>
-
-    <!--
-       <app-my-input-text myControlName="lastName" myLabel="Last Name" myPlaceholder="Enter last name"></app-my-input-text>
-       <app-my-input-text myControlName="studentNumber" myLabel="Student Number" myPlaceholder="Enter student number"></app-my-input-text>
-
-       <app-my-dropdown [options]="municipalities" myControlName="birthMunicipalityId" myLabel="Birth Municipality"></app-my-dropdown>
-       <app-my-dropdown [options]="municipalities" myControlName="permanentMunicipalityId" myLabel="Permanent Municipality"></app-my-dropdown>
-
-       <app-my-input-text myControlName="contactMobilePhone" myLabel="Mobile Phone" myPlaceholder="Enter mobile phone"></app-my-input-text>
-       <app-my-input-text myControlName="contactPrivateEmail" myLabel="Email" myPlaceholder="Enter email"></app-my-input-text>
-   -->
+    
 
 
     <div class="form-buttons">
