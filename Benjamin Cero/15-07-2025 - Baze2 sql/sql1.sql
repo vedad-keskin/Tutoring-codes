@@ -668,4 +668,65 @@ FROM f_detalji4(43736)
 
 SELECT*
 FROM ZaglavljeNarudzbe AS ZN
-WHERE ZN.NarudzbaID = 43736
+
+
+--26) (7 bodova) Kreirati upit koji ce prikazati uposlenike koji imaju iskustva( radilli su na jednom odjelu) a trenutno rade na marketing ili odjelu za nabavku. Osobama po prestanku rada na odjelu se upise podatak datuma prestanka rada. Rezultat upita treba prikazati ime i prezime uposlenika, odjel na kojem rade. (AdventureWorks 2017)
+
+SELECT P.FirstName + ' ' + P.LastName AS 'Ime i prezime', D.Name
+FROM AdventureWorks2022.HumanResources.Employee AS E
+	INNER JOIN AdventureWorks2022.HumanResources.EmployeeDepartmentHistory AS EDH
+	ON EDH.BusinessEntityID = E.BusinessEntityID
+	INNER JOIN AdventureWorks2022.HumanResources.Department AS D
+	ON D.DepartmentID = EDH.DepartmentID 
+	INNER JOIN AdventureWorks2022.Person.Person AS P
+	ON P.BusinessEntityID = E.BusinessEntityID
+WHERE D.Name IN ('Marketing','Sales') AND EDH.EndDate IS NULL 
+AND E.BusinessEntityID IN (SELECT EDH.BusinessEntityID
+                           FROM AdventureWorks2022.HumanResources.EmployeeDepartmentHistory AS EDH1
+						   WHERE EDH1.EndDate IS NOT NULL
+                           )
+
+
+--27) Ispisati ime i prezime kupca u jednoj koloni, id narudzbe i jos neke stvari, uzeti u obzir samo one narudzbe kojima je broj dana od narucivanja do isporuke manji od prosjecnog za sve narudzbe (Adventureworks)
+
+SELECT P.FirstName + ' '+ P.LastName AS 'Ime i prezime', SOH.SalesOrderID, DATEDIFF(DAY,SOH.OrderDate, SOH.ShipDate) AS  'Broj dana od narudzbe do isporuke'
+FROM AdventureWorks2022.Person.Person AS P
+     INNER JOIN AdventureWorks2022.Sales.Customer AS C
+	 ON C.PersonID = P.BusinessEntityID
+	 INNER JOIN AdventureWorks2022.Sales.SalesOrderHeader AS SOH
+	 ON SOH.CustomerID = C.CustomerID
+WHERE DATEDIFF(DAY,SOH.OrderDate, SOH.ShipDate) < (SELECT AVG(DATEDIFF(DAY,SOH1.OrderDate, SOH1.ShipDate))
+                                                   FROM AdventureWorks2022.Sales.SalesOrderHeader AS SOH1
+                                                   )
+
+
+--28) Za svaku teritoriju ispisati koliki je postotak narudzbi za svaku teritoriju u odnosu na sve narudzbe, zaokruziti na dvije decimsle i dodati znak %. Npr. 20,04% (Adventureworks)
+
+SELECT ST.Name, CAST(CAST(COUNT(SOH.SalesOrderID) * 100.0 / (SELECT COUNT(SOH1.SalesOrderID) 
+															 FROM AdventureWorks2022.Sales.SalesOrderHeader AS SOH1)
+                                                             AS DECIMAL(18,2)
+                                                             ) AS VARCHAR) + '%' AS 'Percentage'
+FROM AdventureWorks2022.Sales.SalesTerritory AS ST
+     INNER JOIN AdventureWorks2022.Sales.SalesOrderHeader AS SOH
+	 ON SOH.TerritoryID = ST.TerritoryID
+GROUP BY ST.Name
+
+
+--29) (10 bodova) Kreirati upit kojim ce se prikazati ukupan broj obradjenih narudzbi i ukupnu vrijednost narudzbi sa popustom za svakog uposlenika pojedinacno, i to od zadnje 30% kreiranih datumski kreiranih narudzbi. Rezultate sortirati prema ukupnoj vrijednosti u opadajucem redoslijedu. (AdventureWorks 2017)
+
+
+SELECT P.FirstName + ' ' + P.LastName AS 'Ime prezime', COUNT(SOH.SalesOrderID) AS 'Obradio narudzbi', SUM(SOH.SubTotal) AS 'Ukupna vrijednost' 
+FROM AdventureWorks2022.Person.Person AS P
+     INNER JOIN AdventureWorks2022.HumanResources.Employee AS E
+	 ON E.BusinessEntityID = P.BusinessEntityID
+	 INNER JOIN AdventureWorks2022.Sales.SalesPerson AS SP
+	 ON SP.BusinessEntityID = E.BusinessEntityID
+	 INNER JOIN AdventureWorks2022.Sales.SalesOrderHeader AS SOH
+	 ON SOH.SalesPersonID = SP.BusinessEntityID
+WHERE SOH.OrderDate IN (SELECT TOP 30 PERCENT SOH1.OrderDate
+                        FROM AdventureWorks2022.Sales.SalesOrderHeader AS SOH1
+						ORDER BY 1 DESC
+                        )
+GROUP BY P.FirstName + ' ' + P.LastName
+ORDER BY 3 DESC
+
