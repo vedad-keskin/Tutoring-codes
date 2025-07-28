@@ -48,3 +48,7 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;" [class.obrisano]="row.isDeleted"></mat-row>
 </table>
+
+
+<button color="primary" (click)="navigateToNewSemester()" mat-raised-button >ENROLL IN WINTER SEMESTER</button>
+
