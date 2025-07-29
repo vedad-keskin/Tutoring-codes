@@ -13,8 +13,14 @@
     "BUTTON": "Prijavi se"
   },
   "SEMESTER": {
-    "YEAROFSTUDY": "Godina Studija"
-
+    "TITLE": "Novi semestar za",
+    "YEAROFSTUDY": "Godina Studija",
+    "DATE": "Datum",
+    "ACYEAR": "Akademska godina",
+    "PRICE": "Cijena školarine",
+    "RENEWAL": "Obnova godine",
+    "SAVE": "Spasite promjene",
+    "CANCEL": "Otkaži"
   }
 }
 

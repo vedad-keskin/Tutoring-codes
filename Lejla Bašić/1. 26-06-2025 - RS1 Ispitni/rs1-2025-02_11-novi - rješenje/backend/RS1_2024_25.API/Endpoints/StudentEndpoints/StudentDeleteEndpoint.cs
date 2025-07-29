@@ -8,17 +8,18 @@ using RS1_2024_25.API.Helper.Api;
 using RS1_2024_25.API.Services;
 using System.Threading;
 using System.Threading.Tasks;
+using static RS1_2024_25.API.Endpoints.StudentEndpoints.StudentDeleteEndpoint;
 
-[MyAuthorization(isAdmin: true, isManager: false)]
+//[MyAuthorization(isAdmin: true, isManager: false)]
 [Route("students")]
 public class StudentDeleteEndpoint(ApplicationDbContext db) : MyEndpointBaseAsync
-    .WithRequest<int>
+    .WithRequest<StudentDeleteRequest>
     .WithoutResult
 {
-    [HttpDelete("{id}")]
-    public override async Task HandleAsync(int id, CancellationToken cancellationToken = default)
+    [HttpDelete]
+    public override async Task HandleAsync(StudentDeleteRequest request, CancellationToken cancellationToken = default)
     {
-        var student = await db.Students.SingleOrDefaultAsync(x => x.ID == id, cancellationToken);
+        var student = await db.Students.SingleOrDefaultAsync(x => x.ID == request.ID, cancellationToken);
 
         if (student == null)
             throw new KeyNotFoundException("Student not found");
@@ -28,6 +29,21 @@ public class StudentDeleteEndpoint(ApplicationDbContext db) : MyEndpointBaseAsyn
 
         // Soft-delete
         student.IsDeleted = true;
+        student.TimeDeleted = DateTime.Now;
+        student.DeletedById = request.DeletedById;
+
+
         await db.SaveChangesAsync(cancellationToken);
     }
+    public class StudentDeleteRequest
+    {
+        public int ID { get; set; }
+
+        public int? DeletedById { get; set; } // FK na grad
+
+    }
+
+
+
+
 }

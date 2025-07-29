@@ -11,6 +11,14 @@
   </mat-form-field>
 </div>
 
+<div class="search-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Search</mat-label>
+    <input (keyup)="applyFilter2($event)" matInput placeholder="Search by username of the user that deleted student">
+  </mat-form-field>
+</div>
+
+
 <div *ngIf="dataSource.data.length === 0" class="no-data">
   <p>No students to display.</p>
 </div>
@@ -33,6 +41,20 @@
     <mat-header-cell *matHeaderCellDef mat-sort-header>Student Number</mat-header-cell>
     <mat-cell *matCellDef="let student">{{ student.studentNumber }}</mat-cell>
   </ng-container>
+
+
+  <!-- Student Number Column -->
+  <ng-container matColumnDef="timeDeleted">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Time Deleted</mat-header-cell>
+    <mat-cell *matCellDef="let student">{{ student.timeDeleted | date:'HH:mm:ss' }}</mat-cell>
+  </ng-container>
+
+  <!-- Student Number Column -->
+  <ng-container matColumnDef="deletedByName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Deleted by</mat-header-cell>
+    <mat-cell *matCellDef="let student">{{ student.deletedByName }}</mat-cell>
+  </ng-container>
+
 
   <!-- Actions Column -->
   <ng-container matColumnDef="actions">

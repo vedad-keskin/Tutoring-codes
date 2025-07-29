@@ -13,7 +13,13 @@
     "BUTTON": "Login"
   },
   "SEMESTER": {
-    "YEAROFSTUDY": "Year of Study"
-
+    "TITLE": "New semester for",
+    "YEAROFSTUDY": "Year of Study",
+    "DATE": "Date",
+    "ACYEAR": "Academic Year",
+    "PRICE": "Price of scholarship",
+    "RENEWAL": "Renewal",
+    "SAVE": "Save Changes",
+    "CANCEL": "Cancel"
   }
 }

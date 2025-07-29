@@ -20,6 +20,8 @@ export interface StudentGetAllResponse {
   citizenship?: string; // Državljanstvo
   birthMunicipality?: string; // Općina rođenja
   isDeleted: boolean;
+  timeDeleted:Date;
+  deletedByName: string;
 }
 
 @Injectable({

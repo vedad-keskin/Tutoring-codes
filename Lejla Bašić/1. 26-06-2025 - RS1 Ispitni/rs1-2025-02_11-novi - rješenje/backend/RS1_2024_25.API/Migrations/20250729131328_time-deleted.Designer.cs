@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RS1_2024_25.API.Data;
 
@@ -11,9 +12,11 @@ using RS1_2024_25.API.Data;
 namespace RS1_2024_25.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250729131328_time-deleted")]
+    partial class timedeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -471,9 +474,6 @@ namespace RS1_2024_25.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DeletedById")
-                        .HasColumnType("int");
-
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
@@ -510,8 +510,6 @@ namespace RS1_2024_25.API.Migrations
                     b.HasIndex("BirthMunicipalityId");
 
                     b.HasIndex("CitizenshipId");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("PermanentMunicipalityId");
 
@@ -673,11 +671,6 @@ namespace RS1_2024_25.API.Migrations
                         .HasForeignKey("CitizenshipId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("RS1_2024_25.API.Data.Models.TenantSpecificTables.Modul1_Auth.MyAppUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("RS1_2024_25.API.Data.Models.SharedTables.Municipality", "PermanentMunicipality")
                         .WithMany()
                         .HasForeignKey("PermanentMunicipalityId")
@@ -698,8 +691,6 @@ namespace RS1_2024_25.API.Migrations
                     b.Navigation("BirthMunicipality");
 
                     b.Navigation("Citizenship");
-
-                    b.Navigation("DeletedBy");
 
                     b.Navigation("PermanentMunicipality");
 

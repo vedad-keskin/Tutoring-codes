@@ -129,9 +129,9 @@ export class StudentSemestersNewComponent implements OnInit {
     if (this.semesterForm.invalid) return;
 
     const semesterData: SemesterUpdateOrInsertRequest = {
-      ...this.semesterForm.value,
-      price : this.semesterForm.get('price')?.value,
-      renewal : this.semesterForm.get('renewal')?.value,
+      ...this.semesterForm.getRawValue(),
+      //price : this.semesterForm.get('price')?.value,
+      //renewal : this.semesterForm.get('renewal')?.value,
 
     };
 

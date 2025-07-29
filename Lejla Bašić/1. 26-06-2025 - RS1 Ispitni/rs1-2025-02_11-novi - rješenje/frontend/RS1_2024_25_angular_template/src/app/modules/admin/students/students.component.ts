@@ -2,7 +2,10 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StudentGetAllResponse } from '../../../endpoints/student-endpoints/student-get-all-endpoint.service';
 import { StudentGetAllEndpointService } from '../../../endpoints/student-endpoints/student-get-all-endpoint.service';
-import { StudentDeleteEndpointService } from '../../../endpoints/student-endpoints/student-delete-endpoint.service';
+import {
+  StudentDeleteEndpointService,
+  StudentDeleteRequest
+} from '../../../endpoints/student-endpoints/student-delete-endpoint.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,7 +15,7 @@ import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
 import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-students',
@@ -21,7 +24,9 @@ import {map} from 'rxjs/operators';
   standalone: false
 })
 export class StudentsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber', 'actions'];
+
+  displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber','timeDeleted','deletedByName', 'actions'];
+
   dataSource: MatTableDataSource<StudentGetAllResponse> = new MatTableDataSource<StudentGetAllResponse>();
   students: StudentGetAllResponse[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -54,7 +59,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
       map(q=> q.toLowerCase()),
       filter(q=> q.length > 3),
-
+      tap(q=> console.log(this.dataSource.data.length) )
 
 
     ).subscribe((filterValue) => {
@@ -74,6 +79,12 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     this.searchSubject.next(filterValue); // Prosljeđuje vrijednost Subject-u
   }
 
+  applyFilter2(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.fetchStudents(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
+  }
+
+
   fetchStudents(filter: string = '', page: number = 1, pageSize: number = 5): void {
     this.studentGetService.handleAsync({
       q: filter,
@@ -92,6 +103,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       error: (err) => {
         this.snackbar.showMessage('Error fetching students. Please try again.', 5000);
         console.error('Error fetching students:', err);
+      },
+      complete: () => {
+        console.log(this.dataSource.data.length)
       }
     });
   }
@@ -101,7 +115,26 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   deleteStudent(id: number): void {
-    this.studentDeleteService.handleAsync(id).subscribe({
+
+    let tempId: number = 0;
+
+    const AuthData = localStorage.getItem('my-auth-token');
+
+    if(AuthData){
+
+      const JSONAuth = JSON.parse(AuthData);
+
+      tempId = JSONAuth.myAuthInfo.userId;
+
+    }
+
+
+    const studentDeleteRequest : StudentDeleteRequest = {
+      id: id,
+      deletedById: tempId
+    }
+
+    this.studentDeleteService.handleAsync(studentDeleteRequest).subscribe({
       next: () => {
         this.snackbar.showMessage('Student successfully deleted.');
         this.fetchStudents(); // Refresh the list after deletion
@@ -184,4 +217,6 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     });
 
   }
+
+
 }
