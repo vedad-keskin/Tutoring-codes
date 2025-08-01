@@ -28,13 +28,45 @@ namespace DLWMS.WinApp.IspitIB180079
 
         private void UcitajProstorije()
         {
-            // prostorije[0] = AMF1
-            // prostorije[1] = AMF3
-            // prostorije[2] = UC1
+            // prostorije[0] = AMF1 --> Broj = 0 --> 2
+            // prostorije[1] = AMF3 --> Broj = 0 --> 1
+            // prostorije[2] = UC1  --> Broj = 0 --> 0
 
             var prostorije = db.ProstorijeIB180079.ToList();
 
-            dgvProstorije.DataSource = prostorije;
+            for (int i = 0; i < prostorije.Count(); i++) // 0 1 2 
+            {
+
+                // prostorije[0] - AMF1 = Id = 1 ---> Broj = 2
+                // prostorije[1] - AMF3 = Id = 2 ---> Broj = 1
+                // prostorije[2] - UC1 = Id = 3 ---> Broj = 0
+
+                prostorije[i].Broj = db.NastavaIB180079
+                    .Where(x => x.ProstorijaId == prostorije[i].Id)
+                    .Count();
+            }
+
+
+            if (prostorije != null)
+            {
+
+                dgvProstorije.DataSource = null;
+                dgvProstorije.DataSource = prostorije;
+
+            }
+
+
+        }
+
+        private void btnNovaProstorija_Click(object sender, EventArgs e)
+        {
+
+            var frmNovaProstorija = new frmNovaProstorijaIB180079();
+
+            if(frmNovaProstorija.ShowDialog() == DialogResult.OK)
+            {
+                UcitajProstorije();
+            }
 
         }
     }
