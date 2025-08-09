@@ -1,0 +1,239 @@
+#include <iostream>
+using namespace std;
+
+// GetNizKaraktera 99% , AlocirajNiz 1%
+
+char* GetNizKaraktera(const char* sadrzaj) {
+
+	int vel = strlen(sadrzaj) + 1;
+
+	char* temp = new char[vel];
+
+	strcpy_s(temp, vel, sadrzaj);
+
+	return temp;
+
+}
+
+// BAZNA KLASA --> klasa koja se nasljedjuje --> 3. razlike 
+
+class Osoba {
+protected: // 1. razlika
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	//Osoba osoba0;
+	//Osoba osoba1("Vedad Keskin", "1212998150001");
+
+
+	//             "Denis Music",              "12312312312");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+	// virtual se samo pise u baznim klasama 
+
+
+	// nudi se opcijonalno mijenjanje neke func. 
+	  
+	//virtual void Test() {
+
+	//	cout << "VERZIJA 1 NEKE FUNKCIJE" << endl;
+
+	//}
+
+	// zabranjuje nam da pravimo bazne klase 
+	// mandatory(obavzeno) se mora override ova func. 
+
+	virtual void Info() = 0; // pure vir. func. --> asptrakcija // 2. razlika
+
+
+
+
+	virtual ~Osoba() { // 3. razlika
+
+		cout << "BAZNI DESTRUKTOR" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << "Ime i prezime: " << _imePrezime << endl;
+		cout << "JMBG: " << _JMBG << endl;
+
+	}
+
+	// cout << osoba0;
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << "Ime i prezime: " << obj._imePrezime << endl;
+		COUT << "JMBG: " << obj._JMBG << endl;
+
+		return COUT;
+	}
+
+
+
+};
+
+// IZVEDENA --> klasa koja naslijedi baznu klasu  --> 5. korak
+
+class Profesor : public Osoba { // 1. korak
+public:
+	char* _titula;
+
+
+	//Profesor profesor1("dr. sc.",                   "Denis Music",              "12312312312");
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") 
+		: Osoba(imeprezime,jmbg)  { // 2. korak
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4. korak
+
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTRUKTOR" << endl;
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	//void Test() { // override funkcije iz bazne klase
+
+	//	cout << "VERZIJA 2 NEKE FUNKCIJE" << endl;
+
+	//}
+
+	void Info() { // 5. korak
+
+		cout << *this;
+
+	}
+
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1. NACIN
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		// 2. NACIN 
+
+		//COUT << obj._titula << " ";
+		//COUT << Osoba(obj);
+
+		return COUT;
+	}
+
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( ) 
+
+
+};
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti; // [ ] 
+	int* _trenutno;
+	int _max;
+
+};
+
+
+
+void main() {
+
+	//Osoba osoba0;
+	//Osoba osoba1("Vedad Keskin", "1212998150001");
+
+	//osoba1.Ispis();
+	//cout << osoba1;
+	//cout << osoba0;
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "12312312312");
+	//Profesor profesor2("dr. sc.", "Elmir Babovic", "657567312312");
+	//Profesor profesor3("dr. sc.", "Goran Skondric", "87897812312");
+
+	//Profesor profesorKopija = profesor1;
+	//
+	//Profesor profesorOperatorDodjele;
+	//profesorOperatorDodjele = profesor2;
+
+	//cout << profesorOperatorDodjele;
+
+	//osoba1.Test();
+	//profesor1.Test();
+
+	//cout << profesor1;
+	//profesor1.Info();
+
+
+	// SPEC. SLUCAJ
+	Osoba* profesor4 = new Profesor("dr. sc.", "Denis Music", "423432423");
+	delete profesor4;
+
+
+
+	system("PAUSE>0");
+}
