@@ -1,4 +1,5 @@
-﻿using DLWMS.Infrastructure;
+﻿using DLWMS.Data.IspitIB180079;
+using DLWMS.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,9 @@ namespace DLWMS.WinApp.IspitIB180079
     public partial class frmProstorijeIB180079 : Form
     {
         DLWMSContext db = new DLWMSContext();
+        List<ProstorijeIB180079> prostorije;
+
+
         public frmProstorijeIB180079()
         {
             InitializeComponent();
@@ -32,7 +36,7 @@ namespace DLWMS.WinApp.IspitIB180079
             // prostorije[1] = AMF3 --> Broj = 0 --> 1
             // prostorije[2] = UC1  --> Broj = 0 --> 0
 
-            var prostorije = db.ProstorijeIB180079.ToList();
+            prostorije = db.ProstorijeIB180079.ToList();
 
             for (int i = 0; i < prostorije.Count(); i++) // 0 1 2 
             {
@@ -63,10 +67,32 @@ namespace DLWMS.WinApp.IspitIB180079
 
             var frmNovaProstorija = new frmNovaProstorijaIB180079();
 
-            if(frmNovaProstorija.ShowDialog() == DialogResult.OK)
+            if (frmNovaProstorija.ShowDialog() == DialogResult.OK)
             {
                 UcitajProstorije();
             }
+
+        }
+
+        private void dgvProstorije_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(e.ColumnIndex < 5)
+            {
+
+                var odabranaProstorija = prostorije[e.RowIndex];
+                //var odabranaProstorija2 = dgvProstorije.SelectedRows[0].DataBoundItem as ProstorijeIB180079;
+
+
+                var frmEditProstorija = new frmNovaProstorijaIB180079(odabranaProstorija);
+
+                if (frmEditProstorija.ShowDialog() == DialogResult.OK)
+                {
+                    UcitajProstorije();
+                }
+
+            }
+       
 
         }
     }
