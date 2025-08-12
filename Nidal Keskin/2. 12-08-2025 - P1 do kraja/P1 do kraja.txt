@@ -1,0 +1,309 @@
+#include <iostream>
+using namespace std;
+
+// POKAZIVACI : 
+
+// 1. ALOKACIJA - new 
+
+// ako pravis jednu vrijednost -> ( ) 
+
+// ako pravis vise vrijednosti -> [ ] 
+
+// 2. DEREFERENCIRANJE -> * 
+
+// ako pravis jednu vrijednost -> ( ) -> _ECTS = 000001B50D118280
+//                                      *_ECTS = 0
+
+// ako pravis vise vrijednosti -> [ ] -> *_naziv = "N"
+//                                    ->  _naziv = "Nema predmeta"
+
+// 3. DESTRUKTOR/DEALOKACIJA
+
+// ako pravis jednu vrijednost -> ( ) delete _ECTS;
+
+// ako pravis vise vrijednosti -> [ ] delete[] _naziv;
+
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+	char* temp = new char[vel];
+	strcpy_s(temp, vel, tekst);
+
+	return temp;
+
+}
+
+
+class Predmet {
+public:           // dft. constr.  //
+	//char _naziv[50]; // Nema predmeta //
+	char* _naziv;
+	int _ocjena;  //      5		   //
+	int* _ECTS;	  //      0		   //
+
+	// user-def constr.
+	//Predmet predmet1("Programiranje II", 7, 9); // <-- user-def constr.
+
+	Predmet(const char* naziv = "Nema predmeta", int ects = 0, int ocjena = 5) {
+
+		_ocjena = ocjena;
+
+		_ECTS = new int(ects);
+
+
+		_naziv = GetNizKaraktera(naziv);
+
+	}
+
+	//Predmet predmetKopija2(predmet1); // copy constr.
+
+	// bez & pravi kopiju
+	// sa & salje original
+	// const kontanstno -> ne moze se mijenjati
+
+	Predmet(const Predmet& predmet) {
+
+		_ocjena = predmet._ocjena;
+
+		_ECTS = new int(*predmet._ECTS);
+
+		_naziv = GetNizKaraktera(predmet._naziv);
+
+
+	}
+
+	//predmetOperatorDodjele = predmet1; // operator dodjele
+
+	Predmet& operator = (const Predmet& predmet) {
+
+		if (this != &predmet) {
+
+			delete _ECTS;
+			delete[] _naziv;
+
+			_ocjena = predmet._ocjena;
+
+			_ECTS = new int(*predmet._ECTS);
+
+			_naziv = GetNizKaraktera(predmet._naziv);
+
+
+		}
+
+
+		return *this;
+
+	}
+
+
+
+	// destructor. 
+
+	// TILDA alt gr + 1 ~
+
+	~Predmet() {
+
+
+		delete _ECTS;
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+
+	void Ispis() {
+
+		cout << "Naziv predmeta: " << _naziv << endl;
+		cout << "ECTS predmeta: " << *_ECTS << endl;
+		cout << "Ocjena predmeta: " << _ocjena << endl;
+
+	}
+
+	//cout << predmet2;
+
+	friend ostream& operator << (ostream& COUT, const Predmet& predmet) {
+
+		COUT << "Naziv predmeta: " << predmet._naziv << endl;
+		COUT << "ECTS predmeta: " << *predmet._ECTS << endl;
+		COUT << "Ocjena predmeta: " << predmet._ocjena << endl;
+
+		return COUT;
+	}
+
+
+
+};
+
+class Student {
+	char* _imePrezime; // niz kar. 
+
+	Predmet* _polozeni; // ( ) ili [ ]
+
+	int _trenutno; // koliko imamo predmeta u nizu poh. 
+	int _max;	   // koliko maksimalno mozemo imati predmeta u nizu 
+public:
+
+
+	Student(const char* imeprezime = "---", int max = 3) {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+
+		_trenutno = 0;
+		_max = max;
+
+		_polozeni = new Predmet[_max];
+
+	}
+
+	Student(const Student& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_trenutno = obj._trenutno;
+
+		_max = obj._max; // 3 = 3 
+
+		_polozeni = new Predmet[_max];
+
+
+		for (int i = 0; i < _trenutno; i++) // 0 1 2 
+		{
+			_polozeni[i] = obj._polozeni[i];
+		}
+
+	}
+
+
+	Student& operator = (const Student& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _polozeni;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_trenutno = obj._trenutno;
+
+			_max = obj._max; // 3 = 3 
+
+			_polozeni = new Predmet[_max];
+
+
+			for (int i = 0; i < _trenutno; i++) // 0 1 2 
+			{
+				_polozeni[i] = obj._polozeni[i];
+			}
+		}
+		return *this;
+	}
+
+	~Student() {
+
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _polozeni;
+		_polozeni = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Student& obj) {
+
+		COUT << "Ime i prezime: " << obj._imePrezime << endl;
+
+		COUT << endl <<  "POLOZENI PREDMETI STUDENTA:  " << endl << endl;
+
+		for (int i = 0; i < obj._trenutno; i++) // 0 1 
+		{
+			COUT << obj._polozeni[i] << endl;
+		}
+
+
+		return COUT;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	//student.AddPolozeniPredmet(predmet1); <-- OS
+
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)	
+		
+		if (_trenutno == _max) { // 3 > 4 
+
+			cout << "Niz je popunjen" << endl;
+			return;
+
+		}
+
+		for (int i = 0; i < _trenutno; i++) // 0 1 
+		{
+			// MATII == MATII
+
+			// char* == char*
+			
+			// strcmp ( naziv1 , naziv2 ) == 0
+
+			if (strcmp( predmet._naziv , _polozeni[i]._naziv ) == 0) {
+
+				cout << "Predmet je vec polozen" << endl;
+				return;
+
+			}
+
+		}
+
+
+		_polozeni[_trenutno] = predmet; // pol[0] = PRII , pol[1] = MATII , pol[2] = WRD
+
+		_trenutno++; // 0 --> 1 --> 2 --> 3 
+
+
+
+	}
+
+};
+
+
+
+void main() {
+
+
+	Predmet predmet0; // <-- dft. constr.
+
+	Predmet predmet1("Programiranje II", 7, 5); // <-- user-def constr.
+	Predmet predmet2("Matematika II", 4, 6); // <-- user-def constr.
+	Predmet predmet3("Web razvoj i dizajn", 5, 7); // <-- user-def constr.
+	Predmet predmet4("Operativni sistemi", 4, 8); // <-- user-def constr.
+
+	Student student("Vedad Keskin", 3);
+
+	student.AddPolozeniPredmet(predmet1);
+	student.AddPolozeniPredmet(predmet2);
+	student.AddPolozeniPredmet(predmet2);
+	student.AddPolozeniPredmet(predmet3);
+	student.AddPolozeniPredmet(predmet4);
+
+	Student studentKopija = student;
+
+	Student studentOperatorDodjele = student;
+
+	cout << studentOperatorDodjele;
+
+
+	system("pause>0");
+}
+
