@@ -77,7 +77,7 @@ namespace DLWMS.WinApp.IspitIB180079
         private void dgvProstorije_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex < 5)
+            if (e.ColumnIndex < 5)
             {
 
                 var odabranaProstorija = prostorije[e.RowIndex];
@@ -92,7 +92,30 @@ namespace DLWMS.WinApp.IspitIB180079
                 }
 
             }
-       
+
+
+        }
+
+        private void dgvProstorije_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(e.ColumnIndex == 5)
+            {
+
+                var odabranaProstorija = prostorije[e.RowIndex];
+                //var odabranaProstorija2 = dgvProstorije.SelectedRows[0].DataBoundItem as ProstorijeIB180079;
+
+
+                var frmNastave = new frmNastavaIB180079(odabranaProstorija);
+
+                if (frmNastave.ShowDialog() == DialogResult.OK)
+                {
+                    UcitajProstorije();
+                }
+
+
+            }
+
 
         }
     }

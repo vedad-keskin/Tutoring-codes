@@ -13,11 +13,16 @@ namespace DLWMS.Data.IspitIB180079
 
         // FK ..
         public int ProstorijaId { get; set; } // 1
+
         // Amfiteatar 1 - AMF1 - [Logo] 35  ... 
         public ProstorijeIB180079 Prostorija { get; set; }
 
-        public int PredmetId { get; set; }
-        public Predmet Predmet { get; set; }
+
+
+        public int PredmetId { get; set; } // 2
+        public Predmet Predmet { get; set; } // 2 Programiranje I 7	1 1
+
+
 
         public string Vrijeme { get; set; }
         public string Dan { get; set; }

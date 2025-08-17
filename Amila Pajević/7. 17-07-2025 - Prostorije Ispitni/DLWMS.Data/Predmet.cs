@@ -10,7 +10,7 @@
         public override string ToString()
         {
             // COUT << Naziv << " " << ECTS << endl;
-            return $"{Naziv} ({ECTS})";
+            return $"{Naziv}";
         }
     }
 }
