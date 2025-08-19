@@ -17,6 +17,8 @@ namespace DLWMS.Data.IspitIB180079
         public int Iznos { get; set; }
         public bool Aktivna { get; set; }
 
+        public int UkupnoInfo => DateTime.Now.Year.ToString() == Godina ? Iznos * DateTime.Now.Month : Iznos * 12;
+
         public override string ToString()
         {
             return Stipendija?.Naziv ?? "N/A";
