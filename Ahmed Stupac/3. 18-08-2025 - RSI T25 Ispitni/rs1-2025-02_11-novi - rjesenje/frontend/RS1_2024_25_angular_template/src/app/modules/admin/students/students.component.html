@@ -2,10 +2,20 @@
 
 <button color="primary" mat-raised-button routerLink="./new">New Student</button>
 
+<button color="primary" mat-raised-button (click)="toggleDeleted()">Prikaži/Sakrij Obrisane</button>
+
+
 <div class="search-container">
   <mat-form-field appearance="outline">
     <mat-label>Search</mat-label>
     <input (keyup)="applyFilter($event)" matInput placeholder="Search students">
+  </mat-form-field>
+</div>
+
+<div class="search-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Search</mat-label>
+    <input (keyup)="applyFilter2($event)" matInput placeholder="Search by delete">
   </mat-form-field>
 </div>
 
@@ -32,6 +42,18 @@
     <mat-cell *matCellDef="let student">{{ student.studentNumber }}</mat-cell>
   </ng-container>
 
+  <!-- Time Deleted Column -->
+  <ng-container matColumnDef="timeDeleted">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Time Deleted</mat-header-cell>
+    <mat-cell *matCellDef="let student">{{ student.timeDeleted | date:'HH:mm:ss' }}</mat-cell>
+  </ng-container>
+
+  <!-- User Deleted Column -->
+  <ng-container matColumnDef="deletedBy">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Deleted By</mat-header-cell>
+    <mat-cell *matCellDef="let student">{{ student.deletedByName }}</mat-cell>
+  </ng-container>
+
   <!-- Actions Column -->
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
@@ -55,7 +77,7 @@
 
   <!-- Table Header and Rows -->
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" [class.obrisano]="row.isDeleted"></mat-row>
 </table>
 
 <mat-paginator [length]="students.length" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"
