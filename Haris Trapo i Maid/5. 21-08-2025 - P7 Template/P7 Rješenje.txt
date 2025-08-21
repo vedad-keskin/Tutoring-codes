@@ -1,0 +1,404 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+	if (tekst == nullptr)
+		return nullptr;
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+
+template<class T>
+class Kolekcija {
+public:
+	T* _niz;
+	int _max;
+	int _trenutno;
+
+
+	Kolekcija(int max = 3) {
+
+		_trenutno = 0;
+		_max = max;
+
+		_niz = new T[_max];
+
+	}
+
+	Kolekcija(const Kolekcija& obj) {
+
+		_trenutno = obj._trenutno;
+		_max = obj._max;
+
+		_niz = new T[_max];
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			_niz[i] = obj._niz[i];
+		}
+
+
+	}
+
+	~Kolekcija() {
+
+		delete[] _niz;
+		_niz = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Kolekcija& obj) {
+
+		for (int i = 0; i < obj._trenutno; i++)
+		{
+			COUT << obj._niz[i] << endl;
+		}
+
+		return COUT;
+	}
+
+
+
+
+
+	//              Zivotinja el
+	void AddElement(T el) {
+		// Dodaje element tipa T u niz
+		// Onemogućiti izlazak niza izvan opsega bacajem izuzetka tipa Exception
+		// Onemogućiti dupliranje elemenata bacajem izuzetka tipa Exception
+
+		if (_max == _trenutno)
+		{
+			throw exception("Niz je popunjen");
+		}
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			// Zivotinja == Zivotinja
+			if (el == _niz[i]) {
+
+				throw exception("Dupliranje nije dozvoljeno");
+
+			}
+		}
+
+
+		_niz[_trenutno] = el;
+
+		_trenutno++;
+
+	}
+
+
+	bool IsEmpty() {
+		// Vršiti provjeru da li je niz prazan
+
+
+		if (_trenutno == 0) {
+
+			return true;
+
+		}
+		else {
+
+			return false;
+
+		}
+
+		//return _trenutno == 0;
+		//return _trenutno == 0 ? true : false;
+
+
+	}
+
+
+	bool RemoveLast() {
+		// Uklanja zadnji element iz niza
+
+		//if (IsEmpty() == true) {
+		if (IsEmpty()) {
+			return false;
+		}
+
+
+		_trenutno--;
+
+		return true;
+
+	}
+
+
+
+	bool RemoveAt(int lokacija) { // 3 
+		// Uklanja element na određenoj poziciji
+
+		if (IsEmpty() == true || lokacija < 0 || lokacija >= _trenutno) {
+			return false;
+		}
+
+
+		for (int i = lokacija; i < _trenutno - 1; i++)
+		{
+			_niz[i] = _niz[i + 1];
+		}
+
+		_trenutno--;
+
+		return true;
+
+
+	}
+
+
+	bool RemoveAt(T el) { // C 
+		// Uklanja element koji je jednak proslijeđenom
+
+		if (IsEmpty() == true) {
+			return false;
+		}
+
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			if (el == _niz[i]) { // niz[i] = C  , i = lokacija i = 2
+
+				for (int j = i; j < _trenutno - 1; j++)
+				{
+					_niz[j] = _niz[j + 1];
+				}
+
+				_trenutno--;
+
+				return true;
+
+			}
+		}
+
+		return false;
+
+
+	}
+
+
+
+
+	void InsertAt(T el, int lokacija) { // X , 2
+		// Dodaje element na određenu lokaciju
+
+		if (lokacija < 0 || lokacija >= _trenutno) {
+			return;
+		}
+
+
+		for (int i = _trenutno; i > lokacija; i--)
+		{
+
+			_niz[i] = _niz[i - 1];
+
+		}
+
+		_niz[lokacija] = el;
+
+		_trenutno++;
+
+
+
+	}
+
+
+	T* GetNajmanjiElement() {
+		// Vraća najmanji element iz niza i to kao pokazivač
+
+		if (IsEmpty() == true) {
+
+			return nullptr;
+
+		}
+
+		// 8  5  9  4  1  3
+
+		T* najmanji = new T(_niz[0]); // 8 
+
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			// Zivotinja  > Zivotinja
+			if (*najmanji > _niz[i]) {
+
+				*najmanji = _niz[i]; // 1
+
+			}
+
+		}
+
+		return najmanji;
+
+	}
+
+
+};
+
+class Zivotinja {
+	char* _naziv;
+	int _tezina;
+public:
+
+
+	Zivotinja(const char* naziv = "---", int tezina = 0) {
+
+		_naziv = GetNizKaraktera(naziv);
+		_tezina = tezina;
+
+	}
+
+	Zivotinja(const Zivotinja& obj) {
+
+		_naziv = GetNizKaraktera(obj._naziv);
+		_tezina = obj._tezina;
+
+	}
+
+	Zivotinja& operator = (const Zivotinja& obj) {
+		if (this != &obj) {
+
+			delete[] _naziv;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+			_tezina = obj._tezina;
+		}
+		return *this;
+	}
+
+	bool operator == (const Zivotinja& obj) {
+
+		return strcmp(_naziv, obj._naziv) == 0;
+
+	}
+
+	bool operator > (const Zivotinja& obj) {
+
+		//if (_tezina > obj._tezina) {
+		//	return true;
+		//}
+		//else {
+		//	return false;
+		//}
+
+		return _tezina > obj._tezina;
+
+	}
+
+	~Zivotinja() {
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Zivotinja& obj) {
+		COUT << obj._naziv<< " - " << obj._tezina <<" kg";
+		return COUT;
+	}
+
+
+
+
+
+	// Operator == na način da poredi po vrsti životinje da li su dvije životinje iste
+
+
+	// Operator > na način da poredi da li je težina prve životinje veća od težine druge
+
+
+};
+
+void main() {
+
+	Zivotinja zivotinja1("Maca", 3);
+	Zivotinja zivotinja2("Cuko", 10);
+	Zivotinja zivotinja3("Slon", 5000);
+	Zivotinja zivotinja4("Ptica", 1);
+	Zivotinja zivotinja5("Medvjed", 300);
+
+	Kolekcija<Zivotinja> zooloski(10);
+
+	zooloski.AddElement(zivotinja1);
+	zooloski.AddElement(zivotinja2);
+	zooloski.AddElement(zivotinja3);
+	zooloski.AddElement(zivotinja4);
+	zooloski.AddElement(zivotinja5);
+
+	zooloski.RemoveLast();
+
+	zooloski.RemoveAt(1);
+
+	zooloski.RemoveAt(zivotinja1);
+
+	Zivotinja zivotinjaX("Zmaj", 10000);
+
+	zooloski.InsertAt(zivotinjaX, 0);
+
+	cout << "Najmanja zivotinja u zooloskom vrtu je " << *zooloski.GetNajmanjiElement() << endl;;
+
+	cout << zooloski;
+
+
+
+
+
+
+
+
+
+	//Kolekcija<char> nizSlova(10);
+
+	//int ascii = 65; // A 
+
+	//for (int i = 0; i < 9; i++)
+	//{
+
+	//	nizSlova.AddElement(ascii + i); // A B C .. 
+
+	//}
+
+
+
+	//try {
+	//	// baciti exception ako je duplikat
+	//	nizSlova.AddElement('B');
+	//}
+	//catch (exception& err) {
+	//	cout << err.what() << endl;
+	//}
+
+	//nizSlova.AddElement('J');
+
+
+	//try {
+	//	// baciti exception ako je niz popunjen
+	//	nizSlova.AddElement('K');
+	//}
+	//catch (exception& err) {
+	//	cout << err.what() << endl;
+	//}
+
+	//nizSlova.RemoveLast();
+	//nizSlova.RemoveLast();
+
+	//nizSlova.RemoveAt(3);
+
+	//nizSlova.RemoveAt('C');
+
+	//nizSlova.InsertAt('X', 2);
+
+	//cout <<"Najmanji element niza je " <<  *nizSlova.GetNajmanjiElement();
+
+	//cout << nizSlova;
+
+
+
+	system("pause>0");
+}
