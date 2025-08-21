@@ -31,6 +31,7 @@
             lblKonekcijaInfo = new Label();
             btnIzvjestaj = new Button();
             pictureBox1 = new PictureBox();
+            btnIspit = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -38,17 +39,18 @@
             // 
             lblKonekcijaInfo.AutoSize = true;
             lblKonekcijaInfo.Font = new Font("Segoe UI", 13F);
-            lblKonekcijaInfo.Location = new Point(158, 80);
+            lblKonekcijaInfo.Location = new Point(181, 107);
             lblKonekcijaInfo.Name = "lblKonekcijaInfo";
-            lblKonekcijaInfo.Size = new Size(0, 25);
+            lblKonekcijaInfo.Size = new Size(0, 30);
             lblKonekcijaInfo.TabIndex = 0;
             // 
             // btnIzvjestaj
             // 
             btnIzvjestaj.Font = new Font("Segoe UI", 12F);
-            btnIzvjestaj.Location = new Point(213, 134);
+            btnIzvjestaj.Location = new Point(243, 179);
+            btnIzvjestaj.Margin = new Padding(3, 4, 3, 4);
             btnIzvjestaj.Name = "btnIzvjestaj";
-            btnIzvjestaj.Size = new Size(135, 32);
+            btnIzvjestaj.Size = new Size(154, 43);
             btnIzvjestaj.TabIndex = 1;
             btnIzvjestaj.Text = "Prikaži izvještaj";
             btnIzvjestaj.UseVisualStyleBackColor = true;
@@ -56,21 +58,35 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(24, 42);
+            pictureBox1.Location = new Point(27, 56);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(109, 124);
+            pictureBox1.Size = new Size(125, 165);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
             // 
+            // btnIspit
+            // 
+            btnIspit.Font = new Font("Segoe UI", 11F);
+            btnIspit.Location = new Point(243, 229);
+            btnIspit.Name = "btnIspit";
+            btnIspit.Size = new Size(154, 48);
+            btnIspit.TabIndex = 3;
+            btnIspit.Text = "Ispit 22.02.2024";
+            btnIspit.UseVisualStyleBackColor = false;
+            btnIspit.Click += btnIspit_Click;
+            // 
             // frmPocetna
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(551, 209);
+            ClientSize = new Size(642, 298);
+            Controls.Add(btnIspit);
             Controls.Add(pictureBox1);
             Controls.Add(btnIzvjestaj);
             Controls.Add(lblKonekcijaInfo);
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmPocetna";
@@ -87,5 +103,6 @@
         private Label lblKonekcijaInfo;
         private Button btnIzvjestaj;
         private PictureBox pictureBox1;
+        private Button btnIspit;
     }
 }

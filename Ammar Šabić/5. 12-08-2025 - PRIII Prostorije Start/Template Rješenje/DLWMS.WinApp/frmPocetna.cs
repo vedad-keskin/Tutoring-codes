@@ -1,4 +1,5 @@
 ﻿using DLWMS.Infrastructure;
+using DLWMS.WinApp.IspitIB180079;
 using DLWMS.WinApp.Izvjestaji;
 
 namespace DLWMS.WinApp
@@ -19,6 +20,15 @@ namespace DLWMS.WinApp
         private void btnIzvjestaj_Click(object sender, EventArgs e)
         {
             new frmIzvjestaji().Show();
+        }
+
+        private void btnIspit_Click(object sender, EventArgs e)
+        {
+
+            var frmProstorije = new frmProstorijeIB180079();
+
+            frmProstorije.ShowDialog();
+
         }
     }
 }

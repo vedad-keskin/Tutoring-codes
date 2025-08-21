@@ -66,8 +66,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IspitIB180079\" />
-  </ItemGroup>
-
 </Project>
