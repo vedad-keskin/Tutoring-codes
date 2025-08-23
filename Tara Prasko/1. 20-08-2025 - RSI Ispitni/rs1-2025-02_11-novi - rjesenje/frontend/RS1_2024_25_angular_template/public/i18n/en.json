@@ -11,5 +11,8 @@
     "PASSWORD_PLACEHOLDER": "Enter password",
     "SAVE_LOGIN": "Save login",
     "BUTTON": "Login"
+  },
+  "NEW-SEMESTER": {
+    "TITLE": "New semester for"
   }
 }
