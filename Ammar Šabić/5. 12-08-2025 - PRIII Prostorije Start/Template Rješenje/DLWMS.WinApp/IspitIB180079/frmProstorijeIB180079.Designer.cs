@@ -49,6 +49,7 @@
             btnNovaProstorija.TabIndex = 0;
             btnNovaProstorija.Text = "Nova prostorija";
             btnNovaProstorija.UseVisualStyleBackColor = true;
+            btnNovaProstorija.Click += btnNovaProstorija_Click;
             // 
             // btnPrintaj
             // 

@@ -48,13 +48,26 @@ namespace DLWMS.WinApp.IspitIB180079
                 // pros[0] = AMF 1 Id = 1 == 1
 
                 prostorije[i].Broj = db.NastavaIB180079
-                    .Where(x => x.ProstorijaId == prostorije[i].Id )
+                    .Where(x => x.ProstorijaId == prostorije[i].Id)
                     .Count();
             }
 
 
 
             dgvProstorije.DataSource = prostorije;
+
+
+        }
+
+        private void btnNovaProstorija_Click(object sender, EventArgs e)
+        {
+
+            var frmNovaProstorija = new frmNovaProstorijaIB180079();
+
+            if(frmNovaProstorija.ShowDialog() == DialogResult.OK)
+            {
+                UcitajProstorije();
+            }
 
 
         }
