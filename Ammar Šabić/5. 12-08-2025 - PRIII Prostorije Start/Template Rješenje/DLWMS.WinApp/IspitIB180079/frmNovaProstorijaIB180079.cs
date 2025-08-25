@@ -17,9 +17,20 @@ namespace DLWMS.WinApp.IspitIB180079
     public partial class frmNovaProstorijaIB180079 : Form
     {
         DLWMSContext db = new DLWMSContext();
+        private ProstorijeIB180079? odabranaProstorija; // null -> dodavanje , nije null -> editovanje
+
+        // dft. constr. --> za dodavanje nove prostorije 
         public frmNovaProstorijaIB180079()
         {
             InitializeComponent();
+        }
+
+
+        // user-def. --> za editovanje postojece prostorije
+        public frmNovaProstorijaIB180079(ProstorijeIB180079? odabranaProstorija)
+        {
+            InitializeComponent();
+            this.odabranaProstorija = odabranaProstorija;
         }
 
         private void pbLogo_DoubleClick(object sender, EventArgs e)
@@ -50,19 +61,37 @@ namespace DLWMS.WinApp.IspitIB180079
 
                 var kapacitet = int.Parse(txtKapacitet.Text); // 54
 
-                var novaProstorija = new ProstorijeIB180079()
+                if(odabranaProstorija == null) // add
                 {
-                    //Id = 4, PROGRAM PUCA 
-                    //Broj = 0, PROGRAM PUCA 
 
-                    Naziv = naziv,
-                    Oznaka = oznaka,
-                    Kapacitet = kapacitet,
-                    Logo = logo
+                    var novaProstorija = new ProstorijeIB180079()
+                    {
+                        //Id = 4, PROGRAM PUCA 
+                        //Broj = 0, PROGRAM PUCA 
 
-                };
+                        Naziv = naziv,
+                        Oznaka = oznaka,
+                        Kapacitet = kapacitet,
+                        Logo = logo
 
-                db.ProstorijeIB180079.Add(novaProstorija);
+                    };
+
+                    db.ProstorijeIB180079.Add(novaProstorija);
+
+                }
+                else
+                {
+
+                    odabranaProstorija.Naziv = naziv;
+                    odabranaProstorija.Oznaka = oznaka;
+                    odabranaProstorija.Kapacitet = kapacitet;
+                    odabranaProstorija.Logo = logo;
+
+
+                    db.ProstorijeIB180079.Update(odabranaProstorija);
+
+                }
+
 
                 db.SaveChanges();
 
@@ -74,13 +103,36 @@ namespace DLWMS.WinApp.IspitIB180079
 
         private bool Validiraj()
         {
-            return Helpers.Validator.ProvjeriUnos(pbLogo, err, Kljucevi.RequiredField) 
+            return Helpers.Validator.ProvjeriUnos(pbLogo, err, Kljucevi.RequiredField)
                 &&
-                Helpers.Validator.ProvjeriUnos(txtKapacitet, err, Kljucevi.RequiredField) 
+                Helpers.Validator.ProvjeriUnos(txtKapacitet, err, Kljucevi.RequiredField)
                 &&
                 Helpers.Validator.ProvjeriUnos(txtNaziv, err, Kljucevi.RequiredField)
                 &&
                 Helpers.Validator.ProvjeriUnos(txtOznaka, err, Kljucevi.RequiredField);
+        }
+
+        private void frmNovaProstorijaIB180079_Load(object sender, EventArgs e)
+        {
+            UcitajInfo();
+        }
+
+        private void UcitajInfo()
+        {
+            if(odabranaProstorija != null)
+            {
+
+                txtNaziv.Text = odabranaProstorija.Naziv;
+                txtOznaka.Text = odabranaProstorija.Oznaka;
+
+                // INT -> STRING 
+                txtKapacitet.Text = odabranaProstorija.Kapacitet.ToString();
+
+                // BYTE[] -> IMAGE
+                pbLogo.Image = odabranaProstorija.Logo.ToImage();
+
+            }
+
         }
     }
 }

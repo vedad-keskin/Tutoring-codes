@@ -146,6 +146,7 @@
             Controls.Add(label1);
             Name = "frmNovaProstorijaIB180079";
             Text = "Podaci o prostoriji";
+            Load += frmNovaProstorijaIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)pbLogo).EndInit();
             ((System.ComponentModel.ISupportInitialize)err).EndInit();
             ResumeLayout(false);

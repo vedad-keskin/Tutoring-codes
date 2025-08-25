@@ -73,6 +73,8 @@
             dgvProstorije.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProstorije.Size = new Size(915, 252);
             dgvProstorije.TabIndex = 1;
+            dgvProstorije.CellContentClick += dgvProstorije_CellContentClick;
+            dgvProstorije.CellDoubleClick += dgvProstorije_CellDoubleClick;
             // 
             // Logo
             // 

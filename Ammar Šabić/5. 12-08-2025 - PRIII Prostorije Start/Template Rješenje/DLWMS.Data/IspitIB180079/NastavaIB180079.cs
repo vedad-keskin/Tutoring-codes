@@ -12,8 +12,8 @@ namespace DLWMS.Data.IspitIB180079
         public int ProstorijaId { get; set; }
         public ProstorijeIB180079 Prostorija { get; set; }
 
-        public int PredmetId { get; set; }
-        public Predmet Predmet { get; set; }
+        public int PredmetId { get; set; } // 1 
+        public Predmet Predmet { get; set; } // 1 Programiranje 7 ... 
 
         public string Vrijeme { get; set; }
         public string Dan { get; set; }
