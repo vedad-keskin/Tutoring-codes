@@ -21,7 +21,7 @@
 
         public override string ToString()
         {
-            return $"{Ime} {Prezime}";
+            return $"{BrojIndeksa} {Ime} {Prezime}";
         }
 
 
