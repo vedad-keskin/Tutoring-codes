@@ -38,19 +38,30 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell *matCellDef="let student">
+
+
       <button (click)="editStudent(student.id)" color="primary" mat-button>
         <mat-icon>edit</mat-icon>
         Edit
       </button>
+
+
       <button (click)="openMyConfirmDialog(student.id)" color="warn" mat-button>
         <mat-icon>delete</mat-icon>
         Delete
+      </button>
+
+      <button (click)="openMyConfirmDialogForRestore(student.id)" color="warn" mat-button>
+        <mat-icon>restore</mat-icon>
+        Restore
       </button>
 
       <button (click)="openStudentSemesters(student.id)" color="warn" mat-button>
         <mat-icon>description</mat-icon>
         Registry
       </button>
+
+
 
     </mat-cell>
   </ng-container>
