@@ -40,8 +40,15 @@
             Student = new DataGridViewTextBoxColumn();
             cbStudent = new ComboBox();
             err = new ErrorProvider(components);
+            groupBox1 = new GroupBox();
+            label2 = new Label();
+            label3 = new Label();
+            txtBroj = new TextBox();
+            txtInfo = new TextBox();
+            btnGenerisi = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvPrisustva).BeginInit();
             ((System.ComponentModel.ISupportInitialize)err).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // lblNazivProstorije
@@ -58,7 +65,7 @@
             // 
             lblBrojac.AutoSize = true;
             lblBrojac.Font = new Font("Segoe UI", 20F);
-            lblBrojac.Location = new Point(786, 9);
+            lblBrojac.Location = new Point(767, 9);
             lblBrojac.Name = "lblBrojac";
             lblBrojac.Size = new Size(69, 46);
             lblBrojac.TabIndex = 0;
@@ -147,11 +154,70 @@
             // 
             err.ContainerControl = this;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(btnGenerisi);
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Controls.Add(txtBroj);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Location = new Point(12, 344);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(843, 243);
+            groupBox1.TabIndex = 10;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(15, 66);
+            label2.Name = "label2";
+            label2.Size = new Size(38, 20);
+            label2.TabIndex = 0;
+            label2.Text = "Info:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(15, 32);
+            label3.Name = "label3";
+            label3.Size = new Size(85, 20);
+            label3.TabIndex = 0;
+            label3.Text = "Broj zapisa:";
+            // 
+            // txtBroj
+            // 
+            txtBroj.Location = new Point(106, 29);
+            txtBroj.Name = "txtBroj";
+            txtBroj.Size = new Size(140, 27);
+            txtBroj.TabIndex = 1;
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(15, 89);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(809, 148);
+            txtInfo.TabIndex = 1;
+            // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(265, 28);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(124, 29);
+            btnGenerisi.TabIndex = 2;
+            btnGenerisi.Text = "Generiši";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
             // frmPrisustvoIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(867, 341);
+            ClientSize = new Size(867, 599);
+            Controls.Add(groupBox1);
             Controls.Add(cbStudent);
             Controls.Add(dgvPrisustva);
             Controls.Add(btnDodaj);
@@ -165,6 +231,8 @@
             Load += frmPrisustvoIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvPrisustva).EndInit();
             ((System.ComponentModel.ISupportInitialize)err).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -183,5 +251,11 @@
         private DataGridViewTextBoxColumn Student;
         private ComboBox cbStudent;
         private ErrorProvider err;
+        private GroupBox groupBox1;
+        private Label label2;
+        private Button btnGenerisi;
+        private TextBox txtInfo;
+        private TextBox txtBroj;
+        private Label label3;
     }
 }
