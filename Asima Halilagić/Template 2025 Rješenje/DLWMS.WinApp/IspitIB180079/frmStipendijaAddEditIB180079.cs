@@ -19,15 +19,42 @@ namespace DLWMS.WinApp.IspitIB180079
     public partial class frmStipendijaAddEditIB180079 : Form
     {
         DLWMSContext db = new DLWMSContext();
+        private StudentiStipendijeIB180079? odabranaStudentStipendija;
+
         public frmStipendijaAddEditIB180079()
         {
             InitializeComponent();
+        }
+
+        public frmStipendijaAddEditIB180079(StudentiStipendijeIB180079? odabranaStudentStipendija)
+        {
+            InitializeComponent();
+            this.odabranaStudentStipendija = odabranaStudentStipendija;
         }
 
         private void frmStipendijaAddEditIB180079_Load(object sender, EventArgs e)
         {
 
             UcitajComboBox();
+
+            UcitajInfo();
+        }
+
+        private void UcitajInfo()
+        {
+            if(odabranaStudentStipendija != null)
+            {
+
+                cbStudent.SelectedIndex = db.Studenti.ToList().FindIndex(x => x.Id == odabranaStudentStipendija.StudentId);
+
+                cbStudent.Enabled = false;
+
+                cbGodina.SelectedItem = odabranaStudentStipendija.StipendijaGodina.Godina;
+
+                cbStipendijaGodina.SelectedIndex = db.StipendijeGodineIB180079.ToList().FindIndex(x => x.StipendijaId == odabranaStudentStipendija.StipendijaGodina.StipendijaId);
+
+            }
+
 
 
         }
@@ -62,10 +89,22 @@ namespace DLWMS.WinApp.IspitIB180079
                 var odabraniStudent = cbStudent.SelectedItem as Student;
                 var odabranaStipendijaGodina = cbStipendijaGodina.SelectedItem as StipendijeGodineIB180079;
 
-                if (db.StudentiStipendijeIB180079.ToList().Exists( x => x.StudentId == odabraniStudent.Id && x.StipendijaGodinaId == odabranaStipendijaGodina.Id))
+                if (db.StudentiStipendijeIB180079.ToList().Exists(x => x.StudentId == odabraniStudent.Id && x.StipendijaGodinaId == odabranaStipendijaGodina.Id))
                 {
 
-                    MessageBox.Show($"Student {odabraniStudent} već ima evidentiranu stipediju {odabranaStipendijaGodina} na kalendarskoj {odabranaStipendijaGodina.Godina}","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show($"Student {odabraniStudent} već ima evidentiranu stipediju {odabranaStipendijaGodina} na kalendarskoj {odabranaStipendijaGodina.Godina}", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }
+                if (odabranaStudentStipendija != null) // editovanje 
+                {
+
+                    var untrackedStudentStipendija = db.StudentiStipendijeIB180079
+                        .First(x => x.Id == odabranaStudentStipendija.Id);
+
+                    untrackedStudentStipendija.StipendijaGodinaId = odabranaStipendijaGodina.Id;
+
+
+                    db.StudentiStipendijeIB180079.Update(untrackedStudentStipendija);
 
                 }
                 else
@@ -78,11 +117,12 @@ namespace DLWMS.WinApp.IspitIB180079
                     };
 
                     db.StudentiStipendijeIB180079.Add(novaStudentStipendija);
-                    db.SaveChanges();
 
-                    DialogResult = DialogResult.OK;
 
                 }
+                db.SaveChanges();
+
+                DialogResult = DialogResult.OK;
 
             }
         }

@@ -133,5 +133,89 @@ namespace DLWMS.WinApp.IspitIB180079
 
 
         }
+
+        private async void btnGenerisi_Click(object sender, EventArgs e)
+        {
+            // 1. dio 
+            // -- thread - async/await/Run 
+            // -- validacije 
+            // -- ovdje mora se izvaditi sve sto je vezano za combo box
+
+            //Thread thread = new Thread(() => GenerisiStipendije());
+            //thread.Start();
+
+            await Task.Run(() => GenerisiStipendije());
+
+
+        }
+
+        private void GenerisiStipendije()
+        {
+
+            // 2. dio
+            // -- pohrane 
+            // -- sleep
+            // -- kalkulakcije
+
+            var odabranaStipendijaGodina = dgvStipendijeGodine.SelectedRows[0].DataBoundItem as StipendijeGodineIB180079;
+
+            var sviStudenti = db.Studenti.ToList();
+
+            var info = "";
+
+            var redniBroj = 1;
+
+            for (int i = 0; i < sviStudenti.Count(); i++)
+            {
+
+                if (!db.StudentiStipendijeIB180079.ToList().Exists(x => x.StipendijaGodinaId == odabranaStipendijaGodina.Id &&
+                x.StudentId == sviStudenti[i].Id))
+                {
+
+                    var novaStudentStipendija = new StudentiStipendijeIB180079()
+                    {
+
+                        StudentId = sviStudenti[i].Id,
+                        StipendijaGodinaId = odabranaStipendijaGodina.Id
+
+                    };
+
+                    info += $"{redniBroj}. {odabranaStipendijaGodina} u iznosu od {odabranaStipendijaGodina.Iznos} dodata {sviStudenti[i]}{Environment.NewLine}";
+
+                    redniBroj++;
+
+                    db.StudentiStipendijeIB180079.Add(novaStudentStipendija);
+                    db.SaveChanges();
+
+                    Thread.Sleep(300);
+
+
+                }
+
+            }
+
+
+
+            Action action = () =>
+            {
+                // 3. dio
+                // -- mbox
+                // -- ispis
+                // -- ucitavanja
+
+                MessageBox.Show($"Uspješno su generisane stipendije", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                txtInfo.Text = info;
+
+            };
+            BeginInvoke(action);
+
+
+        }
+
+        private void frmStipendijeIB180079_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+        }
     }
 }

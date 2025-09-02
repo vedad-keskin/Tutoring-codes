@@ -44,8 +44,12 @@
             Aktivna = new DataGridViewCheckBoxColumn();
             err = new ErrorProvider(components);
             btnPotvrda = new Button();
+            btnGenerisi = new Button();
+            groupBox1 = new GroupBox();
+            txtInfo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvStipendijeGodine).BeginInit();
             ((System.ComponentModel.ISupportInitialize)err).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -185,11 +189,42 @@
             btnPotvrda.UseVisualStyleBackColor = true;
             btnPotvrda.Click += btnPotvrda_Click;
             // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(12, 351);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(212, 29);
+            btnGenerisi.TabIndex = 6;
+            btnGenerisi.Text = "Generiši stipendije >>>>>";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Location = new Point(12, 386);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(1041, 228);
+            groupBox1.TabIndex = 7;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator info";
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(6, 26);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(1029, 196);
+            txtInfo.TabIndex = 0;
+            // 
             // frmStipendijeIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1065, 387);
+            ClientSize = new Size(1065, 626);
+            Controls.Add(groupBox1);
+            Controls.Add(btnGenerisi);
             Controls.Add(btnPotvrda);
             Controls.Add(dgvStipendijeGodine);
             Controls.Add(btnDodaj);
@@ -201,9 +236,12 @@
             Controls.Add(label1);
             Name = "frmStipendijeIB180079";
             Text = "Upravljanje stipendijama";
+            FormClosed += frmStipendijeIB180079_FormClosed;
             Load += frmStipendijeIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStipendijeGodine).EndInit();
             ((System.ComponentModel.ISupportInitialize)err).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -225,5 +263,8 @@
         private DataGridViewCheckBoxColumn Aktivna;
         private ErrorProvider err;
         private Button btnPotvrda;
+        private GroupBox groupBox1;
+        private TextBox txtInfo;
+        private Button btnGenerisi;
     }
 }

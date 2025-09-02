@@ -125,11 +125,32 @@ namespace DLWMS.WinApp.IspitIB180079
 
             var frmStipendije = new frmStipendijeIB180079();
 
-            if(frmStipendije.ShowDialog() == DialogResult.OK)
+            if (frmStipendije.ShowDialog() == DialogResult.OK)
             {
                 UcitajStudentiStipendije();
             }
 
+
+        }
+
+        private void dgvStudentiStipendije_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(e.ColumnIndex < 5)
+            {
+                //var odabranaStudentStipendija1 = studentiStipendije[e.RowIndex];
+                var odabranaStudentStipendija = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
+
+                var frmEditStipendija = new frmStipendijaAddEditIB180079(odabranaStudentStipendija);
+
+                if (frmEditStipendija.ShowDialog() == DialogResult.OK)
+                {
+
+                    UcitajStudentiStipendije();
+
+                }
+
+            }
 
         }
     }
