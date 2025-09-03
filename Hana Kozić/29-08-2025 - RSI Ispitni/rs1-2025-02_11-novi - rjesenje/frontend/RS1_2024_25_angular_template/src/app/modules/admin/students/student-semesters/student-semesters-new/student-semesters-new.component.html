@@ -1,4 +1,4 @@
-<h3>Novi semestar za {{student?.firstName ?? "N/A"}} {{student?.lastName ?? "N/A"}}</h3>
+<h3>{{ 'NEW-SEMESTER.TITLE' | translate }} {{student?.firstName ?? "N/A"}} {{student?.lastName ?? "N/A"}}</h3>
 
 
 <mat-card class="student-form-card">
@@ -6,20 +6,21 @@
 
 <form (ngSubmit)="saveSemester()" [formGroup]="semesterForm">
 
+  <label>{{'NEW-SEMESTER.DATE' | translate}}<br></label>
   <input formControlName="dateOfEnrollment" type="date">
 
-  <app-my-input-text myControlName="yearOfStudy" (input)="yearChanged($event)" myLabel="Godina studija" myPlaceholder="Enter year of study"></app-my-input-text>
+  <app-my-input-text myControlName="yearOfStudy" (input)="yearChanged($event)" myLabel="{{'NEW-SEMESTER.STUDY-YEAR' | translate}}" myPlaceholder="Enter year of study"></app-my-input-text>
 
-  <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="Ak godina"></app-my-dropdown>
+  <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="{{'NEW-SEMESTER.ACADEMIC-YEAR' | translate}}"></app-my-dropdown>
 
-  <app-my-input-text myControlName="price" myLabel="Cijena školarine" myPlaceholder="Enter price"></app-my-input-text>
+  <app-my-input-text myControlName="price" myLabel="{{'NEW-SEMESTER.PRICE' | translate}}" myPlaceholder="{{'NEW-SEMESTER.PRICE' | translate}}"></app-my-input-text>
 
-  <mat-checkbox formControlName="renewal">Obnova godine</mat-checkbox>
+  <mat-checkbox formControlName="renewal">{{'NEW-SEMESTER.RENEWAL' | translate}}</mat-checkbox>
 
 
   <div class="form-buttons">
-    <button [disabled]="semesterForm.invalid" color="primary" mat-raised-button type="submit">Save Changes</button>
-    <button color="warn" mat-raised-button routerLink="/admin/students/semesters/{{studentId}}" type="button">Cancel</button>
+    <button [disabled]="semesterForm.invalid" color="primary" mat-raised-button type="submit">{{'NEW-SEMESTER.SAVE-BUTTON' | translate}}</button>
+    <button color="warn" mat-raised-button routerLink="/admin/students/semesters/{{studentId}}" type="button">{{'NEW-SEMESTER.CANCEL-BUTTON' | translate}}</button>
   </div>
 </form>
 </mat-card>
