@@ -10,7 +10,7 @@ using static RS1_2024_25.API.Endpoints.CityEndpoints.SemesterGetAllByStudentIdEn
 namespace RS1_2024_25.API.Endpoints.CityEndpoints;
 
 //bez paging i bez filtera
-[Route("semester")]
+[Route("semesters")]
 public class SemesterGetAllByStudentIdEndpoint(ApplicationDbContext db) : MyEndpointBaseAsync
     .WithRequest<int>
     .WithResult<SemesterGetAllByStudentIdResponse[]>
