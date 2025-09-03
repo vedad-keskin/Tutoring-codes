@@ -53,6 +53,11 @@ public class SemesterUpdateOrInsertEndpoint(ApplicationDbContext db) : MyEndpoin
         semester.Renewal = request.Renewal;
         semester.Price = request.Price;
 
+        if (db.Semesters.ToList().Exists(x => x.StudentId == request.StudentId && x.AcademicYearId == request.AcademicYearId))
+        {
+            return BadRequest("Academic Year already exists");
+        }
+
         // Save changes to the database
         await db.SaveChangesAsync(cancellationToken);
 
