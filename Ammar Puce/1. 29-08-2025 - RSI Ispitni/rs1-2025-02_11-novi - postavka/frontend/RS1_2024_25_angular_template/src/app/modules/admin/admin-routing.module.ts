@@ -47,7 +47,7 @@ const routes: Routes = [
       {path: 'rxjs-subject-message-example', component: RxjsSubjectMessageExampleComponent},
 
       {path: 'students/semesters/:id', component: StudentSemestersComponent},
-      {path: 'students/semester/new/:id', component: StudentSemestersNewComponent},
+      {path: 'students/semesters/new/:id', component: StudentSemestersNewComponent},
 
 
 
