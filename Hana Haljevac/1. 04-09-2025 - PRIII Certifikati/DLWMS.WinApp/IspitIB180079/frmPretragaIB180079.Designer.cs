@@ -101,6 +101,7 @@
             btnCertifikati.TabIndex = 2;
             btnCertifikati.Text = "Certifikati po godinama";
             btnCertifikati.UseVisualStyleBackColor = true;
+            btnCertifikati.Click += btnCertifikati_Click;
             // 
             // dgvStudentiCertifikati
             // 

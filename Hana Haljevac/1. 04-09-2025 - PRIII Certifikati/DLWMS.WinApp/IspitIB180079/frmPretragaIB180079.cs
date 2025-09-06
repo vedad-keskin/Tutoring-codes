@@ -119,7 +119,7 @@ namespace DLWMS.WinApp.IspitIB180079
 
         private void dgvStudentiCertifikati_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex < 5)
+            if (e.ColumnIndex < 5)
             {
 
                 //var odabraniStudentCertifikat = studentiCertifikati[e.RowIndex];
@@ -132,6 +132,17 @@ namespace DLWMS.WinApp.IspitIB180079
                     UcitajStudentiCertifikati();
                 }
 
+            }
+
+        }
+
+        private void btnCertifikati_Click(object sender, EventArgs e)
+        {
+            var frmCertifikati = new frmCertifikatiIB180079();
+
+            if (frmCertifikati.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiCertifikati();
             }
 
         }
