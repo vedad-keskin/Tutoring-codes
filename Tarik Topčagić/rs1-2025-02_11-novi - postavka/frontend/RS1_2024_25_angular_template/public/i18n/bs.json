@@ -10,7 +10,10 @@
     "PASSWORD_LABEL": "Šifra:",
     "PASSWORD_PLACEHOLDER": "Unesite šifru",
     "SAVE_LOGIN": "Sačuvaj prijavu",
-    "BUTTON": "Prijavi se"
+    "BUTTON": "Prijavi se",
+    "NEW-SEMESTER": "Novi semestar za",
+    "YEAR": "Godina studija",
+    "RENEWAL": "Obnova godine"
   }
 }
 

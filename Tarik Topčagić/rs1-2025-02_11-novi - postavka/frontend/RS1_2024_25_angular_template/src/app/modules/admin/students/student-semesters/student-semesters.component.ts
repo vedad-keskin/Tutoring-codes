@@ -82,4 +82,10 @@ export class StudentSemestersComponent implements OnInit {
 
 
   }
+
+  navigateToNew() {
+
+    this.router.navigate(['/admin/students/semesters/new', this.studentId]);
+
+  }
 }

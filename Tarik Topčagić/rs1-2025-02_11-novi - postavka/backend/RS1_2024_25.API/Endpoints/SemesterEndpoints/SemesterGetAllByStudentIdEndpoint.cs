@@ -4,7 +4,6 @@ using RS1_2024_25.API.Data;
 using RS1_2024_25.API.Data.Models.SharedTables;
 using RS1_2024_25.API.Data.Models.TenantSpecificTables.Modul1_Auth;
 using RS1_2024_25.API.Helper.Api;
-using static RS1_2024_25.API.Endpoints.CityEndpoints.CityGetAll1Endpoint;
 using static RS1_2024_25.API.Endpoints.CityEndpoints.SemesterGetAllByStudentIdEndpoint;
 
 namespace RS1_2024_25.API.Endpoints.CityEndpoints;
