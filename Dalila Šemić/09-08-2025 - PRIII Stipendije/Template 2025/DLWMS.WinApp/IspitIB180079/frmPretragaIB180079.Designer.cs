@@ -47,18 +47,18 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(10, 7);
             label1.Name = "label1";
-            label1.Size = new Size(60, 20);
+            label1.Size = new Size(48, 15);
             label1.TabIndex = 0;
             label1.Text = "Godina:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(261, 9);
+            label2.Location = new Point(228, 7);
             label2.Name = "label2";
-            label2.Size = new Size(79, 20);
+            label2.Size = new Size(62, 15);
             label2.TabIndex = 0;
             label2.Text = "Stipendija:";
             // 
@@ -67,9 +67,10 @@
             cbGodina.DropDownStyle = ComboBoxStyle.DropDownList;
             cbGodina.FormattingEnabled = true;
             cbGodina.Items.AddRange(new object[] { "2025", "2024", "2023", "2022", "2021" });
-            cbGodina.Location = new Point(12, 32);
+            cbGodina.Location = new Point(10, 24);
+            cbGodina.Margin = new Padding(3, 2, 3, 2);
             cbGodina.Name = "cbGodina";
-            cbGodina.Size = new Size(244, 28);
+            cbGodina.Size = new Size(214, 23);
             cbGodina.TabIndex = 1;
             cbGodina.SelectedIndexChanged += cbGodina_SelectedIndexChanged;
             // 
@@ -77,17 +78,19 @@
             // 
             cbStipendija.DropDownStyle = ComboBoxStyle.DropDownList;
             cbStipendija.FormattingEnabled = true;
-            cbStipendija.Location = new Point(262, 32);
+            cbStipendija.Location = new Point(229, 24);
+            cbStipendija.Margin = new Padding(3, 2, 3, 2);
             cbStipendija.Name = "cbStipendija";
-            cbStipendija.Size = new Size(244, 28);
+            cbStipendija.Size = new Size(214, 23);
             cbStipendija.TabIndex = 1;
             cbStipendija.SelectedIndexChanged += cbStipendija_SelectedIndexChanged;
             // 
             // btnDodaj
             // 
-            btnDodaj.Location = new Point(683, 31);
+            btnDodaj.Location = new Point(598, 23);
+            btnDodaj.Margin = new Padding(3, 2, 3, 2);
             btnDodaj.Name = "btnDodaj";
-            btnDodaj.Size = new Size(171, 29);
+            btnDodaj.Size = new Size(150, 22);
             btnDodaj.TabIndex = 2;
             btnDodaj.Text = "Dodaj stipendiju";
             btnDodaj.UseVisualStyleBackColor = true;
@@ -95,12 +98,14 @@
             // 
             // btnStipendije
             // 
-            btnStipendije.Location = new Point(860, 31);
+            btnStipendije.Location = new Point(752, 23);
+            btnStipendije.Margin = new Padding(3, 2, 3, 2);
             btnStipendije.Name = "btnStipendije";
-            btnStipendije.Size = new Size(208, 29);
+            btnStipendije.Size = new Size(182, 22);
             btnStipendije.TabIndex = 2;
             btnStipendije.Text = "Stipendije po godinama";
             btnStipendije.UseVisualStyleBackColor = true;
+            btnStipendije.Click += btnStipendije_Click;
             // 
             // dgvStudentiStipendije
             // 
@@ -108,12 +113,13 @@
             dgvStudentiStipendije.AllowUserToDeleteRows = false;
             dgvStudentiStipendije.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvStudentiStipendije.Columns.AddRange(new DataGridViewColumn[] { Student, GodinaInfo, StipendijaInfo, IznosInfo, UkupnoInfo, Ukloni });
-            dgvStudentiStipendije.Location = new Point(12, 66);
+            dgvStudentiStipendije.Location = new Point(10, 50);
+            dgvStudentiStipendije.Margin = new Padding(3, 2, 3, 2);
             dgvStudentiStipendije.Name = "dgvStudentiStipendije";
             dgvStudentiStipendije.ReadOnly = true;
             dgvStudentiStipendije.RowHeadersWidth = 51;
             dgvStudentiStipendije.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvStudentiStipendije.Size = new Size(1056, 345);
+            dgvStudentiStipendije.Size = new Size(924, 259);
             dgvStudentiStipendije.TabIndex = 3;
             dgvStudentiStipendije.CellContentClick += dgvStudentiStipendije_CellContentClick;
             // 
@@ -174,9 +180,9 @@
             // 
             // frmPretragaIB180079
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1080, 423);
+            ClientSize = new Size(945, 317);
             Controls.Add(dgvStudentiStipendije);
             Controls.Add(btnStipendije);
             Controls.Add(btnDodaj);
@@ -184,6 +190,7 @@
             Controls.Add(cbGodina);
             Controls.Add(label2);
             Controls.Add(label1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "frmPretragaIB180079";
             Text = "Broj prikazanin studenata: placeholder";
             Load += frmPretragaIB180079_Load;
