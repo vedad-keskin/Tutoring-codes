@@ -81,7 +81,7 @@ namespace DLWMS.WinApp.IspitIB180079
 
             Text = $"Broj prikazanih studenata: {studentStipendije.Count()}";
 
-            if(studentStipendije.Count() == 0)
+            if (studentStipendije.Count() == 0)
             {
 
                 MessageBox.Show($"U bazi nisu evidentirani studenti kojima je u {cbGodina.SelectedItem}. godini dodijeljena {stipendijaGodina} stipendija", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -93,10 +93,10 @@ namespace DLWMS.WinApp.IspitIB180079
         private void dgvStudentiStipendije_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex == 5)
+            if (e.ColumnIndex == 5)
             {
 
-                if (MessageBox.Show("Da li ste sigurni da želite pobrisati odabranu stipendiju?","Pitanje",MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBox.Show("Da li ste sigurni da želite pobrisati odabranu stipendiju?", "Pitanje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
 
                     var odabranaStudentStipendija = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
@@ -109,8 +109,31 @@ namespace DLWMS.WinApp.IspitIB180079
 
 
                 }
-                
 
+
+            }
+
+        }
+
+        private void btnDodaj_Click(object sender, EventArgs e)
+        {
+
+            var frmAddStipendija = new frmStipendijaAddEditIB180079();
+
+            if (frmAddStipendija.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentStipendije();
+            }
+
+        }
+
+        private void btnStipendijeGodine_Click(object sender, EventArgs e)
+        {
+            var frmStipendije = new frmStipendijeIB180079();
+
+            if (frmStipendije.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentStipendije();
             }
 
         }

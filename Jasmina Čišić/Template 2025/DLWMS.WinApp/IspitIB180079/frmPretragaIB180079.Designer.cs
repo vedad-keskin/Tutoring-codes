@@ -91,6 +91,7 @@
             btnDodaj.TabIndex = 2;
             btnDodaj.Text = "Dodaj stipendiju";
             btnDodaj.UseVisualStyleBackColor = true;
+            btnDodaj.Click += btnDodaj_Click;
             // 
             // btnStipendijeGodine
             // 
@@ -100,6 +101,7 @@
             btnStipendijeGodine.TabIndex = 2;
             btnStipendijeGodine.Text = "Stipendije po godinama";
             btnStipendijeGodine.UseVisualStyleBackColor = true;
+            btnStipendijeGodine.Click += btnStipendijeGodine_Click;
             // 
             // dgvStudentiStipendije
             // 

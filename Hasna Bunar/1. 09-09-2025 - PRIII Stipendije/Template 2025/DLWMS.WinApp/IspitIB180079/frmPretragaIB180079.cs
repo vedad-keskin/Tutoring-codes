@@ -53,6 +53,10 @@ namespace DLWMS.WinApp.IspitIB180079
             {
 
                 dgvStudentiStipendije.DataSource = null;
+
+                Text = $"Broj prikazanih studenata: 0";
+
+
                 MessageBox.Show($"U bazi nisu evidentirani studenti kojima je u {cbGodina.SelectedItem}. godini dodijeljena stipendija", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
@@ -123,7 +127,19 @@ namespace DLWMS.WinApp.IspitIB180079
         {
             var frmAddStipendija = new frmStipendijaAddEditIB180079();
 
-            if(frmAddStipendija.ShowDialog() == DialogResult.OK)
+            if (frmAddStipendija.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiStipendije();
+            }
+
+        }
+
+        private void btnStipendije_Click(object sender, EventArgs e)
+        {
+
+            var frmStipendije = new frmStipendijeIB180079();
+
+            if (frmStipendije.ShowDialog() == DialogResult.OK)
             {
                 UcitajStudentiStipendije();
             }
