@@ -15,7 +15,7 @@ namespace DLWMS.WinApp
             ApplicationConfiguration.Initialize();
 
 
-            var startnaForma = new frmPretragaIB180079();
+            var startnaForma = new frmPretraga2IB180079();
 
 
             Application.Run(startnaForma);

@@ -16,6 +16,11 @@
         public byte[] Slika { get; set; }
         public bool Aktivan { get; set; }
 
+        public string DrzavaInfo => Grad?.Drzava?.Naziv ?? "N/A";
+        public string StudentInfo => $"({BrojIndeksa}) {Ime} {Prezime}";
+
+
+
         public override string ToString()
         {
             // cout << "(" << Index ... 
