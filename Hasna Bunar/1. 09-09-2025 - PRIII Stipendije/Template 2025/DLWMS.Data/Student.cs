@@ -16,6 +16,10 @@
         public byte[] Slika { get; set; }
         public bool Aktivan { get; set; }
 
+
+        public string StudentInfo => $"({BrojIndeksa}) {Ime} {Prezime}";
+        public string DrzavaInfo => Grad?.Drzava?.Naziv ?? "N/A";
+
         public override string ToString()
         {
             return $"({BrojIndeksa}) {Ime} {Prezime}";
