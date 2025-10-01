@@ -20,7 +20,7 @@ public class StudentGetAllEndpoint(ApplicationDbContext db) : MyEndpointBaseAsyn
     {
         // Osnovni upit za studente
         var query = db.Students
-                   .Where(s => !s.IsDeleted)
+                   //.Where(s => !s.IsDeleted)
                    .AsQueryable();
 
         // Primjena filtera po imenu, prezimenu, student broju ili državi
@@ -66,5 +66,9 @@ public class StudentGetAllEndpoint(ApplicationDbContext db) : MyEndpointBaseAsyn
         public required string StudentNumber { get; set; }
         public string? Citizenship { get; set; }
         public string? BirthMunicipality { get; set; }
+        public bool IsDeleted { get; set; }
+
+
+
     }
 }
