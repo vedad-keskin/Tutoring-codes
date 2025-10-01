@@ -43,6 +43,7 @@ public class StudentGetAllEndpoint(ApplicationDbContext db) : MyEndpointBaseAsyn
             StudentNumber = s.StudentNumber,
             Citizenship = s.Citizenship != null ? s.Citizenship.Name : null,
             BirthMunicipality = s.BirthMunicipality != null ? s.BirthMunicipality.Name : null,
+            IsDeleted = s.IsDeleted
         });
 
         // Kreiranje paginiranog rezultata
