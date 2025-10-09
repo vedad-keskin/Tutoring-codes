@@ -11,7 +11,7 @@ public class MyAuthorizationSwaggerHeader : IOperationFilter
         {
             Name = "my-auth-token",
             In = ParameterLocation.Header,
-            Description = "upisati token preuzet iz autentikacijacontrollera"
+            Description = "upisati token preuzet iz autentikacija controllera"
         });
     }
 }
