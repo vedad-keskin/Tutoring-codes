@@ -13,7 +13,7 @@ public class Municipality : SharedTableBase
 {
     public string Name { get; set; } = string.Empty; // Naziv opštine
 
-    public int CityId{ get; set; } // FK na grad
+    public int CityId { get; set; } // FK na grad
     [ForeignKey(nameof(CityId))]
     public City? City { get; set; } // Navigaciona veza na grad
 
