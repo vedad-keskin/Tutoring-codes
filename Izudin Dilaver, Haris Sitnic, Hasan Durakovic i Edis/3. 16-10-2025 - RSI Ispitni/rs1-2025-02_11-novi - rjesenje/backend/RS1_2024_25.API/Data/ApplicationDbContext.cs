@@ -14,6 +14,7 @@ namespace RS1_2024_25.API.Data;
 public class ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : DbContext(options)
 {
    
+    public DbSet<Activity> Activities { get; set; }
     public DbSet<AcademicYear> AcademicYears { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Country> Countries { get; set; }

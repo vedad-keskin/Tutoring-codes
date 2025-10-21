@@ -19,11 +19,18 @@ import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-
   standalone: false
 })
 export class StudentsComponent implements OnInit, AfterViewInit {
+
+
   displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber', 'actions'];
   dataSource: MatTableDataSource<StudentGetAllResponse> = new MatTableDataSource<StudentGetAllResponse>();
   students: StudentGetAllResponse[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  // int broj = 1;
+  broj:number = 1;
+  okreni :boolean = false;
+
 
   constructor(
     private studentGetService: StudentGetAllEndpointService,
