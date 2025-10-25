@@ -28,6 +28,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
+  // Nase varijable
+
+  showDeleted: boolean = false;
+
+
 
   constructor(
     private studentGetService: StudentGetAllEndpointService,
@@ -60,7 +65,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       pageSize: pageSize
     }).subscribe({
       next: (data) => {
-        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(data.dataItems);
+        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(
+
+          this.showDeleted ? data.dataItems : data.dataItems.filter(x => !x.isDeleted),
+
+        );
         this.paginator.length = data.totalCount;
       },
       error: (err) => {
@@ -115,4 +124,15 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  toggleDeleted() {
+
+     this.showDeleted = !this.showDeleted;
+
+     this.fetchStudents();
+
+
+  }
+
+
 }
