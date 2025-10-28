@@ -25,13 +25,27 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+
+  // Nase varijable
+
+  // naziv varijable : tip varijalbe = neka pohrana ;
+
+  broj: number = 1;
+
+
+
+
+
+
   constructor(
     private studentGetService: StudentGetAllEndpointService,
     private studentDeleteService: StudentDeleteEndpointService,
     private snackbar: MySnackbarHelperService,
     private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.fetchStudents();
