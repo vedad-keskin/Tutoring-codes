@@ -4,6 +4,9 @@ import {
   StudentGetByIdEndpointService, StudentGetByIdResponse
 } from '../../../../endpoints/student-endpoints/student-get-by-id-endpoint.service';
 import {MySnackbarHelperService} from '../../../shared/snackbars/my-snackbar-helper.service';
+import {
+  SemesterGetAllByStudentIdEndpoint, SemesterGetAllByStudentIdResponse
+} from '../../../../endpoints/semester-endpoints/semester-get-all-by-student-id-endpoint.service';
 
 @Component({
   selector: 'app-student-semesters',
@@ -21,6 +24,8 @@ export class StudentSemestersComponent implements OnInit {
 
   //student:any;
   student:StudentGetByIdResponse | null = null;
+  semesters:any;
+  displayedColumns: string[] = ['id', 'academicYear', 'yearOfStudy', 'renewal','winterSemester','recordedby'];
 
 
 
@@ -28,6 +33,7 @@ export class StudentSemestersComponent implements OnInit {
                private router: Router,
                private studentGetByIdService:StudentGetByIdEndpointService,
                private snackbar: MySnackbarHelperService,
+               private semesterGetAllByStudentIdService:SemesterGetAllByStudentIdEndpoint
 
   ) {
 
@@ -39,6 +45,7 @@ export class StudentSemestersComponent implements OnInit {
 
 
     this.GetStudent();
+    this.GetAllSemesters();
 
 
     }
@@ -62,5 +69,20 @@ export class StudentSemestersComponent implements OnInit {
   }
 
 
+  private GetAllSemesters() {
 
+    this.semesterGetAllByStudentIdService.handleAsync(this.studentId).subscribe({
+      next: (data) => {
+
+
+        this.semesters = data;
+
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error fetching semesters. Please try again.', 5000);
+        console.error('Error fetching semesters:', err);
+      }
+    });
+
+  }
 }
