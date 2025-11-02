@@ -19,11 +19,24 @@ import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-
   standalone: false
 })
 export class StudentsComponent implements OnInit, AfterViewInit {
+
+
   displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber', 'actions'];
   dataSource: MatTableDataSource<StudentGetAllResponse> = new MatTableDataSource<StudentGetAllResponse>();
   students: StudentGetAllResponse[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+
+  // Nase varijable
+
+  // vrsta naziv = pohrana
+  // int broj = 1;
+
+  // naziv : vrsta = pohrana;
+  broj: number = 1;
+
+
 
   constructor(
     private studentGetService: StudentGetAllEndpointService,
@@ -31,7 +44,8 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     private snackbar: MySnackbarHelperService,
     private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.fetchStudents();
@@ -51,9 +65,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   fetchStudents(filter: string = '', page: number = 1, pageSize: number = 5): void {
     this.studentGetService.handleAsync({
-      q: filter,
-      pageNumber: page,
-      pageSize: pageSize
+      q: filter, // Ve
+      pageNumber: page, // 1
+      pageSize: pageSize // 10
     }).subscribe({
       next: (data) => {
         this.dataSource = new MatTableDataSource<StudentGetAllResponse>(data.dataItems);
