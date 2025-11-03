@@ -19,10 +19,11 @@ public class SemesterGetAllByStudentIdEndpoint(ApplicationDbContext db) : MyEndp
     public override async Task<SemesterGetAllByStudentIdResponse[]> HandleAsync(int id,CancellationToken cancellationToken = default)
     {
         var result = await db.Semesters
+            .Where(x=> x.StudentId == id)
                         .Select(c => new SemesterGetAllByStudentIdResponse
                         {
                             ID = c.ID,
-                            AcademicYearName = c.AcademicYear!.Description,
+                            AcademicYearName = $"{c.AcademicYear.StartDate.Year}-{c.AcademicYear.EndDate.Year %100}",
                             YearOfStudy = c.YearOfStudy,
                             Renewal = c.Renewal,
                             DateOfEnrollment = c.DateOfEnrollment,
