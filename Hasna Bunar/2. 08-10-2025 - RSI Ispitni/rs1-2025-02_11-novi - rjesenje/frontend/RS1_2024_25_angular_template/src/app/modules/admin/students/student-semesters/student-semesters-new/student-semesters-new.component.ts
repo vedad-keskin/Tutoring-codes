@@ -11,6 +11,16 @@ import {
 } from '../../../../../endpoints/semester-endpoints/semester-get-all-by-student-id-endpoint.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MyAuthService} from '../../../../../services/auth-services/my-auth.service';
+import {
+  AcademicYearGetAllEndpoint
+} from '../../../../../endpoints/academic-year-endpoints/academic-year-get-all-endpoint.service';
+import {
+  StudentUpdateOrInsertRequest
+} from '../../../../../endpoints/student-endpoints/student-update-or-insert-endpoint.service';
+import {
+  SemesterUpdateOrInsertEndpoint,
+  SemesterUpdateOrInsertRequest
+} from '../../../../../endpoints/semester-endpoints/semester-update-or-insert-endpoint.service';
 
 @Component({
   selector: 'app-student-semesters-new',
@@ -27,6 +37,7 @@ export class StudentSemestersNewComponent implements OnInit {
   student: StudentGetByIdResponse | null = null;
 
   semesters:any;
+  academicYears:any;
 
   semesterForm: FormGroup;
 
@@ -39,7 +50,9 @@ export class StudentSemestersNewComponent implements OnInit {
     private dialog: MatDialog,
     private semesterGetAllByStudentIdService:SemesterGetAllByStudentIdEndpoint,
     private fb: FormBuilder,
-    private myAuthService:MyAuthService
+    private myAuthService:MyAuthService,
+    private academicYearGetAllService:AcademicYearGetAllEndpoint,
+    private semesterUpdateOrInsertService:SemesterUpdateOrInsertEndpoint,
   ) {
 
     this.studentId = this.route.snapshot.params['id'];
@@ -64,6 +77,7 @@ export class StudentSemestersNewComponent implements OnInit {
 
     this.getByIdStudent();
     this.getAllByStudentId();
+    this.getAllAcademicYears();
 
 
   }
@@ -106,6 +120,42 @@ export class StudentSemestersNewComponent implements OnInit {
 
 
   saveSemester() {
+
+
+    if (this.semesterForm.invalid) return;
+
+    const semesterData: SemesterUpdateOrInsertRequest = {
+      ...this.semesterForm.value,
+    };
+
+    this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
+      next: () => {
+
+        this.snackbar.showMessage('Successfully added semester.', 5000);
+
+        this.router.navigate(['/admin/students/semesters',this.studentId]);
+      },
+      error: (error) => {
+        this.snackbar.showMessage('Error saving semester. Please try again.', 5000);
+        console.error('Error saving semester', error);
+      },
+    });
+
+  }
+
+  private getAllAcademicYears() {
+
+    this.academicYearGetAllService.handleAsync().subscribe({
+      next: (data) => {
+
+        this.academicYears = data;
+
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error fetching academic years. Please try again.', 5000);
+        console.error('Error fetching academic years:', err);
+      }
+    });
 
   }
 }
