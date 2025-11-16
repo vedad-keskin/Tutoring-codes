@@ -9,12 +9,14 @@ using RS1_2024_25.API.Helper.BaseClasses;
 namespace RS1_2024_25.API.Data.Models.SharedTables;
 
 // opstina - Opštine
-public class Municipality : SharedTableBase
+public class Municipality : SharedTableBase // kroz nasljedjivanje dobijes PK 
 {
-    public string Name { get; set; } = string.Empty; // Naziv opštine
 
-    public int CityId{ get; set; } // FK na grad
+
+    public string Name { get; set; } = string.Empty; // Naziv opštine ---> ""
+
+    public int CityId { get; set; } // FK na grad
     [ForeignKey(nameof(CityId))]
-    public City? City { get; set; } // Navigaciona veza na grad
+    public City? City { get; set; } // ? -> NULLABLE -> podatak moze biti NULL NA BAZI 
 
 }
