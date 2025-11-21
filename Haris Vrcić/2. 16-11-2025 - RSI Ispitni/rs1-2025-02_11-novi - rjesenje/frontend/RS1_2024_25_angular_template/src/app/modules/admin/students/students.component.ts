@@ -25,6 +25,15 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+
+  // int broj = 1;
+
+  broj: number = 1;
+  okreni: boolean = false;
+  datum: Date = new Date();
+
+
+
   constructor(
     private studentGetService: StudentGetAllEndpointService,
     private studentDeleteService: StudentDeleteEndpointService,
