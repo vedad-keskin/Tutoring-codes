@@ -7,11 +7,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, Subject} from 'rxjs';
 import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm/my-dialog-confirm.component';
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
 import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-students',
@@ -30,6 +31,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   // int broj = 1;
 
   showDeleted: boolean = false;
+  private searchSubject: Subject<string> = new Subject();
 
 
 
@@ -43,8 +45,24 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    this.initSearchListener();
     this.fetchStudents();
   }
+
+  initSearchListener(): void {
+    this.searchSubject.pipe(
+      debounceTime(300), // Vrijeme čekanja (300ms)
+      distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
+      filter(message => message.length > 3),
+      map((message) => message.toLowerCase())
+
+
+
+    ).subscribe((filterValue) => {
+      this.fetchStudents(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
+    });
+  }
+
 
   ngAfterViewInit(): void {
     this.paginator.page.subscribe(() => {
@@ -55,7 +73,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.fetchStudents(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
+    this.searchSubject.next(filterValue); // Prosljeđuje vrijednost Subject-u  }
   }
 
   fetchStudents(filter: string = '', page: number = 1, pageSize: number = 5): void {
