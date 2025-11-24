@@ -28,9 +28,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   // int broj = 1;
 
-  broj: number = 1;
-  okreni: boolean = false;
-  datum: Date = new Date();
+  showDeleted: boolean = false;
 
 
 
@@ -65,7 +63,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       pageSize: pageSize
     }).subscribe({
       next: (data) => {
-        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(data.dataItems);
+        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(
+
+          this.showDeleted ? data.dataItems : data.dataItems.filter(x => !x.isDeleted)
+
+        );
         this.paginator.length = data.totalCount;
       },
       error: (err) => {
@@ -119,5 +121,13 @@ export class StudentsComponent implements OnInit, AfterViewInit {
         message: 'Implementirajte matičnu knjigu?'
       }
     });
+  }
+
+  toggleDeleted() {
+
+    this.showDeleted = !this.showDeleted;
+
+    this.fetchStudents();
+
   }
 }
