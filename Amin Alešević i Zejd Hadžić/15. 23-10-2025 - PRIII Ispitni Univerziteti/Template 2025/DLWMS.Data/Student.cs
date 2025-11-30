@@ -23,6 +23,11 @@
 
         public bool Aktivan { get; set; }
 
+        public string StudentInfo => $"({BrojIndeksa}) {Ime} {Prezime}";
+        public string DrzavaInfo => Grad?.Drzava?.Naziv ?? "N/A";
+        public string GradInfo => Grad?.Naziv ?? "N/A";
+        public string SpolInfo => Spol?.Naziv ?? "N/A";
+
 
         public override string ToString()
         {
