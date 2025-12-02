@@ -25,6 +25,15 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  // Nase varijable
+
+  // int broj = 1;
+  broj : number = 1;
+
+  prikaziObrisane: boolean = false;
+
+
+
   constructor(
     private studentGetService: StudentGetAllEndpointService,
     private studentDeleteService: StudentDeleteEndpointService,
@@ -56,7 +65,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       pageSize: pageSize
     }).subscribe({
       next: (data) => {
-        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(data.dataItems);
+        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(
+
+          this.prikaziObrisane ? data.dataItems : data.dataItems.filter(x => !x.isDeleted)
+
+        );
         this.paginator.length = data.totalCount;
       },
       error: (err) => {
@@ -110,5 +123,13 @@ export class StudentsComponent implements OnInit, AfterViewInit {
         message: 'Implementirajte matičnu knjigu?'
       }
     });
+  }
+
+  toggleDeleted() {
+
+     this.prikaziObrisane = !this.prikaziObrisane;
+
+     this.fetchStudents();
+
   }
 }
