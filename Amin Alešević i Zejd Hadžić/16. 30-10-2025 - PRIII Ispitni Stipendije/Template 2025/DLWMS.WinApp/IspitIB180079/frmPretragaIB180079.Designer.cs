@@ -33,7 +33,7 @@
             btnStipendije = new Button();
             btnDodajStipendiju = new Button();
             cbGodina = new ComboBox();
-            cbStipendija = new ComboBox();
+            cbStipendijaGodina = new ComboBox();
             dgvStudentiStipendije = new DataGridView();
             Student = new DataGridViewTextBoxColumn();
             GodinaInfo = new DataGridViewTextBoxColumn();
@@ -79,22 +79,28 @@
             btnDodajStipendiju.TabIndex = 1;
             btnDodajStipendiju.Text = "Dodaj stipendiju";
             btnDodajStipendiju.UseVisualStyleBackColor = true;
+            btnDodajStipendiju.Click += btnDodajStipendiju_Click;
             // 
             // cbGodina
             // 
+            cbGodina.DropDownStyle = ComboBoxStyle.DropDownList;
             cbGodina.FormattingEnabled = true;
+            cbGodina.Items.AddRange(new object[] { "2025", "2024", "2023", "2022", "2021" });
             cbGodina.Location = new Point(12, 32);
             cbGodina.Name = "cbGodina";
             cbGodina.Size = new Size(242, 28);
             cbGodina.TabIndex = 2;
+            cbGodina.SelectedIndexChanged += cbGodina_SelectedIndexChanged;
             // 
-            // cbStipendija
+            // cbStipendijaGodina
             // 
-            cbStipendija.FormattingEnabled = true;
-            cbStipendija.Location = new Point(260, 32);
-            cbStipendija.Name = "cbStipendija";
-            cbStipendija.Size = new Size(245, 28);
-            cbStipendija.TabIndex = 2;
+            cbStipendijaGodina.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbStipendijaGodina.FormattingEnabled = true;
+            cbStipendijaGodina.Location = new Point(260, 32);
+            cbStipendijaGodina.Name = "cbStipendijaGodina";
+            cbStipendijaGodina.Size = new Size(245, 28);
+            cbStipendijaGodina.TabIndex = 2;
+            cbStipendijaGodina.SelectedIndexChanged += cbStipendijaGodina_SelectedIndexChanged;
             // 
             // dgvStudentiStipendije
             // 
@@ -106,8 +112,10 @@
             dgvStudentiStipendije.Name = "dgvStudentiStipendije";
             dgvStudentiStipendije.ReadOnly = true;
             dgvStudentiStipendije.RowHeadersWidth = 51;
+            dgvStudentiStipendije.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentiStipendije.Size = new Size(1151, 362);
             dgvStudentiStipendije.TabIndex = 3;
+            dgvStudentiStipendije.CellContentClick += dgvStudentiStipendije_CellContentClick;
             // 
             // Student
             // 
@@ -160,6 +168,8 @@
             Ukloni.MinimumWidth = 6;
             Ukloni.Name = "Ukloni";
             Ukloni.ReadOnly = true;
+            Ukloni.Text = "Ukloni";
+            Ukloni.UseColumnTextForButtonValue = true;
             Ukloni.Width = 125;
             // 
             // frmPretragaIB180079
@@ -168,7 +178,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1176, 440);
             Controls.Add(dgvStudentiStipendije);
-            Controls.Add(cbStipendija);
+            Controls.Add(cbStipendijaGodina);
             Controls.Add(cbGodina);
             Controls.Add(btnDodajStipendiju);
             Controls.Add(btnStipendije);
@@ -189,7 +199,7 @@
         private Button btnStipendije;
         private Button btnDodajStipendiju;
         private ComboBox cbGodina;
-        private ComboBox cbStipendija;
+        private ComboBox cbStipendijaGodina;
         private DataGridView dgvStudentiStipendije;
         private DataGridViewTextBoxColumn Student;
         private DataGridViewTextBoxColumn GodinaInfo;
