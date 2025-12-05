@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm/my-dialog-confirm.component';
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
+import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
 
 @Component({
   selector: 'app-students',
@@ -39,7 +40,8 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     private studentDeleteService: StudentDeleteEndpointService,
     private snackbar: MySnackbarHelperService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private studentRestoreService:StudentRestoreEndpointService
   ) {}
 
   ngOnInit(): void {
@@ -130,6 +132,44 @@ export class StudentsComponent implements OnInit, AfterViewInit {
      this.prikaziObrisane = !this.prikaziObrisane;
 
      this.fetchStudents();
+
+  }
+
+  openMyConfirmDialogForRestore(id:any): void {
+
+    const dialogRef = this.dialog.open(MyDialogConfirmComponent, {
+      width: '350px',
+      data: {
+        title: 'Confirm Restore',
+        message: 'Are you sure you want to restore this student?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('User confirmed restore');
+        this.restoreStudent(id);
+      } else {
+        console.log('User cancelled restore');
+      }
+    });
+
+  }
+
+
+  private restoreStudent(id: any) {
+
+    this.studentRestoreService.handleAsync(id).subscribe({
+      next: () => {
+        this.snackbar.showMessage('Student successfully restored.');
+        this.fetchStudents(); // Refresh the list after deletion
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error restoring student. Please try again.', 5000);
+        console.error('Error restoring student:', err);
+      }
+    });
+
 
   }
 }
