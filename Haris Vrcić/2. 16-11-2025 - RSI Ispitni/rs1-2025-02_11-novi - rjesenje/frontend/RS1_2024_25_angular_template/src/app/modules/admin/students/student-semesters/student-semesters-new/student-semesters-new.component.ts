@@ -13,6 +13,13 @@ import {MyAuthService} from '../../../../../services/auth-services/my-auth.servi
 import {
   AcademicYearGetAllEndpoint
 } from '../../../../../endpoints/academic-year-endpoints/academic-year-get-all-endpoint.service';
+import {
+  StudentUpdateOrInsertRequest
+} from '../../../../../endpoints/student-endpoints/student-update-or-insert-endpoint.service';
+import {
+  SemesterUpdateOrInsertEndpoint,
+  SemesterUpdateOrInsertRequest
+} from '../../../../../endpoints/semester-endpoints/semester-update-or-insert-endpoint.service';
 
 @Component({
   selector: 'app-student-semesters-new',
@@ -48,7 +55,8 @@ export class StudentSemestersNewComponent implements OnInit {
     private semesterGetAllByStudentIdService:SemesterGetAllByStudentIdEndpoint,
     private fb: FormBuilder,
     private myAuthService:MyAuthService,
-    private academicYearGetAllService:AcademicYearGetAllEndpoint
+    private academicYearGetAllService:AcademicYearGetAllEndpoint,
+    private semesterUpdateOrInsertService:SemesterUpdateOrInsertEndpoint
   ) {
 
     this.studentId = this.route.snapshot.params['id'];
@@ -115,6 +123,25 @@ export class StudentSemestersNewComponent implements OnInit {
 
 
   saveSemester() {
+
+    if (this.semesterForm.invalid) return;
+
+    const semesterData: SemesterUpdateOrInsertRequest = {
+      ...this.semesterForm.value,
+    };
+
+    this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
+      next: () => {
+        this.snackbar.showMessage('Semester successfully saved.');
+
+        this.router.navigate(['/admin/students/semesters', this.studentId]);
+      },
+      error: (error) => {
+        this.snackbar.showMessage('Error saving semester. Please try again.');
+        console.error('Error saving semester', error);
+      },
+    });
+
 
   }
 
