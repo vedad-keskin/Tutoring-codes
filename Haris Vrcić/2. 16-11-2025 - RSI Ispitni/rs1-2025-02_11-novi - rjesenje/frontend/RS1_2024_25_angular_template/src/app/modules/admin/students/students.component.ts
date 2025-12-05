@@ -12,7 +12,7 @@ import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
 import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-students',
@@ -54,7 +54,8 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       debounceTime(300), // Vrijeme čekanja (300ms)
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
       filter(message => message.length > 3),
-      map((message) => message.toLowerCase())
+      map((message) => message.toLowerCase()),
+      tap(x=> console.log(`Broj zapisa: ${this.dataSource.data.length}`))
 
 
 
@@ -93,6 +94,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       error: (err) => {
         this.snackbar.showMessage('Error fetching students. Please try again.', 5000);
         console.error('Error fetching students:', err);
+      },
+      complete: () => {
+        console.log(`Broj recorda: ${this.dataSource.data.length}`);
       }
     });
   }
