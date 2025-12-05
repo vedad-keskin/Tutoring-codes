@@ -1,17 +1,17 @@
-<h3>Novi semstar za {{student?.firstName ?? "N/A"}} {{student?.lastName ?? "N/A"}}</h3>
+<h3>{{'FORM.TITLE' | translate}} {{student?.firstName ?? "N/A"}} {{student?.lastName ?? "N/A"}}</h3>
 
 
 <mat-card class="student-form-card">
 
   <form (ngSubmit)="saveSemester()" [formGroup]="semesterForm">
 
-    <label>Datum</label><br>
+    <label>{{'FORM.DATE' | translate}}</label><br>
     <input type="date" formControlName="dateOfEnrollment">
     <br>
     <br>
     <br>
 
-    <app-my-input-text myControlName="yearOfStudy" myLabel="Godina studija" (keyup)="yearChanged($event)" myPlaceholder="Enter year of study"></app-my-input-text>
+    <app-my-input-text myControlName="yearOfStudy" myLabel="{{'FORM.YEAR' | translate}}" (keyup)="yearChanged($event)" myPlaceholder="Enter year of study"></app-my-input-text>
 
     <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="Ak godina"></app-my-dropdown>
 

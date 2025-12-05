@@ -11,5 +11,10 @@
     "PASSWORD_PLACEHOLDER": "Enter password",
     "SAVE_LOGIN": "Save login",
     "BUTTON": "Login"
+  },
+  "FORM": {
+    "TITLE" : "New semester for",
+    "DATE" : "Date",
+    "YEAR": "Year of study"
   }
 }

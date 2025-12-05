@@ -11,6 +11,11 @@
     "PASSWORD_PLACEHOLDER": "Unesite šifru",
     "SAVE_LOGIN": "Sačuvaj prijavu",
     "BUTTON": "Prijavi se"
+  },
+  "FORM": {
+    "TITLE" : "Novi semestar za",
+    "DATE" : "Datum",
+    "YEAR": "Godina studija"
   }
 }
 

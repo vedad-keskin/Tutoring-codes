@@ -45,6 +45,7 @@ import { StudentEditComponent } from './students/student-edit/student-edit.compo
 import { StudentSemestersComponent } from './students/student-semesters/student-semesters.component';
 import { StudentSemestersNewComponent } from './students/student-semesters/student-semesters-new/student-semesters-new.component';
 import {MatCheckbox} from "@angular/material/checkbox";
+import {TranslatePipe} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -95,6 +96,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
         MatCard,
         MatProgressSpinner,
         MatCheckbox,
+        TranslatePipe,
         // Omogućava pristup svemu što je eksportovano iz SharedModule
     ],
   providers: []
