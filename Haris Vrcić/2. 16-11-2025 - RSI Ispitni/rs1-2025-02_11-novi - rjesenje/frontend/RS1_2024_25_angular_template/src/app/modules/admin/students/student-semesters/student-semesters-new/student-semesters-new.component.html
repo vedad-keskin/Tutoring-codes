@@ -11,7 +11,7 @@
     <br>
     <br>
 
-    <app-my-input-text myControlName="yearOfStudy" myLabel="Godina studija" myPlaceholder="Enter year of study"></app-my-input-text>
+    <app-my-input-text myControlName="yearOfStudy" myLabel="Godina studija" (keyup)="yearChanged($event)" myPlaceholder="Enter year of study"></app-my-input-text>
 
     <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="Ak godina"></app-my-dropdown>
 

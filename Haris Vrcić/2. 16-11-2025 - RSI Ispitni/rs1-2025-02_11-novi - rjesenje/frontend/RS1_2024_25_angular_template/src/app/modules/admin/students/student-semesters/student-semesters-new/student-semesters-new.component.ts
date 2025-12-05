@@ -69,8 +69,8 @@ export class StudentSemestersNewComponent implements OnInit {
       recordedById: [myAuthService.getMyAuthInfo()?.userId, [Validators.required]],
       dateOfEnrollment: [new Date(), [Validators.required]],
       yearOfStudy: [null, [Validators.required]],
-      price: [null, [Validators.required, Validators.min(50), Validators.max(2000)]],
-      renewal: [false, [Validators.required]],
+      price: [{value:null, disabled:true  }, [Validators.required, Validators.min(50), Validators.max(2000)]],
+      renewal: [{value:false , disabled: true}, [Validators.required]],
 
     });
 
@@ -127,7 +127,7 @@ export class StudentSemestersNewComponent implements OnInit {
     if (this.semesterForm.invalid) return;
 
     const semesterData: SemesterUpdateOrInsertRequest = {
-      ...this.semesterForm.value,
+      ...this.semesterForm.getRawValue(),
     };
 
     this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
@@ -159,6 +159,34 @@ export class StudentSemestersNewComponent implements OnInit {
         console.error('Error fetching academic years:', err);
       }
     });
+
+
+  }
+
+  yearChanged($event: any) {
+
+    const year = parseInt($event.target.value, 10);
+
+    if(this.semesters.some((x:any) => x.yearOfStudy == year)) {
+
+        this.semesterForm.patchValue({
+
+          price: 400,
+          renewal: true
+
+        })
+
+    }else{
+
+      this.semesterForm.patchValue({
+
+        price: 1800,
+        renewal: false
+
+      })
+
+
+    }
 
 
   }
