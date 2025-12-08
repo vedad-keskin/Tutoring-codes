@@ -16,8 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 [Route("data-seed")]
-public class DataSeedGenerateEndpoint(ApplicationDbContext db)
-    : MyEndpointBaseAsync
+public class DataSeedGenerateEndpoint(ApplicationDbContext db) : MyEndpointBaseAsync
     .WithoutRequest
     .WithResult<string>
 {

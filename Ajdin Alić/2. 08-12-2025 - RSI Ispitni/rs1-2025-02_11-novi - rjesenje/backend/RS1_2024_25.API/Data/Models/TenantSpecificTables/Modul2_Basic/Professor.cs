@@ -5,7 +5,7 @@ using RS1_2024_25.API.Helper.BaseClasses;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Professor: TenantSpecificTable
+public class Professor : TenantSpecificTable
 {
     [ForeignKey(nameof(User))]
     public int UserId { get; set; } // FK na korisnika
