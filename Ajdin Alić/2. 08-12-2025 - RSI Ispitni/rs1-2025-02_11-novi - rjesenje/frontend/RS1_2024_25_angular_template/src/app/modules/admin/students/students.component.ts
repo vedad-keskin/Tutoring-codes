@@ -29,10 +29,10 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  //int broj = 1;
+  // Nase varijable
 
-  broj : number = 1;
-  tekst : string = '';
+  showDeleted: boolean = false;
+
 
 
 
@@ -67,7 +67,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       pageSize: pageSize
     }).subscribe({
       next: (data) => {
-        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(data.dataItems);
+        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(
+
+          this.showDeleted ? data.dataItems : data.dataItems.filter(x => !x.isDeleted)
+
+        );
         this.paginator.length = data.totalCount;
       },
       error: (err) => {
@@ -122,4 +126,15 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  toggleDeleted() {
+
+     this.showDeleted = !this.showDeleted;
+
+     this.fetchStudents();
+
+  }
+
+
+
 }
