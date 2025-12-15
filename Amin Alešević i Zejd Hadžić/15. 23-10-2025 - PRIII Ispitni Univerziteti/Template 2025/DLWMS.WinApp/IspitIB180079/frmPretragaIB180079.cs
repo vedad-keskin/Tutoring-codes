@@ -137,6 +137,20 @@ namespace DLWMS.WinApp.IspitIB180079
 
 
             }
+            else if (e.ColumnIndex == 5) // razmjene
+            {
+
+                var odabraniStudent = dgvStudenti.SelectedRows[0].DataBoundItem as Student;
+
+
+                var frmRazmjene = new frmRazmjeneIB180079(odabraniStudent);
+
+                frmRazmjene.ShowDialog();
+
+
+            }
         }
+
+  
     }
 }

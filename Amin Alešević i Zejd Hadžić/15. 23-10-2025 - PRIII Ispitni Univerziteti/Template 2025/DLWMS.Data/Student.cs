@@ -32,7 +32,7 @@
         public override string ToString()
         {
             // Denis Music (IB180079) .. 
-            return $"{Ime} {Prezime} ({BrojIndeksa})";
+            return $"({BrojIndeksa}) {Ime} {Prezime}";
         }
 
 
