@@ -54,8 +54,8 @@ namespace DLWMS.WinApp.IspitIB180079
                 .Where(x => x.SpolId == spol.Id)
                 .Where(x => x.Grad.DrzavaId == drzava.Id)
                 //            adnan . Contains ( adnan )
-                .Where(x => x.Ime.ToLower().Contains(imePrezime) || 
-                x.Prezime.ToLower().Contains(imePrezime) )
+                .Where(x => x.Ime.ToLower().Contains(imePrezime) ||
+                x.Prezime.ToLower().Contains(imePrezime))
                 .ToList();
 
 
@@ -64,10 +64,10 @@ namespace DLWMS.WinApp.IspitIB180079
             //this.Text = $"Broj prikazanih studenata: {studenti.Count()}";;
             Text = $"Broj prikazanih studenata: {studenti.Count()}";
 
-            if(studenti.Count() == 0 && drzava.Id != 0) // ovaj dio sa drzavom nije obavezan
+            if (studenti.Count() == 0 && drzava.Id != 0) // ovaj dio sa drzavom nije obavezan
             {
 
-                MessageBox.Show($"U bazi nisu evidentirani studenti spola {spol}, koji u imenu i prezimenu posjeduju sadržaj {imePrezime}, a koji su državljani {drzava}","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show($"U bazi nisu evidentirani studenti spola {spol}, koji u imenu i prezimenu posjeduju sadržaj {imePrezime}, a koji su državljani {drzava}", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
 
@@ -88,5 +88,48 @@ namespace DLWMS.WinApp.IspitIB180079
             UcitajStudente();
 
         }
-    }
+
+        private void dgvStudenti_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
+            if(e.ColumnIndex == 4)
+            {
+
+                var odabraniStudent = dgvStudenti.SelectedRows[0].DataBoundItem as Student;
+
+                //if (odabraniStudent.Aktivan)
+                //{
+                //    odabraniStudent.Aktivan = false;
+                //}
+                //else
+                //{
+                //    odabraniStudent.Aktivan = true;
+                //}
+
+                //odabraniStudent.Aktivan = odabraniStudent.Aktivan ? false : true;
+
+
+                odabraniStudent.Aktivan = !odabraniStudent.Aktivan;
+
+                db.Studenti.Update(odabraniStudent);
+
+                db.SaveChanges();
+
+
+
+            }else if (e.ColumnIndex == 5)
+            {
+
+                var odabraniStudent = dgvStudenti.SelectedRows[0].DataBoundItem as Student;
+
+
+                var frmRazmjene = new frmRazmjeneIB180079(odabraniStudent);
+
+
+                frmRazmjene.ShowDialog();
+
+
+            }
+        }
+}
 }

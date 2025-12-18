@@ -10,8 +10,4 @@
     <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IspitIB180079\" />
-  </ItemGroup>
-
 </Project>

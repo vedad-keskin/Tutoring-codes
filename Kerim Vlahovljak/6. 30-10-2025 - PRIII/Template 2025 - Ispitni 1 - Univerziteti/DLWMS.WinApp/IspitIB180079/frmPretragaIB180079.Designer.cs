@@ -112,6 +112,7 @@
             dgvStudenti.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudenti.Size = new Size(1072, 301);
             dgvStudenti.TabIndex = 3;
+            dgvStudenti.CellClick += dgvStudenti_CellClick;
             // 
             // StudentInfo
             // 

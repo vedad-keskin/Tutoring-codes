@@ -38,7 +38,7 @@
         public override string ToString()
         {
             // Vedad Keskin (IB180079)
-            return $"{Ime} {Prezime} ({BrojIndeksa})";
+            return $"({BrojIndeksa}) {Ime} {Prezime}";
         }
 
 
