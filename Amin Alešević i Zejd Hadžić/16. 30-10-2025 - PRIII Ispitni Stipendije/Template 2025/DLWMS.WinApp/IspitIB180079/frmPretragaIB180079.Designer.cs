@@ -70,6 +70,7 @@
             btnStipendije.TabIndex = 1;
             btnStipendije.Text = "Stipendije po godinama";
             btnStipendije.UseVisualStyleBackColor = true;
+            btnStipendije.Click += btnStipendije_Click;
             // 
             // btnDodajStipendiju
             // 

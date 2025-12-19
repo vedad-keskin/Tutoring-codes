@@ -138,5 +138,17 @@ namespace DLWMS.WinApp.IspitIB180079
             }
 
         }
+
+        private void btnStipendije_Click(object sender, EventArgs e)
+        {
+
+            var frmStipendije = new frmStipendijeIB180079();
+
+            if (frmStipendije.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentStipendije();
+            }
+
+        }
     }
 }
