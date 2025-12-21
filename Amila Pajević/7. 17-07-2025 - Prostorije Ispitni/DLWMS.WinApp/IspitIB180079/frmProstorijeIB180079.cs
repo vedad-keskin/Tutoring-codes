@@ -114,6 +114,15 @@ namespace DLWMS.WinApp.IspitIB180079
                 }
 
 
+            }else if (e.ColumnIndex == 6)
+            {
+
+                var odabranaProstorija = dgvProstorije.SelectedRows[0].DataBoundItem as ProstorijeIB180079;
+
+                var frmPrisustva = new frmPrisustvoIB180079(odabranaProstorija);
+
+                frmPrisustva.ShowDialog();
+
             }
 
 

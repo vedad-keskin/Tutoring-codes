@@ -28,5 +28,12 @@ namespace DLWMS.Data.IspitIB180079
         public string Dan { get; set; }
         public string Oznaka { get; set; }
 
+
+        public override string ToString()
+        {
+            return $"{Predmet?.Naziv ?? "N/A"} - u {Dan} @ {Vrijeme}";
+        }
+
+
     }
 }
