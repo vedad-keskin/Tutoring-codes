@@ -5,6 +5,9 @@ import {
 } from '../../../../endpoints/student-endpoints/student-get-by-id-endpoint.service';
 import {MySnackbarHelperService} from '../../../shared/snackbars/my-snackbar-helper.service';
 import {MatDialog} from '@angular/material/dialog';
+import {
+  SemesterGetAllByStudentIdEndpoint
+} from '../../../../endpoints/semester-endpoints/semester-get-all-by-student-id-endpoint.service';
 
 @Component({
   selector: 'app-student-semesters',
@@ -20,12 +23,17 @@ export class StudentSemestersComponent implements OnInit {
   //student:any;
 
   student : StudentGetByIdResponse | null = null;
+  semesters:any;
+
+  displayedColumns: string[] = ['id', 'academicYear', 'yearOfStudy', 'renewal','winterSemester','recordedBy'];
+
 
   constructor(    private route: ActivatedRoute,
                   private router: Router,
                   private studentGetByIdService:StudentGetByIdEndpointService,
                   private snackbar: MySnackbarHelperService,
                   private dialog: MatDialog,
+                  private semesterGetAllByStudentIdService:SemesterGetAllByStudentIdEndpoint
                   ) {
 
     this.studentId = route.snapshot.params['id'];
@@ -35,7 +43,7 @@ export class StudentSemestersComponent implements OnInit {
   ngOnInit(): void {
 
     this.GetStudent();
-
+    this.GetSemesters();
 
     }
 
@@ -56,4 +64,27 @@ export class StudentSemestersComponent implements OnInit {
   }
 
 
+  private GetSemesters() {
+
+    this.semesterGetAllByStudentIdService.handleAsync(this.studentId).subscribe({
+      next: (data) => {
+
+        this.semesters = data;
+
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error getting semesters. Please try again.', 5000);
+        console.error('Error getting semesters:', err);
+      }
+    });
+
+
+  }
+
+  navigateToNewSemester() {
+
+    this.router.navigate(['/admin/students/semesters/new', this.studentId]);
+
+
+  }
 }
