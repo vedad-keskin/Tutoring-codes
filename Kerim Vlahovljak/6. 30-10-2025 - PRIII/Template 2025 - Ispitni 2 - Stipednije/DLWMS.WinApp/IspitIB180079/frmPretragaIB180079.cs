@@ -94,10 +94,10 @@ namespace DLWMS.WinApp.IspitIB180079
         private void dgvStudentiStipendije_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex == 5)
+            if (e.ColumnIndex == 5)
             {
 
-                if (MessageBox.Show("Da li ste sigurni da želite pobrisati odabrani zapis ?","Pitanje",MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBox.Show("Da li ste sigurni da želite pobrisati odabrani zapis ?", "Pitanje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
 
                     var odabranaStudentStipendija = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
@@ -114,6 +114,29 @@ namespace DLWMS.WinApp.IspitIB180079
             }
 
 
+        }
+
+        private void btnDodajStipendiju_Click(object sender, EventArgs e)
+        {
+
+            var frmStipendijaAdd = new frmStipendijaAddEditIB180079();
+
+            if (frmStipendijaAdd.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentStipendije();
+            }
+
+
+        }
+
+        private void btnStipendije_Click(object sender, EventArgs e)
+        {
+            var frmStipendije = new frmStipendijeIB180079();
+
+            if (frmStipendije.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentStipendije();
+            }
         }
     }
 }

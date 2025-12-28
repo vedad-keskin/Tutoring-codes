@@ -12,11 +12,15 @@ namespace DLWMS.Data.IspitIB180079
 
         // FK
         public int StipendijaId { get; set; }
+
+        // moraju includati
         public StipendijeIB180079 Stipendija { get; set; }
 
         public string Godina { get; set; }
         public int Iznos { get; set; }
         public bool Aktivna { get; set; }
+
+        public int UkupnoInfo => Godina == DateTime.Now.Year.ToString() ? Iznos * DateTime.Now.Month : Iznos * 12;
 
         public override string ToString()
         {
