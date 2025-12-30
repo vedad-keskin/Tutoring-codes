@@ -49,16 +49,16 @@
             Obrisi = new DataGridViewButtonColumn();
             err = new ErrorProvider(components);
             groupBox1 = new GroupBox();
-            btnPotvrda = new Button();
-            label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
-            cbUniverzitetMultithreading = new ComboBox();
-            txtECTSMultithreading = new TextBox();
-            txtBroj = new TextBox();
-            txtInfo = new TextBox();
             btnGenerisi = new Button();
+            txtInfo = new TextBox();
+            txtBroj = new TextBox();
+            txtECTSMultithreading = new TextBox();
+            cbUniverzitetMultithreading = new ComboBox();
+            label9 = new Label();
+            label8 = new Label();
+            label7 = new Label();
+            label6 = new Label();
+            btnPotvrda = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvRazmjene).BeginInit();
             ((System.ComponentModel.ISupportInitialize)err).BeginInit();
             groupBox1.SuspendLayout();
@@ -252,73 +252,15 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Generator razmjena";
             // 
-            // btnPotvrda
+            // btnGenerisi
             // 
-            btnPotvrda.Location = new Point(1059, 362);
-            btnPotvrda.Name = "btnPotvrda";
-            btnPotvrda.Size = new Size(156, 29);
-            btnPotvrda.TabIndex = 7;
-            btnPotvrda.Text = "Potvrda";
-            btnPotvrda.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(8, 36);
-            label6.Name = "label6";
-            label6.Size = new Size(83, 20);
-            label6.TabIndex = 0;
-            label6.Text = "Univerzitet:";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(8, 94);
-            label7.Name = "label7";
-            label7.Size = new Size(104, 20);
-            label7.TabIndex = 0;
-            label7.Text = "Broj razmjena:";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(171, 94);
-            label8.Name = "label8";
-            label8.Size = new Size(89, 20);
-            label8.TabIndex = 0;
-            label8.Text = "Broj kredita:";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(348, 36);
-            label9.Name = "label9";
-            label9.Size = new Size(38, 20);
-            label9.TabIndex = 0;
-            label9.Text = "Info:";
-            // 
-            // cbUniverzitetMultithreading
-            // 
-            cbUniverzitetMultithreading.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbUniverzitetMultithreading.FormattingEnabled = true;
-            cbUniverzitetMultithreading.Location = new Point(8, 59);
-            cbUniverzitetMultithreading.Name = "cbUniverzitetMultithreading";
-            cbUniverzitetMultithreading.Size = new Size(320, 28);
-            cbUniverzitetMultithreading.TabIndex = 1;
-            // 
-            // txtECTSMultithreading
-            // 
-            txtECTSMultithreading.Location = new Point(171, 117);
-            txtECTSMultithreading.Name = "txtECTSMultithreading";
-            txtECTSMultithreading.Size = new Size(157, 27);
-            txtECTSMultithreading.TabIndex = 2;
-            // 
-            // txtBroj
-            // 
-            txtBroj.Location = new Point(8, 117);
-            txtBroj.Name = "txtBroj";
-            txtBroj.Size = new Size(146, 27);
-            txtBroj.TabIndex = 2;
+            btnGenerisi.Location = new Point(6, 161);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(322, 29);
+            btnGenerisi.TabIndex = 4;
+            btnGenerisi.Text = "Generiši razmjene >>>>>";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
             // 
             // txtInfo
             // 
@@ -329,15 +271,74 @@
             txtInfo.Size = new Size(849, 184);
             txtInfo.TabIndex = 3;
             // 
-            // btnGenerisi
+            // txtBroj
             // 
-            btnGenerisi.Location = new Point(6, 161);
-            btnGenerisi.Name = "btnGenerisi";
-            btnGenerisi.Size = new Size(322, 29);
-            btnGenerisi.TabIndex = 4;
-            btnGenerisi.Text = "Generiši razmjene >>>>>";
-            btnGenerisi.UseVisualStyleBackColor = true;
-            btnGenerisi.Click += btnGenerisi_Click;
+            txtBroj.Location = new Point(8, 117);
+            txtBroj.Name = "txtBroj";
+            txtBroj.Size = new Size(146, 27);
+            txtBroj.TabIndex = 2;
+            // 
+            // txtECTSMultithreading
+            // 
+            txtECTSMultithreading.Location = new Point(171, 117);
+            txtECTSMultithreading.Name = "txtECTSMultithreading";
+            txtECTSMultithreading.Size = new Size(157, 27);
+            txtECTSMultithreading.TabIndex = 2;
+            // 
+            // cbUniverzitetMultithreading
+            // 
+            cbUniverzitetMultithreading.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbUniverzitetMultithreading.FormattingEnabled = true;
+            cbUniverzitetMultithreading.Location = new Point(8, 59);
+            cbUniverzitetMultithreading.Name = "cbUniverzitetMultithreading";
+            cbUniverzitetMultithreading.Size = new Size(320, 28);
+            cbUniverzitetMultithreading.TabIndex = 1;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(348, 36);
+            label9.Name = "label9";
+            label9.Size = new Size(38, 20);
+            label9.TabIndex = 0;
+            label9.Text = "Info:";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(171, 94);
+            label8.Name = "label8";
+            label8.Size = new Size(89, 20);
+            label8.TabIndex = 0;
+            label8.Text = "Broj kredita:";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(8, 94);
+            label7.Name = "label7";
+            label7.Size = new Size(104, 20);
+            label7.TabIndex = 0;
+            label7.Text = "Broj razmjena:";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(8, 36);
+            label6.Name = "label6";
+            label6.Size = new Size(83, 20);
+            label6.TabIndex = 0;
+            label6.Text = "Univerzitet:";
+            // 
+            // btnPotvrda
+            // 
+            btnPotvrda.Location = new Point(1059, 362);
+            btnPotvrda.Name = "btnPotvrda";
+            btnPotvrda.Size = new Size(156, 29);
+            btnPotvrda.TabIndex = 7;
+            btnPotvrda.Text = "Potvrda";
+            btnPotvrda.UseVisualStyleBackColor = true;
+            btnPotvrda.Click += btnPotvrda_Click;
             // 
             // frmRazmjeneIB180079
             // 

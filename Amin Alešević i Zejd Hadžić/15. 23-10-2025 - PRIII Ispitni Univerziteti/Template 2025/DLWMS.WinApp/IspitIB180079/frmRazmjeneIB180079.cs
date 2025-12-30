@@ -2,6 +2,7 @@
 using DLWMS.Data.IspitIB180079;
 using DLWMS.Infrastructure;
 using DLWMS.WinApp.Helpers;
+using DLWMS.WinApp.Izvjestaji;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -179,7 +180,8 @@ namespace DLWMS.WinApp.IspitIB180079
             // -- validacije
             // -- ako postoji neki combo box, mora se pohraniti ovdje
 
-            if(ValidirajUnosMultithreadinga()) {
+            if (ValidirajUnosMultithreadinga())
+            {
 
                 var univerzitet = cbUniverzitetMultithreading.SelectedItem as UniverzitetiIB180079;
 
@@ -246,17 +248,27 @@ namespace DLWMS.WinApp.IspitIB180079
                 // -- mbox
                 // -- ucitavanja
 
-                MessageBox.Show($"Uspješno je generisano {broj} razmjena","Informacija",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show($"Uspješno je generisano {broj} razmjena", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 txtInfo.Text = info;
 
                 UcitajRazmjene();
 
             };
-            BeginInvoke(action);    
+            BeginInvoke(action);
 
 
 
+
+        }
+
+        private void btnPotvrda_Click(object sender, EventArgs e)
+        {
+
+            var frmIzvjestaj = new frmIzvjestaji(odabraniStudent);
+
+
+            frmIzvjestaj.ShowDialog();
 
         }
     }
