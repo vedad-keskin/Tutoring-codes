@@ -108,7 +108,7 @@ namespace DLWMS.WinApp.IspitIB180079
                 else if (prisustva.Exists(x => x.StudentId == student.Id))
                 {
 
-                    MessageBox.Show($"Student {student} je već evidentiran na nastavi {nastava}","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show($"Student {student} je već evidentiran na nastavi {nastava}", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 }
                 else
@@ -134,6 +134,96 @@ namespace DLWMS.WinApp.IspitIB180079
         private bool ValidirajUnos()
         {
             return Validator.ProvjeriUnos(cbNastava, err, Kljucevi.RequiredField);
+        }
+
+        private async void btnGenerisi_Click(object sender, EventArgs e)
+        {
+
+            // 1. dio 
+            // --  postavljanje threada -> async i await
+            // --  validacije
+            // --  pristup combo boxu se mora raditi u prvom dijelu 
+
+            if (ValidirajUnosMultithreadinga())
+            {
+
+                var student = cbStudent.SelectedItem as Student;
+
+                await Task.Run(() => GenerisiPrisustva(student));
+
+            }
+        }
+
+        private void GenerisiPrisustva(Student? student)
+        {
+
+            // 2. dio
+            // -- kalkulacije
+            // -- pohrane
+            // -- sleep
+
+            // STRING -> INT 
+
+            var broj = int.Parse(txtBroj.Text);
+
+            var nastave = db.NastavaIB180079
+                .Where(x => x.ProstorijaId == odabranaProstorija.Id)
+                .ToList();
+
+            var info = "";
+
+            for (int i = 0; i < nastave.Count(); i++)
+            {
+                for (int j = 0; j < broj; j++)
+                {
+
+                    var novoPrisustvo = new PrisustvoIB180079()
+                    {
+
+                        StudentId = student.Id,
+                        NastavaId = nastave[i].Id,
+
+                    };
+
+                    db.PrisustvoIB180079.Add(novoPrisustvo);
+                    db.SaveChanges();
+
+                    info += $"{DateTime.Now.ToString("dd.MM HH:mm:ss")} -> {student} za {nastave[i]}{Environment.NewLine}";
+
+                    Thread.Sleep(300);
+
+
+                }
+            }
+
+
+
+
+            Action action = () =>
+            {
+                // 3. dio
+                // -- mbox
+                // -- ucitavanje
+                // -- info
+
+                MessageBox.Show($"Uspješno je generisano {broj * nastave.Count()} prisustava za studenta {student}","Informacija",MessageBoxButtons.OK,MessageBoxIcon.Information);
+
+                UcitajPrisustva();
+
+                txtInfo.Text = info;
+
+
+            };
+            BeginInvoke(action);
+
+
+
+
+        }
+
+        private bool ValidirajUnosMultithreadinga()
+        {
+            return Validator.ProvjeriUnos(txtBroj,err, Kljucevi.RequiredField);
         }
     }
 }

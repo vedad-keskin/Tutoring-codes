@@ -40,8 +40,15 @@
             Nastava = new DataGridViewTextBoxColumn();
             Student = new DataGridViewTextBoxColumn();
             err = new ErrorProvider(components);
+            groupBox1 = new GroupBox();
+            label3 = new Label();
+            label4 = new Label();
+            txtBroj = new TextBox();
+            btnGenerisi = new Button();
+            txtInfo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvPrisustva).BeginInit();
             ((System.ComponentModel.ISupportInitialize)err).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // lblNazivProstorije
@@ -147,11 +154,70 @@
             // 
             err.ContainerControl = this;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Controls.Add(btnGenerisi);
+            groupBox1.Controls.Add(txtBroj);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Location = new Point(12, 389);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(840, 237);
+            groupBox1.TabIndex = 5;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(15, 35);
+            label3.Name = "label3";
+            label3.Size = new Size(85, 20);
+            label3.TabIndex = 0;
+            label3.Text = "Broj zapisa:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(15, 72);
+            label4.Name = "label4";
+            label4.Size = new Size(38, 20);
+            label4.TabIndex = 0;
+            label4.Text = "Info:";
+            // 
+            // txtBroj
+            // 
+            txtBroj.Location = new Point(106, 32);
+            txtBroj.Name = "txtBroj";
+            txtBroj.Size = new Size(125, 27);
+            txtBroj.TabIndex = 1;
+            // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(249, 31);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(119, 29);
+            btnGenerisi.TabIndex = 2;
+            btnGenerisi.Text = "Generiši";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(15, 95);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(809, 136);
+            txtInfo.TabIndex = 3;
+            // 
             // frmPrisustvoIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(864, 395);
+            ClientSize = new Size(864, 638);
+            Controls.Add(groupBox1);
             Controls.Add(dgvPrisustva);
             Controls.Add(btnDodaj);
             Controls.Add(cbStudent);
@@ -165,6 +231,8 @@
             Load += frmPrisustvoIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvPrisustva).EndInit();
             ((System.ComponentModel.ISupportInitialize)err).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -182,5 +250,11 @@
         private DataGridViewTextBoxColumn Nastava;
         private DataGridViewTextBoxColumn Student;
         private ErrorProvider err;
+        private GroupBox groupBox1;
+        private Label label4;
+        private Label label3;
+        private TextBox txtInfo;
+        private Button btnGenerisi;
+        private TextBox txtBroj;
     }
 }
