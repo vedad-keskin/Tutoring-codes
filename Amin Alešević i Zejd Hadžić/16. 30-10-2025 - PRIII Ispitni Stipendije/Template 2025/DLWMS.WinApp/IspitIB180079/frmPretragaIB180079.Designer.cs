@@ -117,6 +117,7 @@
             dgvStudentiStipendije.Size = new Size(1151, 362);
             dgvStudentiStipendije.TabIndex = 3;
             dgvStudentiStipendije.CellContentClick += dgvStudentiStipendije_CellContentClick;
+            dgvStudentiStipendije.CellDoubleClick += dgvStudentiStipendije_CellDoubleClick;
             // 
             // Student
             // 

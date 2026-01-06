@@ -18,14 +18,43 @@ namespace DLWMS.WinApp.IspitIB180079
     public partial class frmStipendijaAddEditIB180079 : Form
     {
         DLWMSContext db = new DLWMSContext();
+        private StudentiStipendijeIB180079? odabranaStudentStipendija; // ostaje null kod dodavanje
+
         public frmStipendijaAddEditIB180079()
         {
             InitializeComponent();
         }
 
+        public frmStipendijaAddEditIB180079(StudentiStipendijeIB180079? odabranaStudentStipendija)
+        {
+            InitializeComponent();
+            this.odabranaStudentStipendija = odabranaStudentStipendija;
+        }
+
         private void frmStipendijaAddEditIB180079_Load(object sender, EventArgs e)
         {
             UcitajComboBox();
+
+            UcitajInfo();
+        }
+
+        private void UcitajInfo()
+        {
+            if(odabranaStudentStipendija != null)
+            {
+
+                 cbStudent.SelectedIndex = db.Studenti.ToList().FindIndex(x => x.Id == odabranaStudentStipendija.StudentId);
+
+                cbStudent.Enabled = false;
+
+                cbGodina.SelectedItem = odabranaStudentStipendija.GodinaInfo;
+
+                cbStipendijaGodina.SelectedIndex = db.StipendijeGodineIB180079.ToList().FindIndex(x => x.StipendijaId == odabranaStudentStipendija.StipendijaGodina.StipendijaId);
+
+
+            }
+
+
         }
 
         private void UcitajComboBox()
@@ -76,7 +105,27 @@ namespace DLWMS.WinApp.IspitIB180079
             {
                 MessageBox.Show($"Student {odabraniStudent} već ima stipendiju {odabranaStipendijaGodina}","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Warning);
             }
-            else
+            else if (odabranaStudentStipendija != null) // editovanje
+            {
+
+                // nema nista dodatno includano
+                var detachedStudentStipendija = db.StudentiStipendijeIB180079.First(x => x.Id == odabranaStudentStipendija.Id);
+
+                //odabranaStudentStipendija.StudentId = odabraniStudent.Id;
+
+                //odabranaStudentStipendija.StipendijaGodinaId = odabranaStipendijaGodina.Id;
+
+                detachedStudentStipendija.StipendijaGodinaId = odabranaStipendijaGodina.Id;
+
+                db.StudentiStipendijeIB180079.Update(detachedStudentStipendija);
+
+                db.SaveChanges();
+
+                DialogResult = DialogResult.OK;
+
+
+            }
+            else // dodavanje
             {
 
                 var novaStudentStipendija = new StudentiStipendijeIB180079();
@@ -88,6 +137,8 @@ namespace DLWMS.WinApp.IspitIB180079
                 db.SaveChanges();
 
                 DialogResult = DialogResult.OK;
+
+
             }
 
 
