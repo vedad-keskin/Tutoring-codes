@@ -59,6 +59,7 @@
             btnPrintaj.TabIndex = 0;
             btnPrintaj.Text = "Printaj";
             btnPrintaj.UseVisualStyleBackColor = true;
+            btnPrintaj.Click += btnPrintaj_Click;
             // 
             // dgvProstorije
             // 

@@ -1,5 +1,6 @@
 ﻿using DLWMS.Data.IspitIB180079;
 using DLWMS.Infrastructure;
+using DLWMS.WinApp.Izvjestaji;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -99,7 +100,7 @@ namespace DLWMS.WinApp.IspitIB180079
         private void dgvProstorije_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex == 5)
+            if (e.ColumnIndex == 5)
             {
 
                 var odabranaProstorija = prostorije[e.RowIndex];
@@ -114,7 +115,8 @@ namespace DLWMS.WinApp.IspitIB180079
                 }
 
 
-            }else if (e.ColumnIndex == 6)
+            }
+            else if (e.ColumnIndex == 6)
             {
 
                 var odabranaProstorija = dgvProstorije.SelectedRows[0].DataBoundItem as ProstorijeIB180079;
@@ -124,6 +126,18 @@ namespace DLWMS.WinApp.IspitIB180079
                 frmPrisustva.ShowDialog();
 
             }
+
+
+        }
+
+        private void btnPrintaj_Click(object sender, EventArgs e)
+        {
+
+            var odabranaProstorija = dgvProstorije.SelectedRows[0].DataBoundItem as ProstorijeIB180079;
+
+            var frmIzvjestaj = new frmIzvjestaji(odabranaProstorija);
+
+            frmIzvjestaj.ShowDialog();
 
 
         }
