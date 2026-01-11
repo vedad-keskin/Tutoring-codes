@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -46,7 +47,20 @@
             ECTS = new DataGridViewTextBoxColumn();
             Okoncana = new DataGridViewCheckBoxColumn();
             Obrisi = new DataGridViewButtonColumn();
+            err = new ErrorProvider(components);
+            groupBox1 = new GroupBox();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            cbUniverzitetMT = new ComboBox();
+            txtBroj = new TextBox();
+            txtECTSMT = new TextBox();
+            btnGenerisi = new Button();
+            label9 = new Label();
+            txtInfo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvRazmjene).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)err).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -102,6 +116,7 @@
             cbDrzava.Name = "cbDrzava";
             cbDrzava.Size = new Size(219, 28);
             cbDrzava.TabIndex = 1;
+            cbDrzava.SelectedIndexChanged += cbDrzava_SelectedIndexChanged;
             // 
             // cbUniverzitet
             // 
@@ -141,6 +156,7 @@
             btnSacuvaj.TabIndex = 4;
             btnSacuvaj.Text = "Sačuvaj";
             btnSacuvaj.UseVisualStyleBackColor = true;
+            btnSacuvaj.Click += btnSacuvaj_Click;
             // 
             // dgvRazmjene
             // 
@@ -212,11 +228,112 @@
             Obrisi.UseColumnTextForButtonValue = true;
             Obrisi.Width = 125;
             // 
+            // err
+            // 
+            err.ContainerControl = this;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Controls.Add(btnGenerisi);
+            groupBox1.Controls.Add(txtECTSMT);
+            groupBox1.Controls.Add(txtBroj);
+            groupBox1.Controls.Add(cbUniverzitetMT);
+            groupBox1.Controls.Add(label8);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Controls.Add(label9);
+            groupBox1.Controls.Add(label6);
+            groupBox1.Location = new Point(12, 454);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(1184, 224);
+            groupBox1.TabIndex = 6;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator razmjena";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(17, 32);
+            label6.Name = "label6";
+            label6.Size = new Size(83, 20);
+            label6.TabIndex = 0;
+            label6.Text = "Univerzitet:";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(17, 83);
+            label7.Name = "label7";
+            label7.Size = new Size(104, 20);
+            label7.TabIndex = 0;
+            label7.Text = "Broj razmjena:";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(169, 83);
+            label8.Name = "label8";
+            label8.Size = new Size(89, 20);
+            label8.TabIndex = 0;
+            label8.Text = "Broj kredita:";
+            // 
+            // cbUniverzitetMT
+            // 
+            cbUniverzitetMT.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbUniverzitetMT.FormattingEnabled = true;
+            cbUniverzitetMT.Location = new Point(17, 52);
+            cbUniverzitetMT.Name = "cbUniverzitetMT";
+            cbUniverzitetMT.Size = new Size(295, 28);
+            cbUniverzitetMT.TabIndex = 1;
+            // 
+            // txtBroj
+            // 
+            txtBroj.Location = new Point(17, 106);
+            txtBroj.Name = "txtBroj";
+            txtBroj.Size = new Size(143, 27);
+            txtBroj.TabIndex = 2;
+            // 
+            // txtECTSMT
+            // 
+            txtECTSMT.Location = new Point(169, 106);
+            txtECTSMT.Name = "txtECTSMT";
+            txtECTSMT.Size = new Size(143, 27);
+            txtECTSMT.TabIndex = 2;
+            // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(17, 139);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(295, 29);
+            btnGenerisi.TabIndex = 3;
+            btnGenerisi.Text = "Generiši razmjene >>>>>";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(332, 32);
+            label9.Name = "label9";
+            label9.Size = new Size(38, 20);
+            label9.TabIndex = 0;
+            label9.Text = "Info:";
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(332, 53);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(846, 165);
+            txtInfo.TabIndex = 4;
+            // 
             // frmRazmjeneIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1208, 425);
+            ClientSize = new Size(1208, 690);
+            Controls.Add(groupBox1);
             Controls.Add(dgvRazmjene);
             Controls.Add(btnSacuvaj);
             Controls.Add(dtpDatumKraj);
@@ -233,6 +350,9 @@
             Text = "Razmjena studenta: placeholder";
             Load += frmRazmjeneIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvRazmjene).EndInit();
+            ((System.ComponentModel.ISupportInitialize)err).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -257,5 +377,16 @@
         private DataGridViewTextBoxColumn ECTS;
         private DataGridViewCheckBoxColumn Okoncana;
         private DataGridViewButtonColumn Obrisi;
+        private ErrorProvider err;
+        private GroupBox groupBox1;
+        private TextBox txtBroj;
+        private ComboBox cbUniverzitetMT;
+        private Label label8;
+        private Label label7;
+        private Label label6;
+        private TextBox txtECTSMT;
+        private TextBox txtInfo;
+        private Button btnGenerisi;
+        private Label label9;
     }
 }
