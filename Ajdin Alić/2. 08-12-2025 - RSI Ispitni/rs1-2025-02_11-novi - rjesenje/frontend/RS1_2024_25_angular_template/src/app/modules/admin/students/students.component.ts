@@ -12,7 +12,7 @@ import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
 import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-students',
@@ -23,7 +23,7 @@ import {map} from 'rxjs/operators';
 export class StudentsComponent implements OnInit, AfterViewInit {
 
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber','timeDeleted', 'actions'];
 
   dataSource: MatTableDataSource<StudentGetAllResponse> = new MatTableDataSource<StudentGetAllResponse>();
   students: StudentGetAllResponse[] = [];
@@ -58,7 +58,8 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       debounceTime(300), // Vrijeme čekanja (300ms)
       distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
       map(message => message.toLowerCase()),
-      filter(message => message.length > 3)
+      filter(message => message.length > 3),
+      tap(message => console.log(`Broj recorda: ${this.dataSource.data.length}`)  ),
 
 
 
@@ -98,6 +99,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       error: (err) => {
         this.snackbar.showMessage('Error fetching students. Please try again.', 5000);
         console.error('Error fetching students:', err);
+      },
+      complete: () => {
+        console.log(`DATA: ${this.dataSource.data.length}`);
       }
     });
   }

@@ -10,6 +10,8 @@
     "PASSWORD_LABEL": "Password:",
     "PASSWORD_PLACEHOLDER": "Enter password",
     "SAVE_LOGIN": "Save login",
-    "BUTTON": "Login"
+    "BUTTON": "Login",
+    "NEW-SEMESTER" : "New semester for",
+    "YEAR-OF-STUDY" : "Year of study"
   }
 }

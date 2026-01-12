@@ -27,6 +27,9 @@ public class StudentDeleteEndpoint(ApplicationDbContext db) : MyEndpointBaseAsyn
             throw new Exception("Student is already deleted");
 
         // Soft-delete
+
+        student.TimeDeleted = DateTime.Now;
+
         student.IsDeleted = true;
         await db.SaveChangesAsync(cancellationToken);
     }

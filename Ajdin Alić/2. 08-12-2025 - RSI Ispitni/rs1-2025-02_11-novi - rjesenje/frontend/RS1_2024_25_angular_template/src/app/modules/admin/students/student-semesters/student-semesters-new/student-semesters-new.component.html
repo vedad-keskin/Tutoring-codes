@@ -1,4 +1,4 @@
-<h3>Novi semstestar za {{student?.firstName ?? "N/A"}} {{student?.lastName ?? "N/A"}}</h3>
+<h3>{{'LOGIN.NEW-SEMESTER' | translate }} {{student?.firstName ?? "N/A"}} {{student?.lastName ?? "N/A"}}</h3>
 
 
 <mat-card class="student-form-card">
@@ -8,7 +8,7 @@
 
     <input type="date" formControlName="dateOfEnrollment">
 
-    <app-my-input-text myControlName="yearOfStudy" myLabel="Godina studija" myPlaceholder="Enter year of study"></app-my-input-text>
+    <app-my-input-text myControlName="yearOfStudy" myLabel="{{'LOGIN.YEAR-OF-STUDY' | translate}}" myPlaceholder="Enter year of study"></app-my-input-text>
 
     <app-my-dropdown [options]="academicYears" myControlName="academicYearId" myLabel="Ak godina"></app-my-dropdown>
 
