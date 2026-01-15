@@ -58,6 +58,13 @@ namespace DLWMS.WinApp.IspitIB180079
 
             }
 
+            if (studentStipednije.Count() == 0)
+            {
+
+                MessageBox.Show($"U bazi nisu evidentirani studenti kojima je u {odabranaStipendijaGodina.Godina}. godini dodijeljena {odabranaStipendijaGodina} stipendija", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            }
+
             Text = $"Broj prikazanih studenata {studentStipednije.Count()}";
 
 
@@ -74,11 +81,12 @@ namespace DLWMS.WinApp.IspitIB180079
                 .Where(x => x.Godina == odabranaGodina)
                 .ToList();
 
-            if(stipendijeGodine.Count() == 0)
+            if (stipendijeGodine.Count() == 0)
             {
 
                 dgvStudentiStipendije.DataSource = null;
                 Text = $"Broj prikazanih studenata 0";
+                MessageBox.Show($"U bazi nisu evidentirani studenti kojima u {odabranaGodina} godini postoje stipendije", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
 
@@ -92,6 +100,41 @@ namespace DLWMS.WinApp.IspitIB180079
         {
 
             UcitajStudentStipendije();
+
+        }
+
+        private void dgvStudentiStipendije_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.ColumnIndex == 5)
+            {
+
+                if (MessageBox.Show("Da li ste sigurni da želite izbrisati odabrani zapis ?", "Pitanje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+
+                    var odabranaStudentStipendija = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
+
+
+                    db.StudentiStipendijeIB180079.Remove(odabranaStudentStipendija);
+
+                    db.SaveChanges();
+
+                    UcitajStudentStipendije();
+
+                }
+
+
+
+            }
+
+        }
+
+        private void btnStipendije_Click(object sender, EventArgs e)
+        {
+
+            var frmStipendije = new frmStipendijeIB180079();
+
+            frmStipendije.ShowDialog();
 
         }
     }

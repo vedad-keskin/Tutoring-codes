@@ -100,6 +100,7 @@
             btnStipendije.TabIndex = 2;
             btnStipendije.Text = "Stipendije po godinama";
             btnStipendije.UseVisualStyleBackColor = true;
+            btnStipendije.Click += btnStipendije_Click;
             // 
             // dgvStudentiStipendije
             // 
@@ -114,6 +115,7 @@
             dgvStudentiStipendije.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentiStipendije.Size = new Size(994, 309);
             dgvStudentiStipendije.TabIndex = 3;
+            dgvStudentiStipendije.CellContentClick += dgvStudentiStipendije_CellContentClick;
             // 
             // Student
             // 
