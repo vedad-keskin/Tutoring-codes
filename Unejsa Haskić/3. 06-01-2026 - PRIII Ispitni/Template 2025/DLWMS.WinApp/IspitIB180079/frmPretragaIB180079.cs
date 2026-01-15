@@ -23,15 +23,17 @@ namespace DLWMS.WinApp.IspitIB180079
 
         private void frmPretragaIB180079_Load(object sender, EventArgs e)
         {
+
             dgvStudentiStipendije.AutoGenerateColumns = false;
 
             cbGodina.SelectedIndex = 0;
-
 
         }
 
         private void cbGodina_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // •	Microsoft.Data.Sqlite.SqliteException: 'SQLite Error 1: 'no such column: s.StipenijId'.'
+            // NullReferenceException
 
             var odabranaGodina = cbGodina?.SelectedItem?.ToString() ?? "N/A"; // "2025" , "2026"
 
@@ -103,14 +105,14 @@ namespace DLWMS.WinApp.IspitIB180079
 
         private void dgvStudentiStipendije_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
-            if(e.ColumnIndex == 5)
+
+            if (e.ColumnIndex == 5)
             {
 
                 var odabranaStudentStipendija = dgvStudentiStipendije.SelectedRows[0].DataBoundItem as StudentiStipendijeIB180079;
 
 
-                if (MessageBox.Show("Da li ste sigurni da želite obrisati odabrani podatak ?","Pitanje",MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBox.Show("Da li ste sigurni da želite obrisati odabrani podatak ?", "Pitanje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
 
                     db.StudentiStipendijeIB180079.Remove(odabranaStudentStipendija);
@@ -125,6 +127,15 @@ namespace DLWMS.WinApp.IspitIB180079
 
 
             }
+
+        }
+
+        private void btnStipendijePoGodinama_Click(object sender, EventArgs e)
+        {
+
+            var frmStipendije = new frmStipendijeIB180079();
+
+            frmStipendije.ShowDialog();
 
         }
     }
