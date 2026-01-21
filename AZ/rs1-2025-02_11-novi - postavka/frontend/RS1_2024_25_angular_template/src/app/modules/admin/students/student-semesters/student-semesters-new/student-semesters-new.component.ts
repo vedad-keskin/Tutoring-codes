@@ -128,7 +128,7 @@ export class StudentSemestersNewComponent implements OnInit {
         this.router.navigate(['/admin/students/semesters',this.studentId]);
       },
       error: (error) => {
-        console.error('Error saving student', error);
+        this.snackbar.showMessage('Academic year already exists', 5000);
       },
     });
 

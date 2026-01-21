@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using RS1_2024_25.API.Data;
 using RS1_2024_25.API.Data.Models;
 using RS1_2024_25.API.Data.Models.SharedTables;
@@ -53,6 +54,13 @@ public class SemesterUpdateOrInsertEndpoint(ApplicationDbContext db) : MyEndpoin
         semester.AcademicYearId = request.AcademicYearId;
         semester.RecordedById = request.RecordedById;
         semester.StudentId = request.StudentId;
+
+        if (db.Semesters.ToList().Exists(x => x.StudentId == request.StudentId && x.AcademicYearId == request.AcademicYearId))
+        {
+
+            throw new KeyNotFoundException("Academic year already exists");
+        }
+
 
 
         // Save changes to the database

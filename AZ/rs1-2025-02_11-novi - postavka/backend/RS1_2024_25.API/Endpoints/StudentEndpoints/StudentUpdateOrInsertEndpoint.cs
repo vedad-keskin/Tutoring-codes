@@ -66,6 +66,9 @@ public class StudentUpdateOrInsertEndpoint(ApplicationDbContext db) : MyEndpoint
         student.ContactMobilePhone = request.ContactMobilePhone;
         student.ContactPrivateEmail = request.ContactPrivateEmail;
 
+
+
+
         // Save changes to the database
         await db.SaveChangesAsync(cancellationToken);
 
