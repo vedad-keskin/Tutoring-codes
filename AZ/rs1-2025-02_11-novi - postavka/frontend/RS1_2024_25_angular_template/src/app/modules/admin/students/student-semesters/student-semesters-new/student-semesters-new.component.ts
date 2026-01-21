@@ -10,6 +10,16 @@ import {
 } from '../../../../../endpoints/semester-endpoint/semester-get-student-by-id-endpoint.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MyAuthService} from '../../../../../services/auth-services/my-auth.service';
+import {
+  AcademicYearGetAllEndpoint
+} from '../../../../../endpoints/academic-year-endpoints/academic-year-get-all-endpoint.service';
+import {
+  StudentUpdateOrInsertRequest
+} from '../../../../../endpoints/student-endpoints/student-update-or-insert-endpoint.service';
+import {
+  SemesterUpdateOrInsertEndpoint,
+  SemesterUpdateOrInsertRequest
+} from '../../../../../endpoints/semester-endpoint/semester-update-or-insert-endpoint.service';
 
 @Component({
   selector: 'app-student-semesters-new',
@@ -28,6 +38,7 @@ export class StudentSemestersNewComponent implements OnInit {
 
 
   semesterForm: FormGroup;
+  academicYears:any;
 
 
 
@@ -38,7 +49,9 @@ export class StudentSemestersNewComponent implements OnInit {
                   private snackbar: MySnackbarHelperService,
                   private semesterGetByStudentIdService:SemesterGetByStudentIdEndpoint,
                   private fb: FormBuilder,
-                  private myAuthService:MyAuthService
+                  private myAuthService:MyAuthService,
+                  private academicYearGetAllService:AcademicYearGetAllEndpoint,
+                  private semesterUpdateOrInsertService:SemesterUpdateOrInsertEndpoint
 
   ) {
 
@@ -48,8 +61,8 @@ export class StudentSemestersNewComponent implements OnInit {
 
       winterSemester: [new Date(), [Validators.required]],
       yearOfStudy: [null, [Validators.required]],
-      price: [null, [Validators.required, Validators.min(50), Validators.max(2000)]],
-      renewal: [false, [Validators.required]],
+      price: [{value: null , disabled:true}, [Validators.required, Validators.min(50), Validators.max(2000)]],
+      renewal: [{value: false , disabled:true}, [Validators.required]],
       academicYearId: [1, [Validators.required]],
       studentId: [this.studentId, [Validators.required]],
       recordedById: [myAuthService.getMyAuthInfo()?.userId, [Validators.required]],
@@ -63,6 +76,7 @@ export class StudentSemestersNewComponent implements OnInit {
 
     this.getByIdStudent();
     this.fetchSemesters();
+    this.fetchAcademicYear();
 
   }
 
@@ -102,6 +116,67 @@ export class StudentSemestersNewComponent implements OnInit {
 
 
   saveSemester() {
+
+    if (this.semesterForm.invalid) return;
+
+    const semesterData: SemesterUpdateOrInsertRequest = {
+      ...this.semesterForm.getRawValue(),
+    };
+
+    this.semesterUpdateOrInsertService.handleAsync(semesterData).subscribe({
+      next: () => {
+        this.router.navigate(['/admin/students/semesters',this.studentId]);
+      },
+      error: (error) => {
+        console.error('Error saving student', error);
+      },
+    });
+
+
+  }
+
+  private fetchAcademicYear() {
+
+    this.academicYearGetAllService.handleAsync().subscribe({
+      next: (data) => {
+
+        this.academicYears = data;
+
+      },
+      error: (err) => {
+        this.snackbar.showMessage('Error getting academic years. Please try again.', 5000);
+        console.error('Error getting academic years:', err);
+      }
+    });
+
+  }
+
+  yearChanged($event: any) {
+
+    const year:number = parseInt($event.target.value, 10);
+
+
+    if(this.semesters.some((x:any) => x.yearOfStudy == year)){
+
+      this.semesterForm.patchValue({
+
+        price:400,
+        renewal:true,
+
+      })
+
+    }else{
+
+
+      this.semesterForm.patchValue({
+
+        price:1800,
+        renewal:false,
+
+      })
+
+
+    }
 
   }
 }
