@@ -99,26 +99,26 @@ namespace DLWMS.WinApp.IspitIB180079
                 var iznos = int.Parse(txtIznos.Text); // "200" --> 200
 
 
-                if (db.StipendijeGodineIB180079.ToList().Exists(x => x.Godina == godina 
+                if (db.StipendijeGodineIB180079.ToList().Exists(x => x.Godina == godina
                 && x.StipendijaId == stipendija.Id))
                 {
 
-                    MessageBox.Show($"Već postoji stipendija {stipendija} na godini {godina}","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show($"Već postoji stipendija {stipendija} na godini {godina}", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 }
                 else
                 {
-                        var novaStipendijaGodina = new StipendijeGodineIB180079()
-                        {
-                            //Id = 7, // pucanje programa
-                            //Stipendija = stipendija, // pucanje programa
+                    var novaStipendijaGodina = new StipendijeGodineIB180079()
+                    {
+                        //Id = 7, // pucanje programa
+                        //Stipendija = stipendija, // pucanje programa
 
-                            StipendijaId = stipendija.Id,
-                            Godina = godina,
-                            Aktivna = true,
-                            Iznos = iznos
+                        StipendijaId = stipendija.Id,
+                        Godina = godina,
+                        Aktivna = true,
+                        Iznos = iznos
 
-                        };
+                    };
 
                     db.StipendijeGodineIB180079.Add(novaStipendijaGodina);
 
@@ -142,6 +142,117 @@ namespace DLWMS.WinApp.IspitIB180079
         {
 
             return Helpers.Validator.ProvjeriUnos(txtIznos, err, "Ovo polje je obavezno");
+
+        }
+
+        private async void btnGenerisi_Click(object sender, EventArgs e)
+        {
+
+            // 1. dio
+            // -- validacija (ako je potrebna)
+            // -- postavljanje threada ( async await Task )
+            // -- ako imamo combo box koji je vezan za generisanje moramo ga izvaditi u prvom dijelu i proslijediti u drugi dio
+
+
+            await Task.Run(() => GenerisiStipendije());
+
+
+        }
+
+        private void GenerisiStipendije()
+        {
+
+            // 2. dio
+            // -- pohrane
+            // -- kalkulacije
+            // -- sleep ( uspavljivanje threada )
+
+
+            var odabranaStipendijaGodina = dgvStipendijeGodine.SelectedRows[0].DataBoundItem as StipendijeGodineIB180079;
+
+            var sviStudenti = db.Studenti.ToList();
+
+
+            var info = "";
+
+            var redniBroj = 1;
+
+
+            //for (int i = 0; i < sviStudenti.Count(); i++)
+            //{
+
+            //    var novaStudentStipendija = new StudentiStipendijeIB180079()
+            //    {
+            //        StudentId = sviStudenti[i].Id,
+            //        StipendijaGodinaId = odabranaStipendijaGodina.Id
+
+            //    };
+
+            //    db.StudentiStipendijeIB180079.Add(novaStudentStipendija);
+            //    db.SaveChanges();
+
+            //}
+
+
+
+            for (int i = 0; i < sviStudenti.Count(); i++)
+            {
+
+                if (!db.StudentiStipendijeIB180079.ToList().Exists(x =>
+                x.StudentId == sviStudenti[i].Id
+                && x.StipendijaGodinaId == odabranaStipendijaGodina.Id))
+                {
+
+                    Thread.Sleep(300);
+
+                    var novaStudentStipendija = new StudentiStipendijeIB180079()
+                    {
+                        StudentId = sviStudenti[i].Id,
+                        StipendijaGodinaId = odabranaStipendijaGodina.Id
+                    };
+
+                    db.StudentiStipendijeIB180079.Add(novaStudentStipendija);
+                    db.SaveChanges();
+
+
+                    info += $"{redniBroj}. {odabranaStipendijaGodina} stipendija u iznosu od {odabranaStipendijaGodina.Iznos} dodata {sviStudenti[i]}{Environment.NewLine}";
+
+                    redniBroj++;
+
+                }
+
+
+            }
+
+
+
+
+
+            Action action = () =>
+            {
+
+                // 3. dio
+                // -- mbox (obavjestavanje korisnika)
+                // -- ispisi
+                // -- ucitavanje (refresh)
+
+                MessageBox.Show($"Uspješno su generisane stipendije", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                txtInfo.Text = info;
+
+
+            };
+            BeginInvoke(action);
+
+
+
+
+        }
+
+        private void frmStipendijeIB180079_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+             DialogResult = DialogResult.OK;
 
         }
     }
