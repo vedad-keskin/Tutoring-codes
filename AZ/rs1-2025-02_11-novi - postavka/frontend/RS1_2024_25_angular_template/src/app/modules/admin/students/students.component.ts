@@ -7,12 +7,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import {debounceTime, distinctUntilChanged, filter, Subject} from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MyDialogConfirmComponent } from '../../shared/dialogs/my-dialog-confirm/my-dialog-confirm.component';
 import {MySnackbarHelperService} from '../../shared/snackbars/my-snackbar-helper.service';
 import {MyDialogSimpleComponent} from '../../shared/dialogs/my-dialog-simple/my-dialog-simple.component';
-import {StudentRestoreEndpointService} from '../../../endpoints/student-endpoints/student-restore-endpoint.service';
-import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-students',
@@ -21,44 +19,22 @@ import {map, tap} from 'rxjs/operators';
   standalone: false
 })
 export class StudentsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber','timeDeleted', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'studentNumber', 'actions'];
   dataSource: MatTableDataSource<StudentGetAllResponse> = new MatTableDataSource<StudentGetAllResponse>();
   students: StudentGetAllResponse[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-  // Nase varijable
-  showDeleted: boolean = false;
-  private searchSubject: Subject<string> = new Subject();
-
 
   constructor(
     private studentGetService: StudentGetAllEndpointService,
     private studentDeleteService: StudentDeleteEndpointService,
     private snackbar: MySnackbarHelperService,
     private router: Router,
-    private dialog: MatDialog,
-    private studentRestoreService:StudentRestoreEndpointService
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.initSearchListener();
     this.fetchStudents();
-  }
-
-  initSearchListener(): void {
-    this.searchSubject.pipe(
-      debounceTime(300), // Vrijeme čekanja (300ms)
-      distinctUntilChanged(), // Emittuje samo ako je vrijednost promijenjena,
-      map(q=> q.toLowerCase()),
-      filter(q => q.length > 3),
-      tap(q=> console.log(this.dataSource.data.length)),
-
-
-
-    ).subscribe((filterValue) => {
-      this.fetchStudents(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
-    });
   }
 
   ngAfterViewInit(): void {
@@ -70,7 +46,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.searchSubject.next(filterValue); // Prosljeđuje vrijednost Subject-u
+    this.fetchStudents(filterValue, this.paginator.pageIndex + 1, this.paginator.pageSize);
   }
 
   fetchStudents(filter: string = '', page: number = 1, pageSize: number = 5): void {
@@ -80,21 +56,12 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       pageSize: pageSize
     }).subscribe({
       next: (data) => {
-        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(
-
-          this.showDeleted ? data.dataItems : data.dataItems.filter(x => !x.isDeleted)
-
-        );
+        this.dataSource = new MatTableDataSource<StudentGetAllResponse>(data.dataItems);
         this.paginator.length = data.totalCount;
       },
       error: (err) => {
         this.snackbar.showMessage('Error fetching students. Please try again.', 5000);
         console.error('Error fetching students:', err);
-      },
-      complete: () => {
-
-        console.log(this.dataSource.data.length);
-
       }
     });
   }
@@ -136,54 +103,12 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   openStudentSemesters(id:number) {
-
-    this.router.navigate(['/admin/students/semesters', id]);
-
-
-  }
-
-  toggleDeleted() {
-
-    this.showDeleted = !this.showDeleted;
-
-    this.fetchStudents();
-
-  }
-
-  openMyConfirmDialogForRestore(id:any) {
-
-    const dialogRef = this.dialog.open(MyDialogConfirmComponent, {
+    this.dialog.open(MyDialogSimpleComponent, {
       width: '350px',
       data: {
-        title: 'Confirm Restore',
-        message: 'Are you sure you want to restore this student?'
+        title: 'Ispitni zadatak',
+        message: 'Implementirajte matičnu knjigu?'
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('User confirmed restore');
-        this.restoreStudent(id);
-      } else {
-        console.log('User cancelled restore');
-      }
-    });
-
-  }
-
-  private restoreStudent(id: any) {
-
-    this.studentRestoreService.handleAsync(id).subscribe({
-      next: () => {
-        this.snackbar.showMessage('Student successfully restored.');
-        this.fetchStudents(); // Refresh the list after deletion
-      },
-      error: (err) => {
-        this.snackbar.showMessage('Error restoring student. Please try again.', 5000);
-        console.error('Error restoring student:', err);
-      }
-    });
-
-
   }
 }
