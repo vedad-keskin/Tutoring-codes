@@ -17,10 +17,10 @@ namespace DLWMS.Data.IspitIB180079
         public int StipendijaGodinaId { get; set; }
         public StipendijeGodineIB180079 StipendijaGodina { get; set; }
 
-        public string StudentInfo => $"({Student.BrojIndeksa}) {Student.Ime} {Student.Prezime}";
+        public string StudentInfo => $"({Student?.BrojIndeksa ?? "N/A"}) {Student?.Ime ?? "N/A"} {Student?.Prezime ?? "N/A"}";
 
-        public string GodinaInfo => StipendijaGodina?.Godina ?? "2025";
-        public string StipendijaInfo => StipendijaGodina?.Stipendija?.Naziv ?? "";
+        public string GodinaInfo => StipendijaGodina?.Godina ?? "N/A";
+        public string StipendijaInfo => StipendijaGodina?.Stipendija?.Naziv ?? "N/A";
         public int IznosInfo => StipendijaGodina?.Iznos ?? 0;
 
         public int Ukupno => StipendijaGodina.Godina == DateTime.Now.Year.ToString() ? StipendijaGodina.Iznos * DateTime.Now.Month : StipendijaGodina.Iznos * 12;
