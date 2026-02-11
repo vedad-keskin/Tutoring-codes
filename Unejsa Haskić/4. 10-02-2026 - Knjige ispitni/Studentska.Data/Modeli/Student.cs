@@ -13,12 +13,17 @@ namespace Studentska.Data.Entiteti
         public string Prezime { get; set; }
         public int Semestar { get; set; }
         public DateTime DatumRodjenja { get; set; }
-        public int SpolId{ get; set; }
+        public int SpolId { get; set; }
         public Spol Spol { get; set; }
         public int GradId { get; set; }
         public Grad Grad { get; set; }
         public bool Aktivan { get; set; }
         public byte[] Slika { get; set; }
+
+        public override string ToString()
+        {
+            return $"({Indeks}) {Ime} {Prezime}";
+        }
        
     }    
 }
