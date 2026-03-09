@@ -7,5 +7,10 @@
         public int DrzavaId { get; set; }
         public Drzava Drzava { get; set; }
         public bool Aktivan { get; set; }
+
+        public override string ToString()
+        {
+            return Naziv;
+        }
     }
 }

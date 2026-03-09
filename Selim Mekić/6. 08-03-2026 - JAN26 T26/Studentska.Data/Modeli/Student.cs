@@ -19,6 +19,11 @@ namespace Studentska.Data.Entiteti
         public Grad Grad { get; set; }
         public bool Aktivan { get; set; }
         public byte[] Slika { get; set; }
+
+        public override string ToString()
+        {
+            return $"({Indeks}) {Ime} {Prezime}";
+        }
        
     }    
 }
