@@ -9,7 +9,7 @@ public:int _ocjena;
 public:int* _ECTS;
 	  // Kreirati i implementirati
 	  // 1. Defaultni konstruktor
-	  // 2. Konstruktor koji prima parametre
+	  // 2. Konstruktor koji prima parametre (user-def constr.)
 	  // 3. Konstruktor kopije
 	  // 4. Operator dodjele
 	  // 5. Destruktor
