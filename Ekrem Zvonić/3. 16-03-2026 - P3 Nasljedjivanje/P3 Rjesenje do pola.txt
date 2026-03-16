@@ -1,0 +1,261 @@
+#include <iostream>
+using namespace std;
+
+//    AlocirajNiz
+
+// _imePrezime = GetNizKaraktera(imeprezime); --> Vedad Keskin
+char* GetNizKaraktera(const char* tekst) {
+
+
+	int vel = strlen(tekst) + 1; // 15
+
+	char* novi = new char[vel];
+
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+
+
+
+// BAZNA KLASA -> KLASA KOJA SE NASLJEDUJE
+
+// 1. RAZLIKA -> protected -> da se nekim paramterima moze pristupiti samo unutar te klase + klase koja naslijedi tu klasu (izvedena)
+
+class Osoba {
+protected:
+	char* _imePrezime;	// --- 
+	char* _JMBG;		// --- 
+public:
+
+
+	// dft + user-def 
+
+	//            "Denis Music",                "2131232132");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+
+		_JMBG = GetNizKaraktera(jmbg);
+
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+
+			delete[] _JMBG;
+
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+
+	virtual void Test() { // kada napravimo virtual metodu ta metoda se moze "overridati" u izvedenoj klasi 
+
+		cout << "POCETNA TEST METODA BAZNE KLASE" << endl;
+
+	}
+
+
+	virtual void Info() = 0; // pure virtual func. --> klasa Osoba --> postaje apstraktna klasa   // 2. RAZLIKA 
+
+
+	virtual ~Osoba() { // 3. RAZLIKA 
+
+		cout << "DESTRUKTOR BAZNE KLASE" << endl;
+
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+
+	//void Ispis() {
+
+	//	cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	//}
+
+	// cout << osoba1;
+
+	friend ostream& operator << (ostream& COUT,  const Osoba& obj) {
+
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+
+};
+
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIJEDI BAZNU KLASU 
+
+// 5. KORAKA
+
+class Profesor : public Osoba  { // 1. korak sada je klasi Prof dostupno sve sto se nalazi u klasi Osoba
+public:
+	char* _titula;
+
+
+	// dft + user-def 
+
+	//Profesor profesor1("dr. sc.",                   "Denis Music",                "2131232132");
+
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime,jmbg)  { // 2. korak proslijedjuemo paraemtre bazne klase u konstruktor koji vec postoji i koji vec rjeseva te bazne parametre 
+
+		_titula = GetNizKaraktera(titula);
+
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. korak spojiti copy sa copy 
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4. korak spoji op = sa op = 
+
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	void Test() { // override metoda 
+
+		cout << "NAPREDNA TEST METODA IZVEDENE KLASE" << endl;
+
+	}
+
+	void Info() { // 5. KORAK 
+
+		cout << *this;
+
+	}
+
+
+	~Profesor() { // nap* -> kod desktruktora izvedene klase brisemo samo parametre te izvedene klase 
+
+		cout << "DESTRUKTOR IZVEDENE KLASE" << endl;
+
+		delete[] _titula;
+
+		_titula = nullptr;
+
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1. NACIN ISPISA IZVEDENE KLASE
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( ) 
+
+
+};
+
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+
+
+
+
+};
+
+
+
+
+
+
+void main() {
+
+	//Osoba osoba0;
+	//Osoba osoba1("Vedad Keskin","12129981500001"); // kada klasa postane apstraktna odna se vise ta klasa ne moze praviti 
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "2131232132");
+
+
+	//osoba1.Test();
+	//profesor1.Test();
+
+
+	//osoba1.Ispis();
+	//osoba0.Ispis();
+
+	//cout << osoba1;
+
+	//Profesor profesorKopija = profesor1; // copy 
+	//Profesor profesorOperatorDodjele;
+	//profesorOperatorDodjele = profesor1; // op = 
+
+	//cout << profesorOperatorDodjele;
+
+	// SPECIJALNI SLUCAJ 
+
+	Osoba* profesor2 = new Profesor("dr. sc.", "Elmir Babovic", "12312141343");
+
+	profesor2->Info();
+
+	delete profesor2;
+
+
+
+	system("pause>0");
+}
+
