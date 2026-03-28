@@ -1,0 +1,596 @@
+#include<iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+
+	if (tekst == nullptr)
+	{
+		return nullptr;
+	}
+
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+}
+
+class Datum {
+	int* _dan, * _mjesec, * _godina;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Operator poredjenja
+
+	Datum(int dan = 1, int mjesec = 1, int godina = 2000) {
+
+		_dan = new int(dan);
+
+		_mjesec = new int(mjesec);
+
+		_godina = new int(godina);
+	}
+
+	Datum(const Datum& obj) {
+
+		_dan = new int(*obj._dan);
+
+		_mjesec = new int(*obj._mjesec);
+
+		_godina = new int(*obj._godina);
+	}
+
+	Datum& operator = (const Datum& obj) {
+		if (this != &obj)
+		{
+			delete _dan;
+
+			delete _mjesec;
+
+			delete _godina;
+
+			_dan = new int(*obj._dan);
+
+			_mjesec = new int(*obj._mjesec);
+
+			_godina = new int(*obj._godina);
+		}
+		return *this;
+	}
+
+	~Datum() {
+
+		delete _dan;
+		_dan = nullptr;
+
+		delete _mjesec;
+		_mjesec = nullptr;
+
+		delete _godina;
+		_godina = nullptr;
+	}
+
+	friend ostream& operator << (ostream& COUT, const Datum& obj) {
+
+		COUT << *obj._dan << "." << *obj._mjesec << "." << *obj._godina << endl;
+
+		return COUT;
+	}
+
+	bool operator == (const Datum& obj) {
+
+		return *_dan == *obj._dan && *_mjesec == *obj._mjesec && *_godina == *obj._godina;
+	}
+};
+
+
+class Fudbaler {
+	char* _imePrezime;
+	char* _pozicija;
+	int _brojDresa;
+	Datum* _datumRodjenja;
+public:
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+	//8. Operator poredjenja
+
+	Fudbaler(const char* imePrezime = "---", const char* pozicija = "---", int brojDresa = 0, Datum datumRodjenja = Datum()) {
+
+		_imePrezime = GetNizKaraktera(imePrezime);
+
+		_pozicija = GetNizKaraktera(pozicija);
+
+		_brojDresa = brojDresa;
+
+		_datumRodjenja = new Datum(datumRodjenja);
+	}
+
+	Fudbaler(const Fudbaler& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_pozicija = GetNizKaraktera(obj._pozicija);
+
+		_brojDresa = obj._brojDresa;
+
+		_datumRodjenja = new Datum(*obj._datumRodjenja);
+	}
+
+	Fudbaler& operator = (const Fudbaler& obj) {
+		if (this != &obj)
+		{
+			delete[] _imePrezime;
+
+			delete[] _pozicija;
+
+			delete _datumRodjenja;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_pozicija = GetNizKaraktera(obj._pozicija);
+
+			_brojDresa = obj._brojDresa;
+
+			_datumRodjenja = new Datum(*obj._datumRodjenja);
+		}
+		return *this;
+	}
+
+	~Fudbaler() {
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+
+		delete[] _pozicija;
+		_pozicija = nullptr;
+
+		delete _datumRodjenja;
+		_datumRodjenja = nullptr;
+	}
+
+	friend ostream& operator << (ostream& COUT, const Fudbaler& obj) {
+
+		COUT << "Ime i prezime: " << obj._imePrezime << endl;
+		COUT << "Pozicija: " << obj._pozicija << endl;
+		COUT << "Broj dresa: " << obj._brojDresa << endl;
+		COUT << "Datum rodjenja: " << *obj._datumRodjenja << endl;
+
+		return COUT;
+	}
+
+	bool operator == (const Fudbaler& obj) {
+
+		return strcmp(_imePrezime, obj._imePrezime) == 0 && _brojDresa == obj._brojDresa;
+	}
+	//Operator += na način da se mijenja broj dresa fudbalera na proslijeđenu vrijednost
+
+	Fudbaler& operator += (int broj) {
+
+		//_brojDresa += broj;
+		_brojDresa = broj;
+
+		return *this;
+	}
+
+
+};
+class Tim {
+	char* _naziv;
+	Fudbaler* _momcad;
+	int* _trenutno;
+	int _max;
+public:
+	//Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Operator ispisa 
+	// 7. Potrebne funkcije
+	// 8. Operator poredjenja
+
+	Tim(const char* naziv = "---", int max = 5) {
+
+		_naziv = GetNizKaraktera(naziv);
+
+		_trenutno = new int(0);
+
+		//_max = 5;
+		_max = max;
+
+		_momcad = new Fudbaler[_max];
+	}
+	Tim(const Tim& obj) {
+
+		_naziv = GetNizKaraktera(obj._naziv);
+
+		_trenutno = new int(*obj._trenutno);
+
+		_max = obj._max;
+
+		_momcad = new Fudbaler[_max];
+
+		for (int i = 0; i < *obj._trenutno; i++)
+		{
+			_momcad[i] = obj._momcad[i];
+		}
+	}
+	Tim& operator = (const Tim& obj) {
+		if (this != &obj)
+		{
+			delete[] _naziv;
+
+			delete _trenutno;
+
+			delete[] _momcad;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+
+			_trenutno = new int(*obj._trenutno);
+
+			_max = obj._max;
+
+			_momcad = new Fudbaler[_max];
+
+			for (int i = 0; i < *obj._trenutno; i++)
+			{
+				_momcad[i] = obj._momcad[i];
+			}
+		}
+		return *this;
+	}
+	~Tim() {
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+		delete _trenutno;
+		_trenutno = nullptr;
+
+		delete[] _momcad;
+		_momcad = nullptr;
+	}
+
+	friend ostream& operator << (ostream& COUT, const Tim& obj) {
+		COUT << "===== Tim =====" << endl;
+		COUT << "Naziv tima: " << obj._naziv << endl << endl;
+
+		COUT << "==== Momcad ====" << endl;
+		for (int i = 0; i < *obj._trenutno; i++)
+		{
+			COUT << obj._momcad[i];
+		}
+
+		return COUT;
+	}
+	bool operator == (const Tim& obj) {
+
+		return strcmp(_naziv, obj._naziv) == 0;
+	}
+
+	// Operator ( ) na način da se doda igrač u tim gdje je Fudbaler parametar operatora
+
+	Tim& operator () (Fudbaler fudbaler) {
+
+		if (_max == *_trenutno)
+		{
+			cout << "Tim je popunjen" << endl;
+			return *this;
+		}
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			if (_momcad[i] == fudbaler)
+			{
+				cout << "Ovaj fudbaler je vec u timu" << endl;
+				return *this;
+			}
+		}
+
+		_momcad[*_trenutno] = fudbaler;
+		(*_trenutno)++;
+
+		return *this;
+	}
+
+	const char* GetNazivTima() {
+		return _naziv;
+	}
+
+};
+
+
+class Liga {
+	char* _naziv;
+	Tim* _timovi;
+	int* _trenutno;
+	int _max;
+public:
+	//Kreirati i implementirati
+	// 1. Defaultni konstruktor
+	// 2. Konstruktor koji prima parametre
+	// 3. Konstruktor kopije
+	// 4. Operator dodjele
+	// 5. Destruktor
+	// 6. Operator ispisa 
+	// 7. Potrebne funkcije
+	// 8. Operator poredjenja
+
+	Liga(const char* naziv = "---", int max = 2) {
+
+		_naziv = GetNizKaraktera(naziv);
+
+		_trenutno = new int(0);
+
+		//_max = 2;
+		_max = max;
+
+		_timovi = new Tim[_max];
+	}
+
+	Liga(const Liga& obj) {
+
+		_naziv = GetNizKaraktera(obj._naziv);
+
+		_trenutno = new int(*obj._trenutno);
+
+		_max = obj._max;
+
+		_timovi = new Tim[_max];
+
+		for (int i = 0; i < *obj._trenutno; i++)
+		{
+			_timovi[i] = obj._timovi[i];
+		}
+	}
+
+	Liga& operator = (const Liga& obj) {
+
+		if (this != &obj)
+		{
+			delete[] _naziv;
+
+			delete _trenutno;
+
+			delete[] _timovi;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+
+			_trenutno = new int(*obj._trenutno);
+
+			_max = obj._max;
+
+			_timovi = new Tim[_max];
+
+			for (int i = 0; i < *obj._trenutno; i++)
+			{
+				_timovi[i] = obj._timovi[i];
+			}
+		}
+		return *this;
+	}
+
+	~Liga() {
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+		delete _trenutno;
+		_trenutno = nullptr;
+
+		delete[] _timovi;
+		_timovi = nullptr;
+	}
+
+	friend ostream& operator << (ostream& COUT, const Liga& obj) {
+		COUT << "===== Liga =====" << endl;
+		COUT << "Naziv lige: " << obj._naziv << endl;
+
+		COUT << "==== Timovi ====" << endl;
+		for (int i = 0; i < *obj._trenutno; i++)
+		{
+			cout << obj._timovi[i];
+		}
+		return COUT;
+	}
+
+	bool operator == (const Liga& obj) {
+
+		return strcmp(_naziv, obj._naziv) == 0;
+	}
+	// Operator ( ) na način da se parametar Tim doda u niz _timovi
+	// Obratiti pažnju na dupliranje timova i na opseg niza
+
+	Liga& operator () (Tim tim) {
+
+		if (_max == *_trenutno)
+		{
+			cout << "Liga je popunjena" << endl;
+			return *this;
+		}
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			if (_timovi[i] == tim)
+			{
+				cout << "Ovaj tim se vec nalazi u ligi" << endl;
+				return *this;
+			}
+		}
+
+		_timovi[*_trenutno] = tim;
+		(*_trenutno)++;
+
+		return *this;
+	}
+
+
+	// Operator [ ] na način da se vraća true ili false u slučaju da Tim postoji ili ne postoji u nizu _timovi
+
+	bool operator [] (Tim tim) {
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			if (_timovi[i] == tim)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	// Operator [ ] na način da se vraća true ili false u slučaju da postoji ili ne postoji tim sa proslijeđenim nazivom u nizu _timovi
+
+	bool operator [] (const char* nazivTima) {
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			if (strcmp(_timovi[i].GetNazivTima(), nazivTima) == 0)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+};
+
+void main()
+{
+
+	Datum datum1(12, 12, 1998);
+	Datum datum2(1, 15, 1995);
+
+
+	/*if (datum1 == datum2)
+	{
+		cout << "Isti su " << endl;
+	}
+	else
+	{
+		cout << "Nisu isti " << endl;
+	}*/
+
+	//cout << datum1;
+	//cout << datum2;
+
+
+	Fudbaler fudbaler1("Oliver Kahn", "GK", 1, datum2);
+	Fudbaler fudbaler2("Philipp Lahm", "LB", 21, datum1);
+	Fudbaler fudbaler3("Franck Ribery", "LMF", 7, datum2);
+	Fudbaler fudbaler4("Arjen Robben", "RMF", 10, datum2);
+	Fudbaler fudbaler5("Luca Toni", "CF", 9, datum1);
+	Fudbaler fudbaler6("Victor Valdez", "GK", 1, datum1);
+	Fudbaler fudbaler7("Charles Puyol", "CB", 5, datum1);
+	Fudbaler fudbaler8("Andres Iniesta", "CMF", 8, datum1);
+	Fudbaler fudbaler9("Ronaldinho", "SS", 10, datum1);
+	Fudbaler fudbaler10("David Villa", "CF", 9, datum1);
+
+	//
+	// fudbaler1 += 3;
+
+	/*if (fudbaler1 == fudbaler1)
+	{
+		cout << "Isti su " << endl;
+	}
+	else
+	{
+		cout << "Nisu isti " << endl;
+	}*/
+
+	//cout << fudbaler1;
+
+	Tim tim1("Bayern Munchen", 11);
+	//cout << tim1;
+
+	tim1(fudbaler1);
+	tim1(fudbaler2);
+	tim1(fudbaler3);
+	tim1(fudbaler4);
+	tim1(fudbaler5);
+
+	//cout << tim1;
+
+	Tim tim2("Barcelona", 11);
+
+	tim2(fudbaler6);
+	tim2(fudbaler7);
+	tim2(fudbaler8);
+	tim2(fudbaler9);
+	tim2(fudbaler10);
+
+	/*if (tim1 == tim1)
+	{
+		cout << "Isti su " << endl;
+	}
+	else
+	{
+		cout << "Nisu isti " << endl;
+	}*/
+
+
+	Liga liga("Liga Sampiona", 36);
+
+	liga(tim1);
+	liga(tim2);
+
+
+
+
+	if (liga[tim1] == true)
+	{
+		cout << "Tim1 je u ligi" << endl;
+	}
+	else
+	{
+		cout << "Tim1 nije u ligi" << endl;
+	}
+
+
+	if (liga[tim2] == true)
+	{
+		cout << "Tim2 je u ligi" << endl;
+	}
+	else
+	{
+		cout << "Tim2 nije u ligi" << endl;
+	}
+
+
+
+
+	if (liga["Bayern Munchen"] == true)
+	{
+		cout << "Tim1 postoji u ligi prema proslijedjenom nazivu" << endl;
+	}
+	else
+	{
+		cout << "Tim1 ne postoji u ligi prema proslijedjenom nazivu" << endl;
+	}
+
+
+	if (liga["Barcelona"] == true)
+	{
+		cout << "Tim2 postoji u ligi prema proslijedjenom nazivu" << endl;
+	}
+	else
+	{
+		cout << "Tim2 ne postoji u ligi prema proslijedjenom nazivu" << endl;
+	}
+
+	cout << liga;
+
+	system("pause>0");
+}
