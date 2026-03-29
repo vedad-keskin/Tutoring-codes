@@ -1,0 +1,240 @@
+#include <iostream>
+using namespace std;
+
+
+//    AlocirajNiz
+char* GetNizKaraktera(const char* tekst) {
+
+
+	int vel = strlen(tekst) + 1;
+
+	char* novi = new char[vel];
+
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+
+// BAZNA KLASA -> KLASA KOJA SE NASLIJEDJUJE 
+
+// 3. RAZLIKE 
+
+class Osoba {
+protected: // 1. RAZLIKA
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	// dft + user-def constr.
+
+	//               "Denis Music",                "123123122");
+
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_JMBG = GetNizKaraktera(obj._JMBG);
+		}
+		return *this;
+	}
+
+
+	virtual void Test() { // OPCIONALNO
+
+		cout << "POCETNA IMPLEMENTACIJA NEKE TEST() METODE" << endl;
+
+	}
+
+	virtual void Info() = 0; // pure virtual func. ---> 2. RAZLIKA 
+
+	// 1. CIJELA BAZNA KLASA POSTAJE APSTRAKTNA -> KLASA OSOBA POSTAJE POMOCNA KLASA I ONA SE VISE NE MOZE INSTANCIRATI
+	// 2. TI MORAS (NE OPCIJLANO) OVERRIDE OVU METODU U SVAKOJ IZVEDENOJ KLASI 
+
+
+
+	virtual ~Osoba() { // 3. RAZLIKA
+
+		cout << "DESTRUKTOR BAZNE KLASE" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	}
+
+	//cout << osoba0;
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+
+};
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIJEDI BAZNU KLASU 
+
+// 5. KORAKA
+
+class Profesor : public Osoba { // 1. KORAK --> proces nasljedjivanja
+public:
+	char* _titula;
+
+
+	//Profesor profesor1("dr. sc.",                   "Denis Music",                 "123123122");
+
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime, jmbg) { // 2. KORAK spojiti spojeni + spojenim constr. klase Osoba
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. KORAK spojiti copy sa copy constr.
+
+		_titula = GetNizKaraktera(obj._titula);
+
+
+	}
+
+	Profesor& operator = (const Profesor& obj)  {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4. KORAK spojiti op = sa op = 
+
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+
+	void Test() override {
+
+		cout << "NAPREDNA IMPLEMENTACIJA NEKE TEST() METODE" << endl;
+
+	}
+
+	void Info() override { // 5. KORAK
+
+		cout << *this;
+
+	}
+	
+	~Profesor() {
+
+		cout << "DESTRUKTOR IZVEDENE KLASE" << endl;
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( ) 
+
+
+
+};
+
+// IZVEDENA
+
+class Student { 
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti; // [ ] 
+	int* _trenutno;
+	int _max;
+
+
+};
+
+
+
+void main()
+{
+
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "123123122");
+
+	//Profesor profesorKopija = profesor1;
+
+	//Profesor profesorOperatorDodjele;
+
+	//profesorOperatorDodjele = profesor1;
+
+
+	//osoba0.Ispis();
+
+	//cout << osoba0;
+	//cout << osoba1;
+	//cout << profesor1;
+	//profesor1.Info();
+	//cout << profesorKopija;
+	//cout << profesorOperatorDodjele;
+
+	//profesor1.Test();
+
+	// SPECIJALNI SLUCAJ / EDGE CASE
+
+	Osoba* profesor2 = new Profesor("dr. sc.", "Elmir Babovic", "2312321321");
+
+	cout << *profesor2;
+	profesor2->Info();
+
+	delete profesor2;
+
+
+	system("pause>0");
+}
