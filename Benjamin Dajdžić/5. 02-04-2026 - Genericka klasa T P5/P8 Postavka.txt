@@ -1,0 +1,157 @@
+#include <iostream>
+using namespace std;
+
+template<class T>
+class Kolekcija {
+public:
+    T* _elementi;
+    int* _trenutno;
+    //Kreirati i implementirati
+    //1. Defaultni konstruktor
+    //2. Konstruktor koji prima parametre
+    //3. Konstruktor kopije
+    //4. Operator dodjele
+    //5. Destruktor
+    //6. Operator ispisa 
+    //7. Potrebne funkcije
+
+
+    // Operator += koji ima za cilj dodati novi element u kolekciju.
+    // Onemoguciti dodavanje istih elemenata. Baciti izuzetak tipa exception, ukoliko element vec postoji
+
+
+
+    // Operator -= koji ima za cilj ukloniti odredjeni element iz kolekcije.
+    // Ako element nije pronadjen, baciti izuzetak tipa exception.
+
+
+    // Operator [] dvije verzije
+    // Treba da pronadje i vrati trazeni element. Ako element ne postoji, baciti izuzetak tipa exception
+
+    T& operator[] (T el) {
+
+    }
+
+    T& operator[] (int pozicija) {
+
+    }
+
+
+};
+
+class Artikal {
+protected:
+    char* _kod;
+    char* _naziv;
+    float _cijena;
+    int _kolicinaNaSkladistu;
+public:
+    //Kreirati i implementirati
+    //1. Defaultni konstruktor
+    //2. Konstruktor koji prima parametre
+    //3. Konstruktor kopije
+    //4. Operator dodjele
+    //5. Destruktor
+    //6. Operator ispisa 
+    //7. Operator poredjenja
+
+
+};
+
+class PrehrambeniArtikal : public Artikal {
+public:
+    float _gramaza;
+    //Kreirati i implementirati
+    //1. Defaultni konstruktor
+    //2. Konstruktor koji prima parametre
+    //3. Konstruktor kopije
+    //4. Operator dodjele
+    //5. Destruktor
+    //6. Operator ispisa 
+
+
+};
+
+class Odjeca : public Artikal {
+public:
+    char* _velicina; // XS, S, M, L ..
+    char* _materijal; // pamuk, svila ..
+    //Kreirati i implementirati
+    //1. Defaultni konstruktor
+    //2. Konstruktor koji prima parametre
+    //3. Konstruktor kopije
+    //4. Operator dodjele
+    //5. Destruktor
+    //6. Operator ispisa 
+
+
+};
+
+class Prodavnica {
+public:
+    char* _naziv;
+    char* _adresa;
+
+    Kolekcija<Odjeca> _odjeca;
+    Kolekcija<PrehrambeniArtikal> _prehrana;
+    //Kreirati i implementirati
+    //1. Defaultni konstruktor
+    //2. Konstruktor koji prima parametre
+    //3. Konstruktor kopije
+    //4. Operator dodjele
+    //5. Destruktor
+    //6. Operator ispisa 
+    //7. Potrebne funkcije
+    //8. Operator poredjenja
+
+    bool DodajOdjecu(Odjeca odjeca)
+    {
+        // Funkcija ima za cilj dodati novi komad odjece
+        // Onemoguciti dodavanje dva ista komada.
+
+
+    }
+
+    bool DodajPrehrambeniArtikal(PrehrambeniArtikal prehrana)
+    {
+        // Funkcija ima za cilj dodati novi prehrambeni artikl
+        // Onemoguciti dodavanje dva ista komada 
+
+
+    }
+
+    bool UvecajStanjeNaSkladistu(PrehrambeniArtikal prehrana, int kolicina)
+    {
+        // Funkcija ima za cilj da uveca stanje na skladistu za proslijedjeni artikal
+
+
+    }
+
+    bool UvecajStanjeNaSkladistu(Odjeca odjeca, int kolicina)
+    {
+        // Funkcija ima za cilj da uveca stanje na skladistu za proslijedjeni artikal
+
+
+    }
+
+    bool UmanjiStanjeNaSkladistu(PrehrambeniArtikal prehrana, int kolicina)
+    {
+        // Funkcija ima za cilj da umanji stanje na skladistu za proslijedjeni artikal
+
+
+    }
+
+    bool UmanjiStanjeNaSkladistu(Odjeca odjeca, int kolicina)
+    {
+        // Funkcija ima za cilj da umanji stanje na skladistu za proslijedjeni artikal
+
+
+    }
+};
+
+void main()
+{
+
+
+    system("PAUSE>0");
+}
