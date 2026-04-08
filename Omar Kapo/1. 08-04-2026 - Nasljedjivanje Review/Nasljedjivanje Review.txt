@@ -1,0 +1,386 @@
+#include<iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* sadrzaj)
+{
+	int vel = strlen(sadrzaj) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, sadrzaj);
+	return novi;
+}
+
+// 3. RAZLIKA 
+
+class Osoba { // BAZNA KLASA
+protected: // 1. RAZLIKA
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+
+	//               "Denis Music",               "13123123");
+	Osoba(const char* imePrezime = "---", const char* jmbg = "---")
+	{
+		_imePrezime = GetNizKaraktera(imePrezime);
+		_JMBG = GetNizKaraktera(jmbg);
+	}
+
+	Osoba(const Osoba& obj)
+	{
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+	}
+
+	Osoba& operator=(const Osoba& obj)
+	{
+		if (this != &obj)
+		{
+			delete[]_imePrezime;
+			delete[]_JMBG;
+
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+		}
+		return *this;
+	}
+
+	virtual void Test() { // ONA SE MOZE ILI NE MORA OVERRIDE
+
+		cout << "POCETNA IMPLEMENTACIJA" << endl;
+
+	}
+
+	virtual void Info() = 0; // 2. RAZLIKA -> pure virt. func. -> klasa postaje apstraktna -> ONA SE MORA OVERRIDEATI
+
+	virtual ~Osoba() { // 3. RAZLIKA
+
+		cout << "POZVAO SE BAZNI DESTRUKTOR" << endl;
+
+		delete[]_imePrezime;
+		delete[]_JMBG;
+		_imePrezime = nullptr;
+		_JMBG = nullptr;
+	}
+
+	friend ostream& operator<< (ostream& COUT, const Osoba& obj)
+	{
+
+		COUT << "Ime i prezime: " << obj._imePrezime  << endl;
+
+		COUT << "JMBG: " << obj._JMBG << endl;
+
+		return COUT;
+		
+	}
+};
+
+// 5. KORAKA
+
+class Profesor : public Osoba { // IZVEDENA KLASA 1. KORAK
+public:
+	char* _titula;
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+
+
+
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+
+	//Profesor profesor1("dr. sc.",                 "Denis Music",             "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime, jmbg) // 2. KORAK
+	{
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	// 3. Konstruktor kopije (copy constructor)
+
+	Profesor(const Profesor& obj) : Osoba(obj) // 3. KORAK
+	{
+		_titula = GetNizKaraktera(obj._titula);
+	}
+
+	// 4. Operator dodjele (operator =)
+
+	Profesor& operator=(const Profesor& obj)
+	{
+		if (this != &obj)
+		{
+			delete[]_titula;
+
+			Osoba::operator=(obj); // 4. KORAK 
+
+			_titula = GetNizKaraktera(obj._titula);
+		}
+		return *this;
+	}
+
+	// 5. Dealokacija (destructor)
+
+	~Profesor()
+	{
+		cout << "POZVAO SE IZVEDENI DESTRUKTOR" << endl;
+
+
+		delete[]_titula;
+		_titula = nullptr;
+	}
+
+	void Test() override {
+
+		cout << "NAPREDNA IMPLEMENTACIJA" << endl;
+
+	}
+
+	void Info() override { // 5. KORAK
+
+		cout << *this;
+
+	}
+
+	// 6. Operator ispisa (operator <<) 
+
+	friend ostream& operator<<(ostream& COUT, const Profesor& obj)
+	{
+
+		COUT <<  obj._titula << " " << obj._imePrezime << " ["<<obj._JMBG<<"]" << endl;
+
+		return COUT;
+	}
+};
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor;
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+
+
+
+
+	Predmet(const char* naziv = "---", int ects = 0, Profesor profesor = Profesor()   )
+	{
+		_naziv = GetNizKaraktera(naziv);
+		_ECTS = new int(ects);
+		_predmetniProfesor = new Profesor(profesor);
+	}
+
+	Predmet(const Predmet& obj)
+	{
+		_naziv = GetNizKaraktera(obj._naziv);
+		_ECTS =  new int(*obj._ECTS);
+		_predmetniProfesor = new Profesor(*obj._predmetniProfesor);
+	
+	}
+
+	Predmet& operator=(const Predmet& obj)
+	{
+		if (this != &obj)
+		{
+			delete[]_naziv;
+			delete _ECTS;
+			delete _predmetniProfesor;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+			_ECTS = new int(*obj._ECTS);
+			_predmetniProfesor = new Profesor(*obj._predmetniProfesor);
+
+		}
+		return *this;
+	}
+
+	~Predmet()
+	{
+		delete[]_naziv;
+		delete _ECTS;
+		delete _predmetniProfesor;
+		_naziv = nullptr;
+		_ECTS = nullptr;
+		_predmetniProfesor = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Predmet& obj)
+	{
+		COUT << "Predmet: " << obj._naziv << endl; // [ ] nikad ne derefer.
+		COUT << "ECTS: " << *obj._ECTS << endl;    // ( ) mora se derefer.
+		COUT << "Profesor: " << endl;
+			COUT << *obj._predmetniProfesor;
+
+		return COUT;
+	}
+
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Operator ispisa (operator <<) 
+
+
+};
+
+
+class Student : public Osoba { // IZVEDENA KLASA
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+
+
+
+	Student(const char* brojIndeksa, const char* ime, const char* jmbg, int max) :Osoba(ime, jmbg)
+	{
+		_brojIndeksa = GetNizKaraktera(brojIndeksa);
+
+		_max = max;
+		_trenutno = new int(0);
+
+		_polozeniPredmeti = new Predmet[_max];
+	}
+
+	Student(const Student& obj) : Osoba(obj)
+	{
+		_brojIndeksa = GetNizKaraktera(obj._brojIndeksa);
+		_max = obj._max;
+		_trenutno = new int(*obj._trenutno);
+		_polozeniPredmeti = new Predmet[_max];
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+			_polozeniPredmeti[i] = obj._polozeniPredmeti[i];
+		}
+
+
+	}
+
+	Student& operator=(const Student& obj)
+	{
+		if (this != &obj)
+		{
+			delete[]_brojIndeksa;
+			delete _trenutno;
+			delete[]_polozeniPredmeti;
+
+			Osoba::operator=(obj); // 4. KORAK
+
+			_brojIndeksa = GetNizKaraktera(obj._brojIndeksa);
+			_max = obj._max;
+			_trenutno = new int(*obj._trenutno);
+			_polozeniPredmeti = new Predmet[_max];
+
+			for (int i = 0; i < *_trenutno; i++) {
+				_polozeniPredmeti[i] = obj._polozeniPredmeti[i];
+			}
+		}
+		return *this;
+	}
+	
+	void Info() override { // 5. KORAK
+
+		cout << *this;
+
+	}
+
+
+	bool DodajPredmet(Predmet predmet) {
+
+		if (*_trenutno >= _max)
+			return false;
+
+
+		for (int i = 0; i < *_trenutno; i++)
+		{
+
+			//                         char* == char*
+
+			if (strcmp(_polozeniPredmeti[i]._naziv , predmet._naziv) == 0) {
+
+				return false;
+
+			}
+
+		}
+
+
+		_polozeniPredmeti[*_trenutno] = predmet;
+		(*_trenutno)++;
+		return true;
+
+	}
+
+	~Student() {
+		delete[]_brojIndeksa;
+		delete[]_polozeniPredmeti;
+		delete _trenutno;
+		_brojIndeksa = nullptr;
+		_polozeniPredmeti = nullptr;
+		_trenutno = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Student& obj) {
+		COUT << obj._imePrezime << " ["<<obj._brojIndeksa<<"] - "<< obj._JMBG << endl;
+		COUT << "POLOZENI PREDMETI STUDENTA : " << endl << endl;
+
+		for (int i = 0; i < *obj._trenutno; i++)
+		{
+			COUT << obj._polozeniPredmeti[i] << endl << endl;
+		}
+
+
+
+		return COUT;
+	}
+
+};
+void main() {
+
+	/* -- PROFESOR TESTIRANJE -- */
+
+	Profesor profesor1("dr. sc.", "Denis Music", "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+	//cout << profesor1 << endl;
+	Profesor profesor2("dr. sc.", "Elmir Babovic", "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+	//cout << profesor2 << endl;
+	Profesor profesor3("dr. sc.", "Nina Bijedic", "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+	//cout << profesor3 << endl;
+
+
+
+	/* -- PREDMET TESTIRANJE -- */
+
+	Predmet predmet1("Programiranje II", 7, profesor1);
+	cout << predmet1 << endl;
+	Predmet predmet2("Web razvoj i dizajn", 5, profesor2);
+	cout << predmet2 << endl;
+	Predmet predmet3("Matematika II ", 4, profesor3);
+	cout << predmet3 << endl;
+	Predmet predmet4("Operativni sistemi", 5, profesor2);
+	cout << predmet4 << endl;
+	///* -- STUDENT TESTIRANJE -- */
+
+	Student student("IB180079", "Vedad Keskin", "12129981500001", 3);
+
+	student.DodajPredmet(predmet1);
+	student.DodajPredmet(predmet2);
+	student.DodajPredmet(predmet2);
+	student.DodajPredmet(predmet3);
+	student.DodajPredmet(predmet4);
+
+	Student studentKopija = student; // copy constr.
+
+	cout << studentKopija;
+
+	/* -- SPECIJALNI SLUCAJ (EDGE CASE) -- */
+	//Osoba* profesorEdgeCase = new Profesor("dr. sc.", "Elmir Babovic", "1316565123");
+
+	//delete profesorEdgeCase;
+
+
+	system("PAUSE>0");
+}
