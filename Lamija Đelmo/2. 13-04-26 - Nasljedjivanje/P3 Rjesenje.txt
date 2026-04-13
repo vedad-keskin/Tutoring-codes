@@ -1,0 +1,232 @@
+#include <iostream>
+using namespace std;
+
+//    AlocirajNiz
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+
+	char* temp = new char[vel];
+
+	strcpy_s(temp, vel, tekst);
+
+	return temp;
+
+}
+
+
+
+// 3/3 RAZLIKE 
+
+class Osoba { // <--- BAZNA KLASA - KLASA KOJA SE NASLIJEDJUJE 
+protected: // 1. RAZLIKA
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+
+	// DFT + USER-DEF --> 
+
+	//                 "Denis Music",             "2133213213");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_JMBG = GetNizKaraktera(obj._JMBG);
+		}
+		return *this;
+	}
+
+	// virtual je mogucnost bazne klase da napraviti metode koje se mogu ali i ne moraju promijeniti (overrajdati)
+
+	virtual void Test() {
+
+		cout << "POCETNA IMPLEMNETACIJA METODE TEST()" << endl;
+
+	}
+
+
+	virtual void Info() = 0; // pure virtual func. ---> 2. RAZLIKA
+	// 1. da je klasa Osoba postala apstraktna klasa
+	// 2. da svaka izvedena MORA imati implementaciju ove Info metode
+
+
+	virtual ~Osoba() { // 3. RAZLIKA
+
+		cout << "BAZNI DESTRUKTOR" << endl;
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	}
+
+	//cout << osoba1;
+
+	friend ostream& operator << (ostream& COUT , const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+	}
+
+
+};
+
+// 5/5 KORAKA
+
+//               1. KORAK 
+class Profesor : public Osoba { // IZVEDENA KLASA -> KLASA KOJA NASLIJEDJI BAZNU KLASU 
+public:
+	char* _titula;
+
+	// DFT + USER-DEF 
+
+
+
+	//Profesor profesor1(           "dr. sc.",          "Denis Music",             "2133213213");
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime,jmbg) { // 2. KORAK
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. KORAK
+
+		_titula = GetNizKaraktera(obj._titula);
+
+
+	}
+
+	Profesor& operator = (const Profesor& obj)  {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4. KORAK
+			
+
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	void Test() override {
+
+		cout << "NAPREDNA IMPLEMNETACIJA METODE TEST()" << endl;
+
+
+	}
+
+	void Info() override { // 5. KORAK
+
+		cout << *this;
+
+	}
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTRUKTOR" << endl;
+
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+
+
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		// 1. NACIN
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+
+		// 2. NACIN
+
+		//COUT << obj._titula << " ";
+		//COUT << Osoba(obj);
+
+
+		return COUT;
+	}
+
+
+};
+
+class Predmet {
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor;
+
+
+};
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+
+
+
+};
+
+
+void main() {
+
+
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "2133213213");
+
+	//cout << profesor1;
+	//profesor1.Info();
+
+
+	// EDGE-CASE (SPECIJALNI SLUCAJ) 
+
+	Osoba* profesorEdgeCase = new Profesor("dr. sc.", "Elmir Babobic", "123123213");
+
+	delete profesorEdgeCase;
+
+
+
+
+
+
+	system("PAUSE>0");
+}
