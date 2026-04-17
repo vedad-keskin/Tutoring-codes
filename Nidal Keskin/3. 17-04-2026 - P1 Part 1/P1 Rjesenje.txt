@@ -1,0 +1,175 @@
+#include <iostream>
+using namespace std;
+
+// POKAZIVACI 
+
+// 1. ALOKACIJA ( new ) 
+
+// ako pravimo jedno -> ( ) 
+// ako pravimo vise -> [ ]  
+
+// 2. DEREFERENCIRANJE --> ( * ) 
+
+// ako pravimo jedno -> ( ) -> onda moramo stavit * --> _ECTS = 0x000001FE4BC78090 , *_ECTS = 0
+// ako pravimo vise -> [ ]  -> onda ne smijemo stavit * -->  *_naziv = N
+
+// 3. DESTRUKTOR/DEALOKACIJA 
+
+// ako pravimo jedno -> ( ) --> delete _ECTS;
+// ako pravimo vise -> [ ]  --> delete[] _naziv;
+
+// c --> c++ 
+//
+//struct Struktura {
+//	int broj;
+//
+//
+//};
+//
+//class Klasa {
+//	int broj;
+//
+//
+//};
+
+class Predmet {
+public:			  // DFT. CONSTR.  //
+	char* _naziv; // Nema predmeta //
+	//char _naziv[50];
+	int _ocjena;  //      5		   //
+	int* _ECTS;	  //      0 	   //
+
+	Predmet() {
+
+		_ocjena = 5;
+
+		_ECTS = new int(0);
+
+		//char dftNaziv1[] = "Nema predmeta"; // 14 
+		//string dftNaziv2 = "Nema predmeta";
+		const char* dftNaziv3 = "Nema predmeta"; // STRING LITERAL --> read-only memorija 
+
+		int vel = strlen(dftNaziv3) + 1; // 13 null terminator \0 
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, dftNaziv3);
+
+	}
+
+	// TILDA ~ alt gr + 1
+	~Predmet() {
+
+		delete _ECTS;
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+
+	void Ispis() {
+
+		cout << "Naziv predmeta: " << _naziv << endl;
+		cout << "Ocjena predmeta: " << _ocjena << endl;
+		cout << "ECTS predmeta: " << *_ECTS << endl;
+
+	}
+
+
+
+
+};
+
+
+class Student {
+	char* _imePrezime;
+	Predmet* _polozeni;
+	int _trenutno;
+	int _max;
+public:
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Ispis ili operator ispisa (operator <<) 
+	// 7. Dodatne funkcije
+
+
+
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)		        
+
+
+	}
+
+};
+
+
+
+void main() {
+
+
+	//Struktura s;
+	//Klasa k;
+
+	//s.broj;
+	//k.broj;
+
+
+	/* -- PREDMET TESTIRANJE -- */
+
+	Predmet predmet0; // dft constr.
+
+	predmet0.Ispis();
+
+
+
+	//Predmet predmet1("Programiranje II", 9, 7); // user-def constr. (naziv, ocjena, ects)
+	//Predmet predmet2("Matematika II", 6, 4); // user-def constr. (naziv, ocjena, ects)
+	//Predmet predmet3("Operativni sistemi", 7, 4); // user-def constr. (naziv, ocjena, ects)
+	//Predmet predmet4("Web razvoj i dizajn", 7, 5); // user-def constr. (naziv, ocjena, ects)
+
+	//Predmet predmetKopija = predmet1; // copy constr.
+
+	//Predmet predmetOperatorDodjele;
+	//predmetOperatorDodjele = predmet1; // operator = 
+
+	///* Metoda Ispisa ili operator ispisa (operator <<) - Dovoljno implementirati jedno */
+
+	//predmet1.Ispis();
+	//cout << predmet1;
+
+	///* -- STUDENT TESTIRANJE -- */
+
+
+	//Student student0; // dft constr.
+
+	//Student student1("Vedad Keskin", 3); // user-def constr. (imeprezime, max)
+
+	//student1.AddPolozeniPredmet(predmet1); // Dodavanje predmeta PRII
+	//student1.AddPolozeniPredmet(predmet2); // Dodavanje predmeta MATII
+	//student1.AddPolozeniPredmet(predmet2); // Dodavanje predmeta MATII - Duplikat (potrebno zabraniti)
+	//student1.AddPolozeniPredmet(predmet3); // Dodavanje predmeta OS
+	//student1.AddPolozeniPredmet(predmet4); // Dodavanje predmeta WRD - Prekoračenje niza (potrebno zabraniti)
+
+
+	//Student studentKopija = student1; // copy constr.
+
+	//Student studentOperatorDodjele;
+	//studentOperatorDodjele = student1; // operator = 
+
+	///* Metoda Ispisa ili operator ispisa (operator <<) - Dovoljno implementirati jedno */
+
+	//student1.Ispis();
+	//cout << student1;
+
+
+	system("pause>0");
+}
+
