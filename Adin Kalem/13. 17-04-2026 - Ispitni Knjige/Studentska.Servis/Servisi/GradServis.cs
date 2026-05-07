@@ -1,4 +1,5 @@
-﻿using Studentska.Data.Entiteti;
+﻿using Microsoft.EntityFrameworkCore;
+using Studentska.Data.Entiteti;
 
 namespace Studentska.Servis.Servisi
 {
@@ -12,6 +13,18 @@ namespace Studentska.Servis.Servisi
         public List<Grad> GetByDrzavaId(int drzavaId)
         {
             return _dbContext.Gradovi.Where(grad => grad.DrzavaId == drzavaId).ToList();
-        }    
+        }
+
+
+        public List<Grad> GetAllIncluded()
+        {
+
+            return _dbContext.Set<Grad>()
+                .Include(x => x.Drzava)
+                .ToList();
+
+
+        }
+
     }
 }

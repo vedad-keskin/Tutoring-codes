@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Studentska.Data.IspitIB180079;
 using Studentska.Servis;
+using Studentska.Servis.Servisi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +17,11 @@ namespace Studentska.WinApp.IspitIB180079
     public partial class frmPretragaIB180079 : Form
     {
 
-        StudentskaDbContext db = new StudentskaDbContext();
+        //StudentskaDbContext db = new StudentskaDbContext();
+        StudentiKnjigeServis studentiKnjigeServis = new StudentiKnjigeServis();
+        KnjigeServis knjigeServis = new KnjigeServis();
+
+
 
         // dft. constr.
         public frmPretragaIB180079()
@@ -26,6 +32,9 @@ namespace Studentska.WinApp.IspitIB180079
         private void frmPretragaIB180079_Load(object sender, EventArgs e)
         {
             dgvStudentiKnjige.AutoGenerateColumns = false;
+
+            cbKnjige.DataSource = knjigeServis.GetAll();
+
 
             UcitajStudentKnjige();
 
@@ -46,13 +55,63 @@ namespace Studentska.WinApp.IspitIB180079
             // 2	Baze Podataka	Kenan Sarčević	2	BLOB
 
 
-            var studentiKnjige = db.StudentiKnjigeIB180079
-                .Include(x => x.Student)
-                .Include(x => x.Knjiga)
+            //var studentiKnjige = db.StudentiKnjigeIB180079
+            //    .Include(x => x.Student)
+            //    .Include(x => x.Knjiga)
+            //    .ToList();
+
+
+
+
+
+            // 1. CHECKBOX
+
+            var vracena = chbVracena.Checked; // "true" "false"
+
+
+            // 2. TEXTBOX
+
+            var pretraga = txtPretraga.Text.ToLower().Trim(); // BAZE , Baze , baze --> baze
+
+
+            // 3. COMBO BOX
+
+            //var knjiga = cbKnjige.SelectedItem.ToString().ToLower();
+
+            //                          object -> Knjiga
+            var knjiga = cbKnjige.SelectedItem as KnjigeIB180079;
+
+
+            // 4. DATE TIME PICKER
+
+            var datumOd = dtpDatumOd.Value; // DateTime
+            var datumDo = dtpDatumDo.Value;
+
+
+
+
+            var studentiKnjige = studentiKnjigeServis
+                .GetAllIncluded()
+                .Where(x => x.Vracena == vracena)
+                // Baze Podataka --> baze podataka
+                .Where(x => x.Knjiga.Naziv.ToLower().Contains(pretraga) ||
+                 $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretraga))
+                //.Where(x => x.Knjiga.ToString().ToLower().Contains(knjiga))
+                .Where(x => x.KnjigaId == knjiga.Id)
+                .Where(x => x.DatumIznajmljivanja >= datumOd && x.DatumIznajmljivanja <= datumDo)
                 .ToList();
 
 
-            dgvStudentiKnjige.DataSource = studentiKnjige;
+
+            if (studentiKnjige != null)
+            {
+
+                dgvStudentiKnjige.DataSource = null;
+                dgvStudentiKnjige.DataSource = studentiKnjige;
+
+            }
+
+
 
 
             Text = $"Broj prikazanih podataka: {studentiKnjige.Count()}";
@@ -68,6 +127,31 @@ namespace Studentska.WinApp.IspitIB180079
         private void btnIznajmljivanja_Click(object sender, EventArgs e)
         {
             //chbVracena.Checked = false;
+        }
+
+        private void chbVracena_CheckedChanged(object sender, EventArgs e)
+        {
+            UcitajStudentKnjige();
+        }
+
+        private void txtPretraga_TextChanged(object sender, EventArgs e)
+        {
+            UcitajStudentKnjige();
+        }
+
+        private void cbKnjige_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UcitajStudentKnjige();
+        }
+
+        private void dtpDatumOd_ValueChanged(object sender, EventArgs e)
+        {
+            UcitajStudentKnjige();
+        }
+
+        private void dtpDatumDo_ValueChanged(object sender, EventArgs e)
+        {
+            UcitajStudentKnjige();
         }
     }
 }

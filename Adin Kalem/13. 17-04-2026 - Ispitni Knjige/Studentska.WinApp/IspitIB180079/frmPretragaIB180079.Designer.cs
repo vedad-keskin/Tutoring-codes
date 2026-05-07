@@ -40,6 +40,12 @@
             DatumVracanja = new DataGridViewTextBoxColumn();
             Vracena = new DataGridViewCheckBoxColumn();
             Povrat = new DataGridViewButtonColumn();
+            label1 = new Label();
+            cbKnjige = new ComboBox();
+            label2 = new Label();
+            label3 = new Label();
+            dtpDatumOd = new DateTimePicker();
+            dtpDatumDo = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dgvStudentiKnjige).BeginInit();
             SuspendLayout();
             // 
@@ -58,6 +64,7 @@
             txtPretraga.Name = "txtPretraga";
             txtPretraga.Size = new Size(433, 27);
             txtPretraga.TabIndex = 1;
+            txtPretraga.TextChanged += txtPretraga_TextChanged;
             // 
             // chbVracena
             // 
@@ -68,6 +75,7 @@
             chbVracena.TabIndex = 2;
             chbVracena.Text = "Vraćena";
             chbVracena.UseVisualStyleBackColor = true;
+            chbVracena.CheckedChanged += chbVracena_CheckedChanged;
             // 
             // btnDodajKnjigu
             // 
@@ -95,12 +103,12 @@
             dgvStudentiKnjige.AllowUserToDeleteRows = false;
             dgvStudentiKnjige.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvStudentiKnjige.Columns.AddRange(new DataGridViewColumn[] { Student, Knjiga, DatumIznajmljivanja, DatumVracanja, Vracena, Povrat });
-            dgvStudentiKnjige.Location = new Point(12, 65);
+            dgvStudentiKnjige.Location = new Point(12, 118);
             dgvStudentiKnjige.Name = "dgvStudentiKnjige";
             dgvStudentiKnjige.ReadOnly = true;
             dgvStudentiKnjige.RowHeadersWidth = 51;
             dgvStudentiKnjige.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvStudentiKnjige.Size = new Size(1051, 344);
+            dgvStudentiKnjige.Size = new Size(1051, 291);
             dgvStudentiKnjige.TabIndex = 4;
             // 
             // Student
@@ -158,11 +166,71 @@
             Povrat.UseColumnTextForButtonValue = true;
             Povrat.Width = 125;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 62);
+            label1.Name = "label1";
+            label1.Size = new Size(54, 20);
+            label1.TabIndex = 5;
+            label1.Text = "Knjiga:";
+            // 
+            // cbKnjige
+            // 
+            cbKnjige.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbKnjige.FormattingEnabled = true;
+            cbKnjige.Location = new Point(12, 85);
+            cbKnjige.Name = "cbKnjige";
+            cbKnjige.Size = new Size(433, 28);
+            cbKnjige.TabIndex = 6;
+            cbKnjige.SelectedIndexChanged += cbKnjige_SelectedIndexChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(451, 62);
+            label2.Name = "label2";
+            label2.Size = new Size(174, 20);
+            label2.TabIndex = 5;
+            label2.Text = "Datum iznajmljivanja od:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(758, 64);
+            label3.Name = "label3";
+            label3.Size = new Size(30, 20);
+            label3.TabIndex = 5;
+            label3.Text = "do:";
+            // 
+            // dtpDatumOd
+            // 
+            dtpDatumOd.Location = new Point(452, 86);
+            dtpDatumOd.Name = "dtpDatumOd";
+            dtpDatumOd.Size = new Size(300, 27);
+            dtpDatumOd.TabIndex = 7;
+            dtpDatumOd.Value = new DateTime(2000, 5, 7, 16, 19, 0, 0);
+            dtpDatumOd.ValueChanged += dtpDatumOd_ValueChanged;
+            // 
+            // dtpDatumDo
+            // 
+            dtpDatumDo.Location = new Point(758, 86);
+            dtpDatumDo.Name = "dtpDatumDo";
+            dtpDatumDo.Size = new Size(305, 27);
+            dtpDatumDo.TabIndex = 7;
+            dtpDatumDo.ValueChanged += dtpDatumDo_ValueChanged;
+            // 
             // frmPretragaIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1075, 421);
+            Controls.Add(dtpDatumDo);
+            Controls.Add(dtpDatumOd);
+            Controls.Add(cbKnjige);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(dgvStudentiKnjige);
             Controls.Add(btnIznajmljivanja);
             Controls.Add(btnDodajKnjigu);
@@ -191,5 +259,11 @@
         private DataGridViewTextBoxColumn DatumVracanja;
         private DataGridViewCheckBoxColumn Vracena;
         private DataGridViewButtonColumn Povrat;
+        private Label label1;
+        private ComboBox cbKnjige;
+        private Label label2;
+        private Label label3;
+        private DateTimePicker dtpDatumOd;
+        private DateTimePicker dtpDatumDo;
     }
 }

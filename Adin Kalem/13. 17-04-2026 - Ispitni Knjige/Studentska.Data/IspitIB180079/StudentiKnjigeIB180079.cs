@@ -14,7 +14,8 @@ namespace Studentska.Data.IspitIB180079
 
         // FK 
         public int StudentId { get; set; } // 1,2,3 .. 
-        public Student Student { get; set; }
+        public Student Student { get; set; } // 1	IB250001	zj)UHb4087	Jasmin	Azemovic	0	2025-12-23 14:12:05.858335	1	1	BLOB	1
+
 
         public int KnjigaId { get; set; }
         public KnjigeIB180079 Knjiga { get; set; }
