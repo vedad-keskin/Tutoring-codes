@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  ecommerce-sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=QWEasd123!
+      - MSSQL_PID=Developer
+    ports:
+      - "1401:1433"
+    expose:
+      - 1433
+    networks:
+      - ecommerce-2025
+  
+  ecommerce-api:
+    build:
+      context: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=ecommerce-sql;Database=eCommerceDb4;User=sa;Password=QWEasd123!;ConnectRetryCount=0;TrustServerCertificate=True
+    ports:
+      - "5121:5121"
+    networks:
+      - ecommerce-2025
+    links:
+      - ecommerce-sql
+    depends_on:
+      - ecommerce-sql
+
+networks:
+  ecommerce-2025:
+    driver: bridge

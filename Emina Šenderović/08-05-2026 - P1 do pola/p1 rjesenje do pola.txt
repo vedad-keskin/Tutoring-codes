@@ -1,0 +1,287 @@
+#include <iostream>
+using namespace std;
+
+char* alocirajTekst(const char* tekst) {
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+// POKAZIVACI :  
+
+// 1. ALOKACIJA ( new )  
+// ako je jedna vrijednost --> ( )  
+//    npr: int* x = new int(5);  --> alocira 1 int i postavlja ga na 5
+// ako je vise vrijednosti --> [ ]  
+//    npr: char* niz = new char[10]; --> alocira niz od 10 char-ova (NEINICIJALIZOVAN)
+
+// 2. DEREFERENCIRANJE ( ispis , kopiranje )
+// ako je jedna vrijednost --> ( ) 
+//    _ECTS -> adresa (npr 0x1234)
+//    *_ECTS -> stvarna vrijednost na toj adresi (npr 7)
+
+// ako je vise vrijednosti --> [ ] 
+//    _naziv -> ispisuje vrijednosti
+//    *_naziv -> prvi karakter (npr 'N')
+
+// VAŽNO: niz (char*) se ponaša kao pointer na prvi element!
+
+// 3. DEALOCIRANJE / DESTRUKTOR  --> ( delete , nullptr )
+// ako je jedna vrijednost --> ( )
+//    delete _ECTS;  --> briše JEDAN int
+
+// ako je vise vrijednosti --> [ ]
+//    delete[] _naziv;  --> briše CIJELI niz
+
+//delete:
+//
+//oslobađa(briše) memoriju koju si ranije zauzeo sa new
+//vraća tu memoriju sistemu(heap - u)
+//NE briše pointer varijablu, nego ono na šta pokazuje
+
+// OBAVEZNO: koristiti isti oblik kao kod new!
+// new -> delete
+// new[] -> delete[]
+
+// nullptr:
+// nakon brisanja pointer treba postaviti na nullptr
+// da izbjegnemo "dangling pointer" (pokazivač koji pokazuje na obrisanu memoriju)
+
+//pointer i dalje postoji
+//ali memorija na koju pokazuje više nije validna
+//
+//➡️ Ovo se zove dangling pointer
+
+// nullptr
+//znači "ne pokazujem ni na šta"
+//to je specijalna vrijednost za pointere
+
+//new → zauzima memoriju
+//delete → briše memoriju
+//nullptr → resetuje pointer
+
+class Predmet {
+public:
+	char* _naziv;
+	int _ocjena;
+	int* _ECTS;
+
+
+
+	Predmet() {
+
+		_ocjena = 5;
+
+		_ECTS = new int(0);
+
+
+		const char* dftNaziv = "Nema predmeta"; // string literal --> read only tekst
+
+		_naziv = alocirajTekst(dftNaziv);
+
+
+
+	}
+
+
+	Predmet(const char* naziv, int ocjena, int ECTS) {
+
+		_naziv = alocirajTekst(naziv);
+		_ocjena = ocjena;
+		_ECTS = new int(ECTS);
+
+	}
+
+	// sa & --> saljes org
+	// bez & --> pravimo kopiju
+	// sa & i const 
+
+	Predmet(const Predmet& objekat) {
+
+		//objekat._ocjena = 10;
+
+		_naziv = alocirajTekst(objekat._naziv);
+
+		_ocjena = objekat._ocjena;
+
+		_ECTS = new int(*objekat._ECTS);
+
+
+	}
+
+	//predmetKopija1 = predmet2; // operator = --> SHALLOW COPY 
+
+	Predmet& operator = (const Predmet& objekat) {
+
+		if (this != &objekat) {
+
+			delete _ECTS;
+
+			delete[] _naziv;
+
+
+			_naziv = alocirajTekst(objekat._naziv);
+
+			_ocjena = objekat._ocjena;
+
+			_ECTS = new int(*objekat._ECTS);
+
+		}
+
+		return *this;
+
+	}
+
+
+
+
+
+
+	~Predmet() {
+
+		cout << "DESTRUKTOR SE POZVAO" << endl;
+
+		delete _ECTS;
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+
+	//void Ispis() {
+
+	//	cout << _naziv << " " << _ocjena << " " << *_ECTS << endl;
+
+	//}
+
+	friend ostream& operator << (ostream& COUT, const Predmet& obj) {
+
+
+		COUT << obj._naziv << ", " << obj._ocjena << ", " << *obj._ECTS << endl;
+
+		return COUT;
+	}
+
+
+
+
+};
+
+
+
+class Student {
+	char* _imePrezime;
+	Predmet* _polozeni;
+	int _trenutno;
+	int _max;
+public:
+
+
+	Student() {
+		_imePrezime = alocirajTekst("NOT SET");
+		_polozeni = nullptr;
+		_trenutno = 0;
+		_max = 5;
+	}
+
+	Student(char* imePrezime, Predmet* polozeni, int trenutno, int max) {
+		_imePrezime = alocirajTekst(imePrezime);
+		_polozeni = polozeni;
+		_trenutno = trenutno;
+		_max = max;
+	}
+
+	Student(Student& objekat) {
+		_imePrezime = alocirajTekst(objekat._imePrezime);
+		_polozeni = objekat._polozeni;
+		_trenutno = objekat._trenutno;
+		_max = objekat._max;
+	}
+
+	~Student() {
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _polozeni;
+		_polozeni = nullptr;
+	}
+
+	void Ispis() {
+		cout << _imePrezime << ", " << _polozeni << endl;
+	}
+
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)		        
+
+
+	}
+
+
+
+};
+
+
+
+
+void main() {
+
+	/* -- PREDMET TESTIRANJE -- */
+
+	Predmet predmet0; // dft constr.
+
+	Predmet predmet1("Programiranje II", 9, 7); // user-def constr. (naziv, ocjena, ects)
+	Predmet predmet2("Matematika II", 6, 4); // user-def constr. (naziv, ocjena, ects)
+	Predmet predmet3("Operativni sistemi", 7, 4); // user-def constr. (naziv, ocjena, ects)
+	Predmet predmet4("Web razvoj i dizajn", 7, 5); // user-def constr. (naziv, ocjena, ects)
+
+	//Predmet predmetKopija1 = predmet1; // copy constr.
+	//Predmet predmetKopija2 (predmet1); // copy constr.
+
+	//Predmet predmetKopija1("xxxx", 9, 5);
+
+	Predmet predmetOperatorDodjele;
+	predmetOperatorDodjele = predmetOperatorDodjele; // operator = --> SHALLOW COPY --> DEEP COPY 
+
+	///* Metoda Ispisa ili operator ispisa (operator <<) - Dovoljno implementirati jedno */
+
+	//predmet1.Ispis();
+	//predmet0.Ispis();
+	//cout << predmet0;
+	//cout << predmet1;
+	//cout << predmet2;
+	//cout << predmet1;
+	//cout << predmetKopija1;
+	cout << predmetOperatorDodjele;
+
+	///* -- STUDENT TESTIRANJE -- */
+
+
+	//Student student0; // dft constr.
+
+	//Student student1("Vedad Keskin", 3); // user-def constr. (imeprezime, max)
+
+	//student1.AddPolozeniPredmet(predmet1); // Dodavanje predmeta PRII
+	//student1.AddPolozeniPredmet(predmet2); // Dodavanje predmeta MATII
+	//student1.AddPolozeniPredmet(predmet2); // Dodavanje predmeta MATII - Duplikat (potrebno zabraniti)
+	//student1.AddPolozeniPredmet(predmet3); // Dodavanje predmeta OS
+	//student1.AddPolozeniPredmet(predmet4); // Dodavanje predmeta WRD - Prekoračenje niza (potrebno zabraniti)
+
+
+	//Student studentKopija = student1; // copy constr.
+
+	//Student studentOperatorDodjele;
+	//studentOperatorDodjele = student1; // operator = 
+
+	///* Metoda Ispisa ili operator ispisa (operator <<) - Dovoljno implementirati jedno */
+
+	//student1.Ispis();
+	//cout << student1;
+
+
+	system("pause>0");
+}
+
