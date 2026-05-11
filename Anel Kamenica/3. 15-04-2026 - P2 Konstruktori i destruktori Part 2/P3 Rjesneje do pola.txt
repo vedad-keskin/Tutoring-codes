@@ -1,0 +1,203 @@
+#include <iostream>
+using namespace std;
+
+//    AlocirajNiz
+char* GetNizKaraktera(const char* tekst) {
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+// BAZNA KLASA -> 3. RAZLIKE
+class Osoba {
+protected: // 1. RAZLIKA -> na ispitu nikada ne smijemo dirati nacin pristupa 
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	// ctrl + c -> copy , ctrl + v -> paste
+
+
+	//               "Denis Music",               "2133232132");
+	Osoba(const char* imePrezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imePrezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+	virtual void Test() { // opcionalno mijenjanje
+
+		cout << "POCETNA IMPLEMENTACIJA" << endl;
+
+	}
+
+
+	// 2. RAZLIKA
+	virtual void Info() = 0; // pure virt. fucn. -> tvoja klasa (Osoba) postaje apstraktna klasa
+	// 1. da se vise ne mogu praviti objekti klase Osoba -> neki pomocni mehanizam da se prave izvedene klase
+	// 2. mora overridati u svakoj izvedenoj klasi
+
+	virtual ~Osoba() { // 3. RAZLIKA
+
+		cout << "BAZNI DESTRUKTOR SE POZVAO" << endl;
+
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+	}
+
+};
+
+// IZVEDENA KLASA -> 5. KORAKA
+class Profesor : public Osoba { // 1. KORAK
+public:
+	char* _titula;
+
+
+
+	//Profesor profesor1("dr. sc.",                   "Denis Music",               "2133232132");
+	Profesor(const char* titula = "prof.", const char* imePrezime = "---", const char* jmbg = "---") : Osoba(imePrezime,jmbg) { // 2. KORAK
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. KORAK
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj)  {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+			Osoba::operator=(obj); // 4. KORAK
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+
+	void Test() override { // OPCIONALNO DA LI CEMO NAPRAVIIT OVERRIDE
+
+		cout << "NAPREDNA IMEPLEMENTACIJA" << endl;
+
+	}
+
+	void Info() override { // 5. KORAK
+
+		cout << *this;
+
+	}
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTRUKTOR SE POZVAO" << endl;
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+	
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+	}
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	Profesor* _predmetniProfesor;
+	int* _ECTS;
+
+
+
+};
+
+// IZVEDENA KLASA
+class Student : public Osoba { // 1. KORAK
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+
+};
+
+
+
+
+
+void main() {
+
+
+	//Profesor profesor1("dr. sc.","Denis Music","2133232132"); // spojeni u naslj.
+
+	//Profesor profesorKopija = profesor1; // copy constr. u naslj. 
+
+	//Profesor profesorOperatorDodjele;
+	//profesorOperatorDodjele = profesor1; // op = u naslj. 
+
+	//profesor1.Test();
+
+	//cout << osoba0;
+	////cout << osoba1;
+	//cout << profesor1;
+	//profesor1.Info();
+	//cout << profesorKopija;
+	//cout << profesorOperatorDodjele;
+
+	// specijalni slucaj/edge case 
+
+	Osoba* profesor2 = new Profesor("dr. sc.", "Elmir Babovic", "3213123");
+
+	cout << *profesor2;
+	profesor2->Info();
+
+	delete profesor2;
+
+
+
+	system("PAUSE>0");
+
+}
