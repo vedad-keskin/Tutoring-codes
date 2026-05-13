@@ -1,0 +1,154 @@
+#include <iostream>
+using namespace std;
+
+template<class T>
+class Kolekcija {
+public:
+    T* _elementi;
+    int* _trenutno;
+    // Kreirati i implementirati
+    // 1. Defaultni konstruktor (default constructor)
+    // 2. Konstruktor koji prima parametre (user-defined constructor)
+    // 3. Konstruktor kopije (copy constructor)
+    // 4. Operator dodjele (operator =)
+    // 5. Dealokacija (destructor)
+    // 6. Operator ispisa (operator <<) 
+
+
+    // Operator += koji ima za cilj dodati novi element u kolekciju (često se naziva AddElement).
+    // Onemoguciti dodavanje istih elemenata. Baciti izuzetak tipa exception, ukoliko element vec postoji
+
+    // Operator -= koji ima za cilj ukloniti odredjeni element iz kolekcije (često se naziva RemoveAt).
+
+    // Operator () koji ima za cilj dodati novi element u kolekciju na određenu lokaciju (često se naziva InsertAt)
+
+    // Operator [] dvije verzije
+    // Treba da pronadje i vrati trazeni element. Ako element ne postoji, baciti izuzetak tipa exception
+
+    T& operator[] (T el) {
+
+    }
+
+    T& operator[] (int pozicija) {
+
+    }
+
+
+};
+
+class Artikal {
+protected:
+    char* _kod;
+    char* _naziv;
+    float _cijena;
+    int _kolicinaNaSkladistu;
+public:
+    // Kreirati i implementirati
+    // 1. Defaultni konstruktor (default constructor)
+    // 2. Konstruktor koji prima parametre (user-defined constructor)
+    // 3. Konstruktor kopije (copy constructor)
+    // 4. Operator dodjele (operator =)
+    // 5. Dealokacija (destructor)
+    // 6. Operator ispisa (operator <<) 
+    // 7. Operator poređenja (operator ==)
+
+
+};
+
+class PrehrambeniArtikal : public Artikal {
+public:
+    float _gramaza;
+    // Kreirati i implementirati
+    // 1. Defaultni konstruktor (default constructor)
+    // 2. Konstruktor koji prima parametre (user-defined constructor)
+    // 3. Konstruktor kopije (copy constructor)
+    // 4. Operator dodjele (operator =)
+    // 5. Dealokacija (destructor)
+    // 6. Operator ispisa (operator <<) 
+
+
+};
+
+class Odjeca : public Artikal {
+public:
+    char* _velicina; // XS, S, M, L ..
+    char* _materijal; // pamuk, svila ..
+    // Kreirati i implementirati
+    // 1. Defaultni konstruktor (default constructor)
+    // 2. Konstruktor koji prima parametre (user-defined constructor)
+    // 3. Konstruktor kopije (copy constructor)
+    // 4. Operator dodjele (operator =)
+    // 5. Dealokacija (destructor)
+    // 6. Operator ispisa (operator <<) 
+
+
+
+};
+
+class Prodavnica {
+public:
+    char* _naziv;
+    char* _adresa;
+
+    Kolekcija<Odjeca> _odjeca;
+    Kolekcija<PrehrambeniArtikal> _prehrana;
+    // Kreirati i implementirati
+    // 1. Defaultni konstruktor (default constructor)
+    // 2. Konstruktor koji prima parametre (user-defined constructor)
+    // 3. Konstruktor kopije (copy constructor)
+    // 4. Operator dodjele (operator =)
+    // 5. Dealokacija (destructor)
+    // 6. Operator ispisa (operator <<) 
+    // 7. Operator poređenja (operator ==)
+
+    bool DodajOdjecu(Odjeca odjeca)
+    {
+        // Funkcija ima za cilj dodati novi komad odjece
+        // Onemoguciti dodavanje dva ista komada.
+
+
+    }
+
+    bool DodajPrehrambeniArtikal(PrehrambeniArtikal prehrana)
+    {
+        // Funkcija ima za cilj dodati novi prehrambeni artikl
+        // Onemoguciti dodavanje dva ista komada 
+
+
+    }
+
+    bool UvecajStanjeNaSkladistu(PrehrambeniArtikal prehrana, int kolicina)
+    {
+        // Funkcija ima za cilj da uveca stanje na skladistu za proslijedjeni artikal
+
+
+    }
+
+    bool UvecajStanjeNaSkladistu(Odjeca odjeca, int kolicina)
+    {
+        // Funkcija ima za cilj da uveca stanje na skladistu za proslijedjeni artikal
+
+
+    }
+
+    bool UmanjiStanjeNaSkladistu(PrehrambeniArtikal prehrana, int kolicina)
+    {
+        // Funkcija ima za cilj da umanji stanje na skladistu za proslijedjeni artikal
+
+
+    }
+
+    bool UmanjiStanjeNaSkladistu(Odjeca odjeca, int kolicina)
+    {
+        // Funkcija ima za cilj da umanji stanje na skladistu za proslijedjeni artikal
+
+
+    }
+};
+
+void main()
+{
+
+
+    system("PAUSE>0");
+}
