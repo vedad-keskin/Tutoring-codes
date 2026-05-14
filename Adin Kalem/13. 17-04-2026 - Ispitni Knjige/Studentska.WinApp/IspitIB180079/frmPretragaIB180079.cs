@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -126,7 +127,15 @@ namespace Studentska.WinApp.IspitIB180079
 
         private void btnIznajmljivanja_Click(object sender, EventArgs e)
         {
-            //chbVracena.Checked = false;
+
+            var frmIznajmljivanja = new frmIznajmljivanjaIB180079();
+
+            if (frmIznajmljivanja.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentKnjige();
+            }
+
+
         }
 
         private void chbVracena_CheckedChanged(object sender, EventArgs e)
@@ -152,6 +161,26 @@ namespace Studentska.WinApp.IspitIB180079
         private void dtpDatumDo_ValueChanged(object sender, EventArgs e)
         {
             UcitajStudentKnjige();
+        }
+
+        private void dgvStudentiKnjige_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(e.ColumnIndex == 5)
+            {
+                //                                                            obj -> StudentKnjig
+                var odabraniStudentKnjiga = dgvStudentiKnjige.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+
+                odabraniStudentKnjiga.DatumVracanja = DateTime.Now;
+                odabraniStudentKnjiga.Vracena = true;
+
+                studentiKnjigeServis.Update(odabraniStudentKnjiga);
+
+                UcitajStudentKnjige();
+
+            }
+
         }
     }
 }

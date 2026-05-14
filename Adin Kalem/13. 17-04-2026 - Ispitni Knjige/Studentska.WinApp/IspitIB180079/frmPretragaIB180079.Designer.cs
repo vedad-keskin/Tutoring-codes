@@ -69,6 +69,8 @@
             // chbVracena
             // 
             chbVracena.AutoSize = true;
+            chbVracena.Checked = true;
+            chbVracena.CheckState = CheckState.Checked;
             chbVracena.Location = new Point(461, 34);
             chbVracena.Name = "chbVracena";
             chbVracena.Size = new Size(83, 24);
@@ -110,6 +112,7 @@
             dgvStudentiKnjige.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentiKnjige.Size = new Size(1051, 291);
             dgvStudentiKnjige.TabIndex = 4;
+            dgvStudentiKnjige.CellContentClick += dgvStudentiKnjige_CellContentClick;
             // 
             // Student
             // 
@@ -218,6 +221,7 @@
             dtpDatumDo.Name = "dtpDatumDo";
             dtpDatumDo.Size = new Size(305, 27);
             dtpDatumDo.TabIndex = 7;
+            dtpDatumDo.Value = new DateTime(2027, 5, 14, 13, 21, 0, 0);
             dtpDatumDo.ValueChanged += dtpDatumDo_ValueChanged;
             // 
             // frmPretragaIB180079
