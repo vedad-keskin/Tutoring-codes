@@ -73,7 +73,7 @@ namespace Studentska.WinApp.IspitIB180079
                 .Where(x => x.Knjiga.Naziv.ToLower().Contains(pretraga) ||
                 $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretraga))
                 .Where(x => x.KnjigaId == knjiga.Id)
-                .Where(x => x.DatumIznajmljivanja >=  datumOd && x.DatumIznajmljivanja <= datumDo)
+                .Where(x => x.DatumIznajmljivanja >= datumOd && x.DatumIznajmljivanja <= datumDo)
                 .ToList();
 
             if (studentiKnjige != null)
@@ -113,6 +113,35 @@ namespace Studentska.WinApp.IspitIB180079
         private void dtpDatumDo_ValueChanged(object sender, EventArgs e)
         {
             UcitajStudentiKnjige();
+        }
+
+        private void dgvStudentiKnjige_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 5)
+            {
+
+                var odabranaStudentKnjiga = dgvStudentiKnjige.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+                odabranaStudentKnjiga.DatumVracanja = DateTime.Now;
+                odabranaStudentKnjiga.Vracena = true;
+
+
+                studentiKnjigeServis.Update(odabranaStudentKnjiga);
+
+                UcitajStudentiKnjige();
+
+                //MessageBox.Show($"{odabranaStudentKnjiga.Student} {odabranaStudentKnjiga.Knjiga}");
+
+            }
+        }
+
+        private void btnIznajmljivanja_Click(object sender, EventArgs e)
+        {
+
+            var frmIznajmljivanje = new frmIznajmljivanjaIB180079();
+
+            frmIznajmljivanje.ShowDialog();
+
         }
     }
 }

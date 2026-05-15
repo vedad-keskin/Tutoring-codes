@@ -69,6 +69,8 @@
             // chbVracena
             // 
             chbVracena.AutoSize = true;
+            chbVracena.Checked = true;
+            chbVracena.CheckState = CheckState.Checked;
             chbVracena.Location = new Point(282, 34);
             chbVracena.Name = "chbVracena";
             chbVracena.Size = new Size(83, 24);
@@ -102,6 +104,7 @@
             dtpDatumDo.Name = "dtpDatumDo";
             dtpDatumDo.Size = new Size(250, 27);
             dtpDatumDo.TabIndex = 4;
+            dtpDatumDo.Value = new DateTime(2030, 5, 15, 17, 43, 0, 0);
             dtpDatumDo.ValueChanged += dtpDatumDo_ValueChanged;
             // 
             // btnDodaj
@@ -121,6 +124,7 @@
             btnIznajmljivanja.TabIndex = 5;
             btnIznajmljivanja.Text = "Iznajmljivanja";
             btnIznajmljivanja.UseVisualStyleBackColor = true;
+            btnIznajmljivanja.Click += btnIznajmljivanja_Click;
             // 
             // dgvStudentiKnjige
             // 
@@ -135,6 +139,7 @@
             dgvStudentiKnjige.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentiKnjige.Size = new Size(1335, 483);
             dgvStudentiKnjige.TabIndex = 6;
+            dgvStudentiKnjige.CellContentClick += dgvStudentiKnjige_CellContentClick;
             // 
             // Student
             // 
@@ -236,6 +241,7 @@
             Controls.Add(label1);
             Controls.Add(lblTekst);
             Name = "frmPretragaIB180079";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Broj prikazanih podataka: placeholder";
             Load += frmPretragaIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStudentiKnjige).EndInit();
