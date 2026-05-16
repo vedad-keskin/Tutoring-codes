@@ -1,0 +1,234 @@
+#include <iostream>
+using namespace std;
+
+
+
+
+//struct  Struktura {
+//	int broj;
+//
+//
+//};
+//
+//
+//class Klasa {
+//	int broj;
+//
+//
+//};
+
+
+// POKAZIVACI :
+
+// 1. ALOKACIJA ( new ) 
+
+// --> JEDNA VRIJEDNOST --> ( ) 
+
+// --> VISE VRIJEDNSOT --> [ ] 
+
+
+// 2. DEREFERENCIRANJE -->  _ECTS --> 0000021A5A047A60 , *_ECTS = 0
+
+// --> JEDNA VRIJEDNOST --> ( ) ---> RADIMO DER.
+
+// --> VISE VRIJEDNSOT --> [ ] ---> NE RADIMO DER. 
+
+
+// 3. DEALOKACIJA / DESTRUKTOR
+
+// --> JEDNA VRIJEDNOST --> ( ) --> delete _ECTS;
+
+// --> VISE VRIJEDNSOT --> [ ] --> delete[] _naziv;
+
+
+class Predmet {
+public: // public , private , protected
+	//                 DFT constr.
+	char* _naziv;  // Nema predmeta	//
+	//char _naziv[50];
+	int _ocjena;   //      5		//
+	int* _ECTS;	   //      0		//
+
+	// 1. dft constr.
+
+	Predmet() {
+
+		_ocjena = 5;
+
+		_ECTS = new int(0);
+
+		//char dftNaziv2[] = "Nema predmeta"; // 14 
+		//string dftNaziv = "Nema predmeta";
+		const char* dftNaziv = "Nema predmeta"; // STRING LITERAL --> read-only mem. 
+
+		int vel = strlen(dftNaziv) + 1; // Nema predmeta\0 
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, dftNaziv); // 1. GDJE 2. KOLIKO 3. STA
+
+
+	}
+
+	// 2. user-def constr.
+
+	//Predmet predmet1("Programiranje II", 9, 7); // <-- user-def constr.
+	Predmet(const char* naziv, int ocjena, int ects) {
+
+		_ocjena = ocjena;
+
+		_ECTS = new int(ects);
+
+		int vel = strlen(naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, naziv);
+
+
+	}
+
+	// 3. copy constr.
+
+	//Predmet predmetKopija2 ( predmet1 );	  // <-- copy constr.
+
+	// bez & -> pravi kopiju
+	// & -> posalji origianl 
+	// const -> vrijednost je konstanta -> ona se ne moze mijenjati 
+
+	Predmet(const Predmet& predmet) { // napravit ce se kopija tog predmeta
+
+		_ocjena = predmet._ocjena;
+
+		_ECTS = new int( *predmet._ECTS  );
+
+		int vel = strlen(predmet._naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, predmet._naziv);
+
+	}
+
+	// 4. operator dodjele
+
+	//predmetOperatorDodjele = predmet1; // <-- operator dodjele
+
+	Predmet& operator = (const Predmet& predmet) {
+
+		// adresa != adresa
+		if (this != &predmet) {
+
+
+			delete _ECTS;
+
+			delete[] _naziv;
+
+
+			_ocjena = predmet._ocjena;
+
+			_ECTS = new int(*predmet._ECTS);
+
+			int vel = strlen(predmet._naziv) + 1;
+
+			_naziv = new char[vel];
+
+			strcpy_s(_naziv, vel, predmet._naziv);
+
+		}
+
+
+
+		return *this;
+
+	}
+
+
+
+
+	// TILDA -> ALT gr + 1
+	~Predmet() {
+
+		cout << "DESTRUKTOR SE POZVAO" << endl;
+
+		delete _ECTS;
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+
+
+
+	void Ispis() {
+
+		cout << "Naziv predmeta: " << _naziv << endl;
+		cout << "ECTS predmeta: " << *_ECTS << endl;
+		cout << "Ocjena predmeta: " << _ocjena << endl;
+
+	}
+
+
+};
+
+
+class Student {
+	char* _imePrezime;
+	Predmet* _polozeni;
+	int _trenutno;
+	int _max;
+public:
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Ispis ili operator ispisa (operator <<) 
+	// 7. Dodatne funkcije
+
+
+
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)		        
+
+
+	}
+
+};
+
+
+
+void main() {
+
+	//Struktura s;
+	//Klasa k;
+
+	//s.broj;
+	//k.broj;
+
+	Predmet predmet0; // <-- dft. constr.
+	Predmet predmet1("Programiranje II", 9, 7); // <-- user-def constr.
+	Predmet predmet2("Matematika II", 6, 5);    // <-- user-def constr.
+
+	//Predmet predmetKopija1 = predmet1;		  // <-- copy constr.
+	//Predmet predmetKopija2 ( predmet1 );	  // <-- copy constr.
+
+	Predmet predmetOperatorDodjele;
+
+	predmetOperatorDodjele = predmetOperatorDodjele; // <-- operator dodjele
+
+	//predmet0.Ispis();
+	predmet1.Ispis();
+	predmetOperatorDodjele.Ispis();
+	//predmet2.Ispis();
+
+	//predmetKopija1.Ispis();
+
+
+	system("pause>0");
+}
+
