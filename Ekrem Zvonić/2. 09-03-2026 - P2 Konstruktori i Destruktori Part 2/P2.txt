@@ -1,0 +1,682 @@
+#include <iostream>
+using namespace std;
+
+class Datum {
+public:
+	int* _dan, * _mjesec, * _godina;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	Datum() {
+		_dan = new int(0);
+		_mjesec = new int(0);
+		_godina = new int(0);
+	}
+
+	Datum(int dan, int mjesec, int godina) {
+		_dan = new int(dan);
+		_mjesec = new int(mjesec);
+		_godina = new int(godina);
+	}
+
+	Datum(const Datum& obj) {
+
+		_dan = new int(*obj._dan);
+
+		_mjesec = new int(*obj._mjesec);
+
+		_godina = new int(*obj._godina);
+
+	}
+
+	Datum& operator = (const Datum& obj) {
+		if (this != &obj)
+		{
+			delete _dan;
+
+			delete _mjesec;
+
+			delete _godina;
+
+			_dan = new int(*obj._dan);
+
+			_mjesec = new int(*obj._mjesec);
+
+			_godina = new int(*obj._godina);
+
+		}
+		return *this;
+	}
+
+	~Datum() {
+
+	
+		delete _dan;
+		_dan = nullptr;
+
+		delete _mjesec;
+		_mjesec = nullptr;
+
+		delete _godina;
+		_godina = nullptr;
+	}
+
+	void Ispis() {
+		cout << "Dan: " << *_dan << endl;
+		cout << "Mjesec: " << *_mjesec << endl;
+		cout << "Godina: " << *_godina << endl;
+
+	}
+
+};
+
+class Kandidat {
+public:
+	char* _imePrezime;
+	char* _JMBG;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+	Kandidat() {
+		const char* tekst1 = "Nema imena i prezimena";
+
+		int vel1 = strlen(tekst1) + 1;
+
+		_imePrezime = new char[vel1];
+
+		strcpy_s(_imePrezime, vel1, tekst1);
+
+
+
+		const char* tekst2 = "Nema dostupnog JMBG-A";
+
+		int vel2 = strlen(tekst2) + 1;
+
+		_JMBG = new char[vel2];
+
+		strcpy_s(_JMBG, vel2, tekst2);
+	}
+
+	Kandidat(const char* imeiprezime, const char* jmbg) {
+		int vel1 = strlen(imeiprezime) + 1;
+
+		_imePrezime = new char[vel1];
+
+		strcpy_s(_imePrezime, vel1, imeiprezime);
+
+		int vel2 = strlen(jmbg) + 1;
+
+		_JMBG = new char[vel2];
+
+		strcpy_s(_JMBG, vel2, jmbg);
+	}
+	Kandidat(const Kandidat& obj) {
+		int vel1 = strlen(obj._imePrezime) + 1;
+
+		_imePrezime = new char[vel1];
+
+		strcpy_s(_imePrezime, vel1, obj._imePrezime);
+
+		int vel2 = strlen(obj._JMBG) + 1;
+
+		_JMBG = new char[vel2];
+
+		strcpy_s(_JMBG, vel2, obj._JMBG);
+	}
+	Kandidat& operator = (const Kandidat& obj) {
+		if (this!=&obj)
+		{
+			delete[] _imePrezime;
+			
+			delete[] _JMBG;
+			
+			int vel1 = strlen(obj._imePrezime) + 1;
+
+			_imePrezime = new char[vel1];
+
+			strcpy_s(_imePrezime, vel1, obj._imePrezime);
+
+			int vel2 = strlen(obj._JMBG) + 1;
+
+			_JMBG = new char[vel2];
+
+			strcpy_s(_JMBG, vel2, obj._JMBG);
+		}
+		return *this;
+	}
+	~Kandidat() {
+
+	
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+
+		delete[] _JMBG;
+		_JMBG = nullptr;
+	}
+
+	void Ispis() {
+		cout << "Ime i prezime: " << _imePrezime << endl;
+		cout << "JMBG: " << _JMBG << endl;
+	}
+};
+
+class Glasac {
+public:
+	Datum _datumRodjenja;
+	char* _imePrezime;
+	char* _JMBG;
+	char* _prebivaliste;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+	Glasac() {
+
+		*_datumRodjenja._dan = 0;
+		*_datumRodjenja._mjesec = 0;
+		*_datumRodjenja._godina = 0;
+
+
+		const char* tekst1 = "Nema imena i prezimena glasaca";
+
+		int vel1 = strlen(tekst1) + 1;
+
+		_imePrezime = new char[vel1];
+
+		strcpy_s(_imePrezime, vel1, tekst1);
+
+
+		const char* tekst2 = "Nema dostupnog JMBG-A";
+
+		int vel2 = strlen(tekst2) + 1;
+
+		_JMBG = new char[vel2];
+
+		strcpy_s(_JMBG, vel2, tekst2);
+
+		const char* tekst3 = "Nema dostupnog prebivalista";
+
+		int vel3 = strlen(tekst3) + 1;
+
+		_prebivaliste = new char[vel3];
+
+		strcpy_s(_prebivaliste, vel3, tekst3);
+	
+	}
+
+	Glasac(Datum datumRodjenja,const char* imePrezime,const char* jmbg,const char* prebivaliste) {
+		_datumRodjenja = datumRodjenja;
+
+		int vel1 = strlen(imePrezime) + 1;
+
+		_imePrezime = new char[vel1];
+
+		strcpy_s(_imePrezime, vel1, imePrezime);
+
+		int vel2 = strlen(jmbg)+1;
+
+		_JMBG = new char[vel2];
+
+		strcpy_s(_JMBG, vel2, jmbg);
+
+		int vel3 = strlen(prebivaliste) + 1;
+
+		_prebivaliste = new char[vel3];
+
+		strcpy_s(_prebivaliste, vel3, prebivaliste);
+
+	}
+	Glasac(const Glasac& obj) {
+		_datumRodjenja = obj._datumRodjenja;
+
+		int vel1 = strlen(obj._imePrezime) + 1;
+
+		_imePrezime = new char[vel1];
+
+		strcpy_s(_imePrezime, vel1, obj._imePrezime);
+
+		int vel2 = strlen(obj._JMBG) + 1;
+
+		_JMBG = new char[vel2];
+
+		strcpy_s(_JMBG, vel2, obj._JMBG);
+
+		int vel3 = strlen(obj._prebivaliste) + 1;
+
+		_prebivaliste = new char[vel3];
+
+		strcpy_s(_prebivaliste, vel3, obj._prebivaliste);
+	}
+	Glasac& operator = (const Glasac& obj) {
+		if (this!=&obj)
+		{
+			delete[] _imePrezime;
+
+			delete[] _JMBG;
+			
+			delete[] _prebivaliste;
+
+			_datumRodjenja = obj._datumRodjenja;
+
+			int vel1 = strlen(obj._imePrezime) + 1;
+
+			_imePrezime = new char[vel1];
+
+			strcpy_s(_imePrezime, vel1, obj._imePrezime);
+
+			int vel2 = strlen(obj._JMBG) + 1;
+
+			_JMBG = new char[vel2];
+
+			strcpy_s(_JMBG, vel2, obj._JMBG);
+
+			int vel3 = strlen(obj._prebivaliste) + 1;
+
+			_prebivaliste = new char[vel3];
+
+			strcpy_s(_prebivaliste, vel3, obj._prebivaliste);
+			
+		}
+		return *this;
+	}
+	~Glasac() {
+	
+
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+		delete[] _prebivaliste;
+		_prebivaliste = nullptr;
+	}
+	void Ispis() {
+		cout << "Datum rodjenja: " << *_datumRodjenja._dan << "." << *_datumRodjenja._mjesec << "." << *_datumRodjenja._godina << endl;
+		cout << "Ime i prezime: " << _imePrezime << endl;
+		cout << "JMBG: " << _JMBG << endl;
+		cout << "Prebivaliste: " << _prebivaliste << endl;
+	}
+
+};
+
+class GlasackiListic {
+public:
+	Glasac* _glasac;
+	Kandidat* _kandidat;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+
+	GlasackiListic() {
+		_glasac = new Glasac();     
+		_kandidat = new Kandidat();
+	}
+	GlasackiListic(Glasac glasac,Kandidat kandidat) {
+		_glasac = new Glasac(glasac);
+		_kandidat = new Kandidat(kandidat);
+	}
+	GlasackiListic(const GlasackiListic& obj) {
+		_glasac = new Glasac(*obj._glasac);
+		_kandidat = new Kandidat(*obj._kandidat);
+	}
+	GlasackiListic& operator = (const GlasackiListic& obj) {
+		if (this!=&obj)
+		{
+			delete _glasac;
+
+			delete _kandidat;
+			
+			_glasac = new Glasac(*obj._glasac);
+			_kandidat = new Kandidat(*obj._kandidat);
+		}
+		return *this;
+	}
+	~GlasackiListic() {
+		delete _glasac;
+		_glasac = nullptr;
+		
+		delete _kandidat;
+		_kandidat = nullptr;
+
+	}
+	void Ispis() {
+		cout << "----- Glasacki Listic -----" << endl;
+		_glasac->Ispis();    
+		_kandidat->Ispis();  
+		cout << "---------------------------" << endl;
+	}
+};
+
+
+class Izbori {
+public:
+	char* _glasackoMjesto;
+	GlasackiListic* _glasovi;
+	int _trenutnoGlasova;
+	int _maxBrojGlasova;
+	//Kreirati i implementirati
+	//1. Defaultni konstruktor
+	//2. Konstruktor koji prima parametre
+	//3. Konstruktor kopije
+	//4. Operator dodjele
+	//5. Destruktor
+	//6. Operator ispisa 
+	//7. Potrebne funkcije
+
+	Izbori() {
+		const char* tekst1 = "Nema dostupnog glasackog mjesta";
+
+		int vel = strlen(tekst1) + 1;
+
+		_glasackoMjesto = new char[vel];
+
+		strcpy_s(_glasackoMjesto, vel, tekst1);
+
+		_trenutnoGlasova = 0;
+
+		_maxBrojGlasova = 3;
+
+		_glasovi = new GlasackiListic[_maxBrojGlasova];
+	}
+	Izbori(const char* glasackomjesto,int maxbrojglasova) {
+		int vel = strlen(glasackomjesto) + 1;
+
+		_glasackoMjesto = new char[vel];
+
+		strcpy_s(_glasackoMjesto, vel, glasackomjesto);
+
+		_trenutnoGlasova = 0;
+
+		_maxBrojGlasova = maxbrojglasova;
+
+		_glasovi = new GlasackiListic[_maxBrojGlasova];
+	}
+	Izbori(const Izbori & obj){
+		int vel = strlen(obj._glasackoMjesto) + 1;
+
+		_glasackoMjesto = new char[vel];
+
+		strcpy_s(_glasackoMjesto, vel, obj._glasackoMjesto);
+
+		_trenutnoGlasova = obj._trenutnoGlasova;
+
+		_maxBrojGlasova = obj._maxBrojGlasova;
+
+		_glasovi = new GlasackiListic[_maxBrojGlasova];
+
+		for (int i = 0; i < obj._trenutnoGlasova; i++)
+		{
+			_glasovi[i] = obj._glasovi[i];
+		}
+	}
+	Izbori& operator = (const Izbori& obj) {
+		if (this!=&obj)
+		{
+			delete[] _glasackoMjesto;
+
+			delete[] _glasovi;
+			
+			int vel = strlen(obj._glasackoMjesto) + 1;
+
+			_glasackoMjesto = new char[vel];
+
+			strcpy_s(_glasackoMjesto, vel, obj._glasackoMjesto);
+
+			_trenutnoGlasova = obj._trenutnoGlasova;
+
+			_maxBrojGlasova = obj._maxBrojGlasova;
+
+			_glasovi = new GlasackiListic[_maxBrojGlasova];
+
+			for (int i = 0; i < obj._trenutnoGlasova; i++)
+			{
+				_glasovi[i] = obj._glasovi[i];
+			}
+		}
+		return *this;
+	}
+	~Izbori() {
+		delete[] _glasackoMjesto;
+		_glasackoMjesto = nullptr;
+
+		delete[] _glasovi;
+		_glasovi = nullptr;
+	}
+	void Ispis() {
+		cout << "Glasacko mjesto: " << _glasackoMjesto << endl;
+		cout << "== GLASOVI ==" << endl<<endl;
+
+		for (int i = 0; i < _trenutnoGlasova; i++)
+		{
+			_glasovi[i].Ispis();
+		}
+	}
+	bool AddGlasackiListic(GlasackiListic listic)
+	{
+		// 1. Onemogucavanje dodavanja vise listica nego sto je dozvoljeno
+		if (_maxBrojGlasova == _trenutnoGlasova) { 
+			cout << "Prekoracen kapacitet niza" << endl;
+			return false; 
+		}
+
+		// Provjera da ista osoba ne glasa više puta
+		for (int i = 0; i < _trenutnoGlasova; i++) {
+			if (strcmp(_glasovi[i]._glasac->_JMBG, listic._glasac->_JMBG) == 0) {
+				cout << "Ovaj glasac je vec glasao" << endl;
+				return false;
+			}
+		}
+
+		// 3. Provjera starosti (osoba mora imati 18 ili više godina)
+		int godinaRodjenja = *listic._glasac->_datumRodjenja._godina;
+		int trenutnaGodina = 2026; 
+		if ((trenutnaGodina - godinaRodjenja) < 18)
+			return false;
+
+
+		// 4. Provjera prebivališta (osoba može glasati samo na svom mjestu)
+		if (strcmp(_glasackoMjesto, listic._glasac->_prebivaliste) != 0) {
+			cout << "Glasac nije sa ovog glasackog mjesta" << endl;
+			return false;
+		}
+
+		// 5. Ako je prošao sve provjere, dodaj glas
+		_glasovi[_trenutnoGlasova] = listic;
+		_trenutnoGlasova++;
+
+		return true;// uspješno dodan glas
+	}
+
+
+};
+
+
+
+void main() {
+
+	//Datum datum0;
+
+	//datum0.Ispis();
+
+	//Datum datum1(29, 3, 2002);
+	//Datum datum2(17, 10, 2004);
+
+	//Datum datumKopija = datum1;
+	//datumKopija.Ispis();
+	//datum1.Ispis();
+	//datum2.Ispis();
+
+	//Datum datumOperatorDodjele;
+	//datumOperatorDodjele = datum1;
+
+
+	//datumOperatorDodjele.Ispis();
+	//datum1.Ispis();
+
+
+
+
+
+	//Kandidat kandidat0;
+
+	//kandidat0.Ispis();
+
+	//Kandidat kandidat1("Ilma Omerika","12345");
+	//Kandidat kandidat2("Ekrem Zvonic", "678910");
+
+	//Kandidat kandidatKopija = kandidat1;
+	//kandidatKopija.Ispis();
+
+	//Kandidat kandidatOperatorDodjdele;
+	//kandidatOperatorDodjdele = kandidat1;
+
+	//kandidatOperatorDodjdele.Ispis();
+	//kandidat1.Ispis();
+	//kandidat2.Ispis();
+
+
+
+
+	//Glasac glasac0;
+	//glasac0.Ispis();
+
+	//Glasac glasac1(datum1, "Ilma Omerika", "576576", "Mostar");
+	//Glasac glasac2(datum2, "Melinda Mahic", "8567687", "Sarajevo");
+
+	//glasac1.Ispis();
+	//glasac2.Ispis();
+
+	//Glasac glasacKopija = glasac1;
+	//glasacKopija.Ispis();
+
+	//Glasac glasacOperstorDodjele;
+	//glasacOperstorDodjele = glasac1;
+
+	//glasacOperstorDodjele.Ispis();
+
+
+
+
+
+	//GlasackiListic glasackilistic0;
+	//glasackilistic0.Ispis();
+
+	//GlasackiListic glasackilistic1(glasac1, kandidat1);
+	//GlasackiListic glasackilistic2(glasac2, kandidat2);
+
+	//glasackilistic1.Ispis();
+	//glasackilistic2.Ispis();
+
+	//GlasackiListic glasackilisticKopija = glasackilistic1;
+
+	//glasackilisticKopija.Ispis();
+
+	//GlasackiListic glasackilisticOperatorDodjele;
+	//glasackilisticOperatorDodjele = glasackilistic1;
+
+	//glasackilisticOperatorDodjele.Ispis();
+
+
+
+
+	//Izbori izbori0;
+	//izbori0.Ispis();
+
+	//Izbori izbori1("Mostar", 3);
+	//Izbori izbori2("Sarajevo", 3);
+
+	//izbori1.Ispis();
+	//izbori2.Ispis();
+
+	//Izbori izboriKopija = izbori1;
+	//izboriKopija.Ispis();
+
+	//Izbori izboriOperatorDodjele;
+	//izboriOperatorDodjele = izbori1;
+
+	//izboriOperatorDodjele.Ispis();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+  
+    Datum datum1(29, 3, 2002);
+    Datum datum2(17, 10, 2004);
+    Datum datum3(5, 5, 1990);
+
+   
+    Kandidat kandidat1("Ilma Omerika", "12345");
+    Kandidat kandidat2("Ekrem Zvonic", "678910");
+
+   
+    Glasac glasac1(datum1, "Ilma Omerika", "576576", "Mostar");
+    Glasac glasac2(datum2, "Melinda Mahic", "8567687", "Mostar");
+    Glasac glasac3(datum3, "Adnan Basic", "999999", "Sarajevo");
+
+   
+    GlasackiListic listic1(glasac1, kandidat1);
+    GlasackiListic listic2(glasac2, kandidat2);
+    GlasackiListic listic3(glasac3, kandidat1);
+
+   
+    Izbori izboriMostar("Mostar", 5);
+    Izbori izboriSarajevo("Sarajevo", 5);
+
+    // Dodavanje glasova
+    if (izboriMostar.AddGlasackiListic(listic1)==true)
+        cout << "Glas dodan uspjesno!" << endl;
+
+    if (izboriMostar.AddGlasackiListic(listic2)==true)
+        cout << "Glas dodan uspjesno!" << endl;
+
+    if (izboriMostar.AddGlasackiListic(listic3)==false)
+        cout << "Glas nije dodat jer je glasac iz druge opstine ili mladji od 18!" << endl;
+
+    if (izboriSarajevo.AddGlasackiListic(listic3)==true)
+        cout << "Glas dodan uspjesno!" << endl;
+
+    // Ispis rezultata
+    cout << "=== IZBORI MOSTAR ===" << endl;
+    izboriMostar.Ispis();
+
+    cout << "=== IZBORI SARAJEVO ===" << endl;
+    izboriSarajevo.Ispis();
+
+
+	system("pause>0");
+}
