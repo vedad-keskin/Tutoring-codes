@@ -29,9 +29,15 @@ namespace Studentska.WinApp.IspitIB180079
         {
             dgvStudentiKnjige.AutoGenerateColumns = false;
 
-            cbKnjiga.DataSource = knjigaServis.GetAll();
+            UcitajComboBox();
 
             UcitajStudentiKnjige();
+
+        }
+
+        private void UcitajComboBox()
+        {
+            cbKnjiga.DataSource = knjigaServis.GetAll();
 
         }
 
@@ -140,7 +146,25 @@ namespace Studentska.WinApp.IspitIB180079
 
             var frmIznajmljivanje = new frmIznajmljivanjaIB180079();
 
-            frmIznajmljivanje.ShowDialog();
+            if (frmIznajmljivanje.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiKnjige();
+
+            }
+
+        }
+
+        private void btnDodaj_Click(object sender, EventArgs e)
+        {
+
+            var frmKnjigaAdd = new frmKnjigaAddIB180079();
+
+            if(frmKnjigaAdd.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiKnjige(); 
+                UcitajComboBox();
+            }
+
 
         }
     }
