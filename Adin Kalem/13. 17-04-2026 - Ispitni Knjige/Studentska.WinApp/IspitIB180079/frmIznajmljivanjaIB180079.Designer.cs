@@ -38,7 +38,11 @@
             cbStudent = new ComboBox();
             cbKnjiga = new ComboBox();
             btnIznajmi = new Button();
+            btnGenerisi = new Button();
+            groupBox1 = new GroupBox();
+            txtInfo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvStudentiKnjige).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // dgvStudentiKnjige
@@ -137,11 +141,42 @@
             btnIznajmi.UseVisualStyleBackColor = true;
             btnIznajmi.Click += btnIznajmi_Click;
             // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(12, 381);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(223, 29);
+            btnGenerisi.TabIndex = 9;
+            btnGenerisi.Text = "Generiši iznajmljivanja";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Location = new Point(12, 416);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(982, 239);
+            groupBox1.TabIndex = 10;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator info";
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(19, 26);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(948, 207);
+            txtInfo.TabIndex = 0;
+            // 
             // frmIznajmljivanjaIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1003, 387);
+            ClientSize = new Size(1003, 667);
+            Controls.Add(btnGenerisi);
+            Controls.Add(groupBox1);
             Controls.Add(btnIznajmi);
             Controls.Add(cbKnjiga);
             Controls.Add(cbStudent);
@@ -153,6 +188,8 @@
             FormClosing += frmIznajmljivanjaIB180079_FormClosing;
             Load += frmIznajmljivanjaIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStudentiKnjige).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -169,5 +206,8 @@
         private ComboBox cbStudent;
         private ComboBox cbKnjiga;
         private Button btnIznajmi;
+        private Button btnGenerisi;
+        private GroupBox groupBox1;
+        private TextBox txtInfo;
     }
 }

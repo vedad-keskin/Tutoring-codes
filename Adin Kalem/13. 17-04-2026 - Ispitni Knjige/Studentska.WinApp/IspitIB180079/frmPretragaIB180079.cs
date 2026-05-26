@@ -34,12 +34,19 @@ namespace Studentska.WinApp.IspitIB180079
         {
             dgvStudentiKnjige.AutoGenerateColumns = false;
 
-            cbKnjige.DataSource = knjigeServis.GetAll();
+
+            UcitajComboBox();
 
 
             UcitajStudentKnjige();
 
             //txtPretraga.Text = "VEDAD KESKIN";
+        }
+
+        private void UcitajComboBox()
+        {
+            cbKnjige.DataSource = knjigeServis.GetAll();
+
         }
 
         private void UcitajStudentKnjige()
@@ -122,7 +129,16 @@ namespace Studentska.WinApp.IspitIB180079
 
         private void btnDodajKnjigu_Click(object sender, EventArgs e)
         {
-            //chbVracena.Checked = true;
+
+            var frmAddKnjiga = new frmKnjigaAddIB180079();
+
+            if (frmAddKnjiga.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentKnjige();
+                UcitajComboBox();
+            }
+
+
         }
 
         private void btnIznajmljivanja_Click(object sender, EventArgs e)

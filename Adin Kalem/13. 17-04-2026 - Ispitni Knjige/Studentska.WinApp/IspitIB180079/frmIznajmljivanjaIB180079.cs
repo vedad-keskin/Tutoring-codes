@@ -124,5 +124,82 @@ namespace Studentska.WinApp.IspitIB180079
         {
             DialogResult = DialogResult.OK;
         }
+
+        private async void btnGenerisi_Click(object sender, EventArgs e)
+        {
+
+            // 1. PRVI DIO
+            // -- postavljanje threada
+            // -- validacije
+            // -- ako imamo neki combo box, on se mora pohranit u prvom dijelu i proslijediti drugom dijelu 
+
+            var student = cbStudent.SelectedItem as Student;
+
+            await Task.Run(() => GenerisiIznajmljivanja(student)  );
+
+        }
+
+        private void GenerisiIznajmljivanja(Student? student)
+        {
+
+            // 2. DRUGI DIO
+            // -- pohrane
+            // -- kalkulacije
+            // -- sleep
+
+
+            var sveKnjige = knjigeServis.GetAll();
+
+            var info = "";
+
+            var redniBroj = 1;
+
+            for (int i = 0; i < sveKnjige.Count(); i++)
+            {
+
+                if (!studentiKnjigeServis.GetAll().Exists(x => x.StudentId == student.Id && x.KnjigaId == sveKnjige[i].Id) )
+                {
+
+                    Thread.Sleep(1000);
+
+                    var novoIznajmljivanje = new StudentiKnjigeIB180079()
+                    {
+                        StudentId = student.Id,
+                        KnjigaId = sveKnjige[i].Id,
+                        DatumIznajmljivanja = DateTime.Now,
+                        Vracena = false
+                    };
+
+
+
+                    info += $"{redniBroj}. {student} dodato zaduzenje {sveKnjige[i]}{Environment.NewLine}";
+
+                    redniBroj++;
+
+
+                    studentiKnjigeServis.Add(novoIznajmljivanje);
+                }
+             
+
+            }
+
+         
+
+            Action action = () =>
+            {
+                // 3. TRECI DIO
+                // -- mbox
+                // -- ispis
+                // -- ucitavanje
+
+                UcitajStudentKnjige();
+                MessageBox.Show($"Generisanje je uspješno završeno", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtInfo.Text = info;
+
+            };
+            BeginInvoke(action);
+
+
+        }
     }
 }
