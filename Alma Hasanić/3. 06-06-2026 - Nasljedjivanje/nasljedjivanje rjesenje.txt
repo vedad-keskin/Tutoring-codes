@@ -1,0 +1,213 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) { // AlocirajNiz, AlocirajTekst
+
+	int vel = strlen(tekst) + 1;
+
+	char* novi = new char[vel];
+
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+
+
+// BAZNA KLASA -> KLASA KOJA CE BITI NASLIJEDJENA
+
+// 3. RAZLIKA --> OBICNU KLASU
+
+class Osoba {
+protected: // 1. RAZLIKA
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	//                "Denis Music",              "123213323");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+		_JMBG = GetNizKaraktera(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+			delete[]_imePrezime;
+			delete[]_JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+			_JMBG = GetNizKaraktera(obj._JMBG);
+		}
+		return *this;
+	}
+
+
+	virtual void Test() {
+
+		cout << "BAZNA POCETNA IMPLEMENTACIJA NEKE METODE TEST()" << endl;
+
+	}
+
+	// 2. RAZLIKA
+
+	virtual void Info() = 0; // NEMA IMPLEMENTACIJA -> pure virtual func. 
+	// 1. nasa klasa Osoba -> postaje apstraktna klasa -> ovo vise nije obicna klasa i ne moze se pravit ona nego je sada samo pomocni mehanizam da pravimo izvedene klase
+	// 2. kada napravimo pure virt. func. onda se ovo virtualna metoda mora overrideati u svakoj izvedenoj klasi 
+
+	virtual ~Osoba() { // 3. RAZLIKA
+
+		cout << "BAZNI DESTERUKTOR SE POZVAO" << endl;
+
+
+		delete[]_imePrezime;
+		_imePrezime = nullptr;
+		delete[]_JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	void Ispis() {
+
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	}
+
+	//cout << osoba1;
+
+	friend ostream& operator << (ostream& COUT , const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+
+// IZVEDENE KLASE -> KLASA KOJE CE NASLIJEDITI BAZNU KLASU 
+
+// 5. KORAK 
+
+class Profesor : public Osoba { // 1. KORAK NASLJEDJIVANJA
+public:
+	char* _titula;
+
+
+	//Profesor profesor1("dr. sc", 
+
+	Profesor(const char* titula = "prof", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime, jmbg) { // 2. KORAK
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3. KORAK
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj) {
+		if (this != &obj) {
+			delete[] _titula;
+
+			Osoba::operator=(obj); // 4. KORAK
+
+			_titula = GetNizKaraktera(obj._titula);
+		}
+		return *this;
+	}
+
+	void Test() override {
+
+		cout << "IZVEDENA NAPREDNA IMPLEMENTACIJA NEKE METODE TEST()" << endl;
+
+
+	}
+
+	// 5. KORAK
+
+	void Info() override {
+
+		cout << *this;
+
+	}
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTERUKTOR SE POZVAO" << endl;
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor;
+
+
+};
+
+// IZVEDENE KLASE -> KLASA KOJE CE NASLIJEDITI BAZNU KLASU 
+
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+
+
+};
+
+
+
+
+
+
+
+void main() {
+
+	Profesor profesor1("dr. sc", "Denis Music", "123213323");
+
+	cout << profesor1;
+	profesor1.Info();
+
+	// SPECIJALNI SLUCAJ -> EDGE CASE
+
+	Osoba* profesor = new Profesor("doc. dr.","Elmir Babovic","21321321312");
+
+	delete profesor;
+
+
+
+	system("PAUSE>0");
+}
