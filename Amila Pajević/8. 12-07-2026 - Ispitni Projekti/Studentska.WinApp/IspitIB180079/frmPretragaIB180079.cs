@@ -52,7 +52,9 @@ namespace Studentska.WinApp.IspitIB180079
                 .Where(x => x.Projekat.Naziv.ToLower().Contains(pretrega) ||
                 $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretrega))
                 .Where(x => status == "Sve" || x.Status == status)
-                .Where(x => stanje == "Sve" || x.Stanje == stanje)
+                .Where(x => stanje == "Sve" ||
+                (x.Arhivirano == false && stanje == "Aktivna") ||
+                (x.Arhivirano == true && stanje == "Arhivirana"))
                 .ToList();
 
 
@@ -87,18 +89,18 @@ namespace Studentska.WinApp.IspitIB180079
 
         private void dgvStudentiProjekti_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == 7)
+            if (e.ColumnIndex == 7)
             {
 
                 var odabraniStudentProjekat = dgvStudentiProjekti.SelectedRows[0].DataBoundItem as StudentiProjektiIB180079;
 
-                if(odabraniStudentProjekat.Stanje == "Arhivirana")
+                if (odabraniStudentProjekat.Arhivirano == true)
                 {
-                    MessageBox.Show("Stanje odabranog projekta je već arhivirano","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show("Stanje odabranog projekta je već arhivirano", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    odabraniStudentProjekat.Stanje = "Arhivirana";
+                    odabraniStudentProjekat.Arhivirano = true;
                 }
 
 
@@ -107,6 +109,20 @@ namespace Studentska.WinApp.IspitIB180079
                 UcitajStudentProjekte();
 
             }
+        }
+
+        private void btnNoviProjekat_Click(object sender, EventArgs e)
+        {
+
+            var frmAddProjekat = new frmProjekatAddIB180079();
+
+            if(frmAddProjekat.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajStudentProjekte();
+
+            }
+
         }
     }
 }

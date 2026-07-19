@@ -112,8 +112,9 @@
             btnNoviProjekat.Name = "btnNoviProjekat";
             btnNoviProjekat.Size = new Size(159, 29);
             btnNoviProjekat.TabIndex = 3;
-            btnNoviProjekat.Text = "Novo projekat";
+            btnNoviProjekat.Text = "Novi projekat";
             btnNoviProjekat.UseVisualStyleBackColor = true;
+            btnNoviProjekat.Click += btnNoviProjekat_Click;
             // 
             // btnNovaPrijava
             // 
@@ -205,7 +206,7 @@
             // Stanje
             // 
             Stanje.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Stanje.DataPropertyName = "Stanje";
+            Stanje.DataPropertyName = "ArhiviranoInfo";
             Stanje.HeaderText = "Stanje prijave";
             Stanje.MinimumWidth = 6;
             Stanje.Name = "Stanje";
