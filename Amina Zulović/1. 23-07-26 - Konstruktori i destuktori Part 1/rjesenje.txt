@@ -1,0 +1,257 @@
+#include <iostream>
+using namespace std;
+
+
+//struct Struktura {
+//private:
+//	int broj;
+//
+//};
+//
+//class Klasa {
+//public:
+//	int broj;
+//
+//
+//};
+
+// POKAZIVACI 
+
+// 1. ALOKACIJA ( new ) 
+
+// ako nam treba jedan mem. proostor -> ( ) 
+
+// ako nam treba vise mem. proostor -> [ ] 
+
+// 2. DEREFERENCIRANJE ( * ) 
+
+// ako nam treba jedan mem. proostor -> ( ) -> * je obavezna -> _ECTS = 000001FD144886C0 , *_ECTS = 0
+
+// ako nam treba vise mem. proostor -> [ ] -> * ne smije pisati -> _naziv = Nema predmeta , *_naziv = N 
+
+// 3. DESTRUTKOR / DEALOKACIJA
+
+// ako nam treba jedan mem. proostor -> ( ) -> delete _ECTS;
+
+// ako nam treba vise mem. proostor -> [ ] -> delete[] _naziv;
+
+
+
+// this
+class Predmet {
+public:			  // dft. constr.  //
+	char* _naziv; // Nema predmeta // nullptr
+	//char _naziv[50];
+
+	int _ocjena;  //      5		   //
+	int* _ECTS;	  //      0		   //
+
+
+	// 1. dft. constr.
+
+	Predmet() {
+
+		_ocjena = 5;
+
+		_ECTS = new int(0); // 1231312
+
+		//char dftNaziv[] = "Nema predmeta"; // 14 slova
+		//string dftNaziv = "Nema predmeta";
+		const char* dftNaziv = "Nema predmeta"; // string literal -> read only mem. 
+
+		int vel = strlen(dftNaziv) + 1; // 13 sl. + 1 = 14 
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, dftNaziv);
+
+
+	}
+
+	// 4. user-def constr.
+	//Predmet predmet1("Programiranje II", 9, 7); // <-- user-def constr.
+
+	Predmet(const char* naziv, int ocjena , int ects) {
+
+		_ocjena = ocjena;
+
+		_ECTS = new int(ects);
+
+		int vel = strlen(naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, naziv);
+
+	}
+
+	// 5. copy constr.
+	//Predmet predmetKopija2(predmet2);  // shallow copy --> deep copy -> copy constr.
+
+	// bez & -> pravimo kopiju
+	// sa & -> saljemo original
+	// const -> nesto je konstantno -> ne moze se mijenajti
+
+
+
+	Predmet(const Predmet& predmet) { // napraviti kopija tog predmeta1 -> poslaji original predmeta1
+
+		//predmet._ocjena = 10;
+
+		_ocjena = predmet._ocjena;
+
+		_ECTS = new int(*predmet._ECTS);
+
+		int vel = strlen(predmet._naziv) + 1;
+
+		_naziv = new char[vel];
+
+		strcpy_s(_naziv, vel, predmet._naziv);
+
+	}
+
+	// 6. op = 
+	//predmetOperatorDodjele = predmet1; // shallow copy --> deep copy --> op = 
+
+	Predmet& operator = (const Predmet& predmet) {
+
+
+		// this -> 0x2132132 , *this 
+		// _ocjena = 9
+		// _ECTS = 7
+		// _naziv = Prog.. 
+
+
+		if (this != &predmet) {
+
+			delete _ECTS;
+
+			delete[] _naziv;
+
+
+			_ocjena = predmet._ocjena;
+
+			_ECTS = new int(*predmet._ECTS);
+
+			int vel = strlen(predmet._naziv) + 1;
+
+			_naziv = new char[vel];
+
+			strcpy_s(_naziv, vel, predmet._naziv);
+
+		}
+
+		return *this;
+
+	}
+
+
+
+
+	// 3. destruktor
+	// tilda -> alt gr + 1 ~~~~~~
+
+	~Predmet() {
+
+		cout << "DESTRUKTOR SE POZVAO" << endl;
+
+		delete _ECTS;
+
+		_ECTS = nullptr;
+
+		delete[] _naziv;
+
+		_naziv = nullptr;
+
+	}
+
+
+	// 2. ispis
+
+	void Ispis() {
+
+		cout << "Naziv predmeta: " << _naziv << endl;
+		cout << "Ocjena predmeta: " << _ocjena << endl;
+		cout << "ECTS predmeta: " << *_ECTS << endl;
+
+	}
+
+
+
+};
+
+
+class Student {
+	char* _imePrezime;
+	Predmet* _polozeni;
+	int _trenutno;
+	int _max;
+public:
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Ispis ili operator ispisa (operator <<) 
+	// 7. Dodatne funkcije
+
+
+
+	void AddPolozeniPredmet(Predmet predmet) {
+		// Dodaje novi polozeni predmet u niz
+		// Voditi računa da se ne može prekoračiti kapacitet niza
+		// Voditi računa da se ne moze dodavati isti predmet (istog naziva)		        
+
+
+	}
+
+};
+
+
+
+void main() {
+
+	Predmet predmet0; // <-- dft. const.
+
+	Predmet predmet1("Programiranje II", 9, 7); // <-- user-def constr.
+	Predmet predmet2("Matematika II", 6, 4); // <-- user-def constr.
+
+	// sit. kopiranja
+
+	Predmet predmetKopija1 = predmet1; // shallow copy --> deep copy -> copy constr.
+	Predmet predmetKopija2(predmet2);  // shallow copy --> deep copy -> copy constr.
+
+
+	Predmet predmetOperatorDodjele; // <-- dft. const.
+
+	predmetOperatorDodjele = predmetOperatorDodjele; // shallow copy --> deep copy --> op = 
+
+
+
+	predmet0.Ispis();
+	cout << endl;
+	predmet1.Ispis();
+	cout << endl;
+	predmet2.Ispis();
+	cout << endl;
+	predmetKopija1.Ispis();
+	cout << endl;	
+	predmetKopija2.Ispis();
+	cout << endl;
+	predmetOperatorDodjele.Ispis();
+	cout << endl;
+
+
+
+
+	//Struktura s;
+	//Klasa k;
+
+	//s.broj;
+	//k.broj;
+
+
+
+	system("pause>0");
+}
