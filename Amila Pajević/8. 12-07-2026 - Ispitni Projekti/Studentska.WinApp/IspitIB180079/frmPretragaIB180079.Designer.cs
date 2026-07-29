@@ -124,6 +124,7 @@
             btnNovaPrijava.TabIndex = 3;
             btnNovaPrijava.Text = "Nova prijava";
             btnNovaPrijava.UseVisualStyleBackColor = true;
+            btnNovaPrijava.Click += btnNovaPrijava_Click;
             // 
             // btnPrint
             // 

@@ -116,13 +116,25 @@ namespace Studentska.WinApp.IspitIB180079
 
             var frmAddProjekat = new frmProjekatAddIB180079();
 
-            if(frmAddProjekat.ShowDialog() == DialogResult.OK)
+            if (frmAddProjekat.ShowDialog() == DialogResult.OK)
             {
 
                 UcitajStudentProjekte();
 
             }
 
+        }
+
+        private void btnNovaPrijava_Click(object sender, EventArgs e)
+        {
+            var frmAddPrijava = new frmPrijavaAddEditIB180079();
+
+            if (frmAddPrijava.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajStudentProjekte();
+
+            }
         }
     }
 }
