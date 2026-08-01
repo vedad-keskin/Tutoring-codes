@@ -1,0 +1,254 @@
+#include <iostream>
+using namespace std;
+
+
+// GetNizKaraktera / AlocirajTekst
+
+char* AlocirajNiz(const char* tekst) {
+
+
+	int vel = strlen(tekst) + 1;
+
+	char* novi = new char[vel];
+
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+// BAZNA KLASA -> KLASA KOJA SE NASLJEDJUJE 
+
+// 3 RAZLIKE 
+
+class Osoba {
+protected: // 1/3 RAZLIKA
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+
+	//              "Denis Music",                2132133123");
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+
+		_imePrezime = AlocirajNiz(imeprezime);
+
+		_JMBG = AlocirajNiz(jmbg);
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = AlocirajNiz(obj._imePrezime);
+
+		_JMBG = AlocirajNiz(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+
+			delete[] _JMBG;
+
+
+			_imePrezime = AlocirajNiz(obj._imePrezime);
+
+			_JMBG = AlocirajNiz(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+	virtual ~Osoba() { // 3/3 RAZLIKA
+
+		cout << "BAZNI DESTURKTOR SE POZVAO" << endl;
+
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+	virtual void Test() {
+
+		cout << "VER. 1 NEKE TEST() METODE" << endl;
+
+	}
+
+
+	virtual void Info() = 0; // pure virt. func.  2/3 RAZLIKA
+
+	// 1. klasa Osoba postaje apstraktna klasa -> to znaci da ona vise ne postoji kao stan. klasa, nego postaje samo pomocni mehanizam da lakse napraviom izv. klase
+	// 2. svaka izvedena klasa mora imati override te apstraktne metode
+
+
+	void Ispis() {
+
+
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	}
+
+	//cout << osoba0;
+
+	friend ostream& operator << (ostream& COUT,  const Osoba& obj) {
+
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+// IZVEDENA KLASA -> KLASA KOJA NASLJEDJUJE BAZNU KLASU 
+
+// 5 KORAK
+
+class Profesor : public Osoba { // 1/5 KORAK
+public:
+	char* _titula;
+
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "2132133123");
+
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime, jmbg)  { // 2/5 KORAK
+
+		_titula = AlocirajNiz(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3/5 KORAK
+
+		_titula = AlocirajNiz(obj._titula);
+
+
+	}
+
+	Profesor& operator = (const Profesor& obj)  {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+
+			Osoba::operator=(obj); // 4/5 KORAK
+
+
+			_titula = AlocirajNiz(obj._titula);
+
+		}
+		return *this;
+	}
+
+	void Test() override {
+
+		cout << "VER. 2 NAPREDNA NEKE TEST() METODE" << endl;
+
+	}
+
+
+	void Info() override { // 5/5 KORAK
+
+		cout << *this;
+
+	}
+
+
+	~Profesor() {
+
+		cout << "IZVEDENI DESTURKTOR SE POZVAO" << endl;
+
+		delete[] _titula;
+		_titula = nullptr;
+
+	}
+
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+
+		COUT << obj._titula <<  " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+
+
+
+};
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor; // ( )
+
+
+};
+
+class Student {
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti; // [ ]
+	int* _trenutno;
+	int _max;
+
+};
+
+
+
+
+
+
+void main() {
+
+	//Osoba osoba0;
+	//Osoba osoba1("Vedad Keskin", "1212998150001");
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "2132133123");
+
+
+	////osoba1.Test();
+	//profesor1.Test();
+	//cout << profesor1;
+	//profesor1.Info();
+
+	// EDGE CASE 
+
+	Osoba* profesorOsoba = new Profesor("dr.sc.", "Elmir Babovic", "2132133123");
+
+	delete profesorOsoba;
+
+
+
+
+
+	//Profesor profesorKopija = profesor1;
+
+	//Profesor profesorOD;
+
+	//profesorOD = profesor1;
+
+	//osoba0.Ispis();
+	//osoba1.Ispis();
+
+	//cout << osoba0;
+	//cout << osoba1;
+
+	//cout << profesor1;
+	//cout << profesorKopija;
+	//cout << profesorOD;
+
+
+
+	system("PAUSE>0");
+}
