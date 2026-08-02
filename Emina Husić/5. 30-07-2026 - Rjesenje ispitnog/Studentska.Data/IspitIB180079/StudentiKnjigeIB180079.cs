@@ -21,6 +21,13 @@ namespace Studentska.Data.IspitIB180079
         public DateTime DatumIznajmljivanja { get; set; }
         public DateTime? DatumVracanja { get; set; } // nullable
 
+        public bool Vracena { get; set; }
+
+
+        public string StudentInfo => Student == null ? "N/A" : $"({Student.Indeks}) {Student.Ime} {Student.Prezime}";
+        public string KnjigaInfo => Knjiga == null ? "N/A" : $"{Knjiga.Naziv} ({Knjiga.Autor})";
+
+        public string StudentIndeksInfo => Student?.Indeks ?? "N/A";
 
     }
 }

@@ -33,7 +33,7 @@ namespace Studentska.Data.Entiteti
             // COUT << Ime << " " << Prezime << endl;
 
 
-            return $"{Ime} {Prezime}";
+            return $"({Indeks}) {Ime} {Prezime}";
 
         }
 
