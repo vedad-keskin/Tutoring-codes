@@ -45,7 +45,7 @@ namespace Studentska.WinApp.IspitIB180079
             var studentiKnjige = db.StudentiKnjigeIB180079
                 .Include(x => x.Student)
                 .Include(x => x.Knjiga)
-                //.ToList()
+                //.ToList() -> objasniti servise
                 .Where(x => x.Vracena == vracena)
                 .Where(x => $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretraga) ||
                 x.Knjiga.Naziv.ToLower().Contains(pretraga))
