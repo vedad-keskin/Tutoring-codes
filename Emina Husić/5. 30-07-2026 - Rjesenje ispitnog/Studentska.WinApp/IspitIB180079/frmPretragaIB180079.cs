@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Studentska.Data.IspitIB180079;
 using Studentska.Servis;
+using Studentska.Servis.Servisi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +16,8 @@ namespace Studentska.WinApp.IspitIB180079
 {
     public partial class frmPretragaIB180079 : Form
     {
-        StudentskaDbContext db = new StudentskaDbContext();
+        //StudentskaDbContext db = new StudentskaDbContext();
+        StudentiKnjigeServis studentiKnjigeServis = new StudentiKnjigeServis();
 
         public frmPretragaIB180079()
         {
@@ -42,18 +45,32 @@ namespace Studentska.WinApp.IspitIB180079
             var pretraga = txtPretraga.Text.ToLower().Trim();
 
 
-            var studentiKnjige = db.StudentiKnjigeIB180079
-                .Include(x => x.Student)
-                .Include(x => x.Knjiga)
-                //.ToList() -> objasniti servise
+            //var studentiKnjige = db.StudentiKnjigeIB180079
+            //    .Include(x => x.Student)
+            //    .Include(x => x.Knjiga)
+            //    //.ToList() -> objasniti servise
+            //    .Where(x => x.Vracena == vracena)
+            //    .Where(x => $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretraga) ||
+            //    x.Knjiga.Naziv.ToLower().Contains(pretraga))
+            //    .ToList();
+
+
+            var studentiKnjige = studentiKnjigeServis
+                .GetAllIncluded() // ToList();
                 .Where(x => x.Vracena == vracena)
-                .Where(x => $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretraga) ||
-                x.Knjiga.Naziv.ToLower().Contains(pretraga))
+                .Where(x => $"{x.Student.Ime} {x.Student.Prezime}".ToLower().Contains(pretraga) || x.Knjiga.Naziv.ToLower().Contains(pretraga))
                 .ToList();
 
+            if (studentiKnjige != null)
+            {
 
-            dgvStudentiKnjige.DataSource = studentiKnjige;
+                dgvStudentiKnjige.DataSource = null;
+                dgvStudentiKnjige.DataSource = studentiKnjige;
 
+
+            }
+
+            Text = $"Broj prikazanih podataka: {studentiKnjige.Count()}";
 
         }
 
@@ -65,6 +82,42 @@ namespace Studentska.WinApp.IspitIB180079
         private void txtPretraga_TextChanged(object sender, EventArgs e)
         {
             UcitajStudentiKnjige();
+
+        }
+
+        private void dgvStudentiKnjige_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.ColumnIndex == 5)
+            {
+
+                //                                                            OBJECT -> STUDKNJI
+
+                var odabranaStudentKnjiga = dgvStudentiKnjige.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+                odabranaStudentKnjiga.Vracena = true;
+                odabranaStudentKnjiga.DatumVracanja = DateTime.Now;
+
+
+                studentiKnjigeServis.Update(odabranaStudentKnjiga);
+
+
+                UcitajStudentiKnjige();
+
+            }
+
+
+        }
+
+        private void btnDodajKnjigu_Click(object sender, EventArgs e)
+        {
+
+            var frmKnjigaAdd = new frmKnjigaAddEditIB180079();
+
+            if (frmKnjigaAdd.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiKnjige();
+            }
 
         }
     }

@@ -79,6 +79,7 @@
             btnDodajKnjigu.TabIndex = 3;
             btnDodajKnjigu.Text = "Dodaj knjigu";
             btnDodajKnjigu.UseVisualStyleBackColor = true;
+            btnDodajKnjigu.Click += btnDodajKnjigu_Click;
             // 
             // btnIznajmljivanja
             // 
@@ -102,6 +103,7 @@
             dgvStudentiKnjige.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentiKnjige.Size = new Size(1107, 358);
             dgvStudentiKnjige.TabIndex = 4;
+            dgvStudentiKnjige.CellContentClick += dgvStudentiKnjige_CellContentClick;
             // 
             // Student
             // 
