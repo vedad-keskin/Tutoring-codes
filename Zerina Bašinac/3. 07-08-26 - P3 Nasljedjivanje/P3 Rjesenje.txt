@@ -1,0 +1,303 @@
+#include <iostream>
+using namespace std;
+
+// GetNizKaraktera / AlocirajTekst / AlocirajNiz
+
+char* GetNizKaraktera(const char* tekst) {
+
+	int vel = strlen(tekst) + 1;
+
+	char* novi = new char[vel];
+
+	strcpy_s(novi, vel, tekst);
+
+	return novi;
+
+}
+
+
+
+class Osoba { // BAZNA KLASA -> KLASA KOJA SE NASLJEDJUJE 
+protected: // 1/3 RAZLIKA 
+	char* _imePrezime;
+	char* _JMBG;
+public:
+
+	// dft+user-def -> spojeni constr.
+
+	Osoba(const char* imeprezime = "---", const char* jmbg = "---") {
+
+		_imePrezime = GetNizKaraktera(imeprezime);
+
+		_JMBG = GetNizKaraktera(jmbg);
+
+
+	}
+
+	Osoba(const Osoba& obj) {
+
+		_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+		_JMBG = GetNizKaraktera(obj._JMBG);
+
+	}
+
+	Osoba& operator = (const Osoba& obj) {
+		if (this != &obj) {
+
+			delete[] _imePrezime;
+
+			delete[] _JMBG;
+
+			_imePrezime = GetNizKaraktera(obj._imePrezime);
+
+			_JMBG = GetNizKaraktera(obj._JMBG);
+
+		}
+		return *this;
+	}
+
+	virtual void Test() { // MOZE A NE MORA PROMIJENITI ( OPCIONALNA ) 
+
+		cout << "VER. 1 NEKE TEST() METODE" << endl;
+
+	}
+
+
+	virtual void Info() = 0; // pure vir. func. 2/3 RAZLIKA
+	// 1. Klasa Osoba postaje apstraktna klasa
+	// 2. // MOZE A NE MORA PROMIJENITI ( OPCIONALNA ) -> MORA PROMJENITI ( OBAVEZNO ) 
+
+
+	virtual ~Osoba() { // 3/3 RAZLIKA
+
+		cout << "POZVAO SE BAZNI DESTRUTKOR" << endl;
+
+
+		delete[] _imePrezime;
+		_imePrezime = nullptr;
+		delete[] _JMBG;
+		_JMBG = nullptr;
+
+	}
+
+
+
+	void Ispis() {
+
+		cout << _imePrezime << " [" << _JMBG << "]" << endl;
+
+	}
+
+
+	//cout << osoba1;
+
+	friend ostream& operator << (ostream& COUT , const Osoba& obj) {
+
+		COUT << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+};
+
+
+// IZVEDENA KLASA -> KLASA KOJA NASLIEJDJI BAZNZU KLASU 
+class Profesor : public Osoba {  // 1/5 KORAK
+public:
+	char* _titula;
+
+
+	Profesor(const char* titula = "prof.", const char* imeprezime = "---", const char* jmbg = "---") : Osoba(imeprezime, jmbg) { // 2/5 KORAK
+
+		_titula = GetNizKaraktera(titula);
+
+	}
+
+	Profesor(const Profesor& obj) : Osoba(obj) { // 3/5 KORAK
+
+		_titula = GetNizKaraktera(obj._titula);
+
+	}
+
+	Profesor& operator = (const Profesor& obj)  {
+		if (this != &obj) {
+
+			delete[] _titula;
+
+			Osoba::operator=(obj); // 4/5 KORAK
+
+			_titula = GetNizKaraktera(obj._titula);
+
+		}
+		return *this;
+	}
+
+	void Test() override {
+
+		cout << "VER. 2 NEKE TEST() METODE" << endl;
+
+
+	}
+	
+	void Info() override { // 5/5 KORAK
+
+		cout << *this;
+
+	}
+
+	~Profesor() {
+
+		cout << "POZVAO SE IZVEDENI DESTRUTKOR" << endl;
+
+		delete[] _titula;
+
+		_titula = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Profesor& obj) {
+
+		COUT << obj._titula << " " << obj._imePrezime << " [" << obj._JMBG << "]" << endl;
+
+		return COUT;
+
+	}
+
+
+
+};
+
+
+class Predmet {
+public:
+	char* _naziv;
+	int* _ECTS;
+	Profesor* _predmetniProfesor;
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Operator ispisa (operator <<) 
+
+
+};
+
+
+
+class Student { // IZVEDENA KLASA
+public:
+	char* _brojIndeksa;
+	Predmet* _polozeniPredmeti;
+	int* _trenutno;
+	int _max;
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Operator ispisa (operator <<) 
+	// 7. Potrebne funkcije
+	// 8. Override ciste virtuelne funkcije npr. void Info()
+
+	bool DodajPredmet(Predmet predmet) {
+
+	}
+
+
+};
+
+
+
+
+
+
+void main() {
+
+	//Osoba osoba0;
+	//Osoba osoba1("Vedad Keskin", "1212991500001");
+
+	//osoba0.Ispis();
+	//osoba1.Ispis();
+
+	//cout << osoba0;
+	//cout << osoba1;
+
+	//Profesor profesor1("dr. sc.", "Denis Music", "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+	//Profesor profesor2("dr. sc.", "Elmir Babovic", "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+	//Profesor profesor3("dr. sc.", "Nina Bijedic", "13123123"); // user-def constr. (titula, imeprezime, jmbg)
+
+	//osoba1.Test();
+	//profesor1.Test();
+
+	//cout << profesor1;
+	//profesor1.Info();
+
+	// EDGE CASE -> SPEC. SLUCAJ 
+
+	Osoba* profesor = new Profesor("dr. sc.", "Denis Music", "13123123");
+
+	profesor->Info();
+	//cout << profesor;
+
+
+	delete profesor;
+
+
+
+
+	//Profesor profesorKopija = profesor1;
+
+	//Profesor profesorOperatorDodjele;
+
+	//profesorOperatorDodjele = profesor2;
+
+	//cout << profesor1;
+	//cout << profesor2;
+	//cout << profesor3;
+	//cout << profesorKopija;
+	//cout << profesorOperatorDodjele;
+
+
+
+
+
+
+
+	/* -- PROFESOR TESTIRANJE -- */
+
+
+
+	/* -- PREDMET TESTIRANJE -- */
+
+	//Predmet predmet1("Programiranje II", 7, profesor1);
+	//Predmet predmet2("Web razvoj i dizajn", 5, profesor2);
+	//Predmet predmet3("Matematika II ", 4, profesor3);
+	//Predmet predmet4("Operativni sistemi", 5, profesor2);
+
+	/* -- STUDENT TESTIRANJE -- */
+
+	//Student student("IB180079", "Vedad Keskin", "12129981500001", 3);
+
+	//student.DodajPredmet(predmet1);
+	//student.DodajPredmet(predmet2);
+	//student.DodajPredmet(predmet2);
+	//student.DodajPredmet(predmet3);
+	//student.DodajPredmet(predmet4);
+
+	//Student studentKopija = student; // copy constr.
+
+	//cout << studentKopija;
+
+	/* -- SPECIJALNI SLUCAJ (EDGE CASE) -- */
+	//Osoba* profesorEdgeCase = new Profesor("dr. sc.", "Elmir Babovic", "1316565123");
+	//delete profesorEdgeCase;
+
+
+	system("PAUSE>0");
+}
