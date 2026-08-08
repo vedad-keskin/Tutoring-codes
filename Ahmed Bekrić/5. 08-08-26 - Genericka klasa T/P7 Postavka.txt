@@ -1,0 +1,225 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+	if (tekst == nullptr)
+		return nullptr;
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+
+template<class T, int max>
+class Kolekcija { // Dicionary, Rjecnik , Parovi , Kolekcija
+public:
+	T* _niz;
+	int _trenutno;
+	// Kreirati i implementirati
+	// 1. Defaultni konstruktor (default constructor)
+	// 2. Konstruktor koji prima parametre (user-defined constructor)
+	// 3. Konstruktor kopije (copy constructor)
+	// 4. Operator dodjele (operator =)
+	// 5. Dealokacija (destructor)
+	// 6. Operator ispisa (operator <<) 
+	// 7. Dodatne funkcije
+
+
+
+
+	void AddElement(T el) {
+		// Dodaje element tipa T u niz
+		// Onemogućiti izlazak niza izvan opsega bacajem izuzetka tipa Exception
+		// Onemogućiti dupliranje elemenata bacajem izuzetka tipa Exception
+
+	}
+
+
+
+	///*
+	//* metoda prihvata indekse lokacije, te vraća elemente koji se u rjecniku nalaze na proslijedjenim lokacijama (ukljucujuci i te lokacije)
+	//*/
+
+
+
+
+
+
+
+
+
+	/* metoda RemoveAt treba da ukloni i vrati (kao povratnu vrijednost) clanoverijecnika koji se nalaze na lokaciji definisanoj prvim parametrom.
+	* Nakon izvrsenja metode RemoveAt, objekat kolekcijaSlova bi trebao posjedovati sljedeci sadrzaj:
+	* A
+	* B
+	* D
+	* E
+	* ....
+	*
+	* a objekat kolekcijaRemoveAt samo element:
+	* C
+	*/
+
+
+
+
+
+	//InsertAt dodaje novi par na lokaciju definisanu prvim parametrom. metoda vraca trenutno stanje kolekcije.
+	//u slucaju popunjene kolekcije ili neispravne lokacije potrebno je baciti izuzetak (za potrebe testiranja mozete dodati try catch blok).
+
+
+
+
+
+	/*UkloniRaspon uklanja broj elemenata definisan drugim parametrom, pocevsi od lokacije
+	definisane prvim parametrom (ukljucujuci tu lokaciju). metoda vraca pokazivac na novu kolekciju sa uklonjenim
+	elementima, a pozivalac je odgovoran za njenu dealokaciju.*/
+	//Kolekcija<char, 10>* kolekcijaRemoveRange = kolekcijaOriginal.RemoveRange(3, 2);
+
+
+
+
+
+
+
+};
+
+class Zivotinja {
+	char* _naziv;
+	int _tezina;
+public:
+
+
+
+};
+
+void main() {
+
+	//Kolekcija<int> kolekcijaBrojeva(10);
+
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	kolekcijaBrojeva.AddElement(i);
+	//}
+
+	//cout << kolekcijaBrojeva;
+
+	//Kolekcija<char,10> kolekcijaOriginal;
+
+	//int ascii = 65; // A
+
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	kolekcijaOriginal.AddElement(ascii + i); // 65 , 66 , 67 .. A B C ..
+	//}
+
+	//try {
+
+	//	kolekcijaOriginal.AddElement('C'); // --> exception 
+	//	
+	//}
+	//catch (exception& err) {
+
+	//	cout << err.what() << endl;
+
+	//}
+
+	//cout << "ORIGINALNA KOLEKCIJA: " << endl;
+	//cout << kolekcijaOriginal << endl;
+
+	//Kolekcija<char, 10> kolekcijaKopija = kolekcijaOriginal;
+
+
+	///*
+	//* metoda prihvata indekse lokacije, te vraća elemente koji se u rjecniku nalaze na proslijedjenim lokacijama (ukljucujuci i te lokacije)
+	//*/
+	//Kolekcija<char, 10> kolekcijaOP = kolekcijaKopija(2, 5);
+
+
+	///*clanovi objekta kolekcijaOP bi trebali biti:
+	//C
+	//D
+	//E
+	//F
+	//*/
+
+	//cout << "KOLEKCIJA OPERATOR ( ): " << endl;
+	//cout << kolekcijaOP << endl;
+
+
+
+
+
+	///* metoda RemoveAt treba da ukloni i vrati (kao povratnu vrijednost) clanoverijecnika koji se nalaze na lokaciji definisanoj prvim parametrom.
+	//* Nakon izvrsenja metode RemoveAt, objekat kolekcijaSlova bi trebao posjedovati sljedeci sadrzaj:
+	//* A 
+	//* B 
+	//* D 
+	//* E 
+	//* ....
+	//*
+	//* a objekat kolekcijaRemoveAt samo element:
+	//* C
+	//*/
+	//Kolekcija<char, 10> kolekcijaRemoveAt = kolekcijaKopija.RemoveAt(2);
+
+
+	//cout << "KOLEKCIJA REMOVE AT: " << endl;
+	//cout << kolekcijaRemoveAt << endl;
+
+	//cout << "PREOSTALI ELEMENTI: " << endl;
+	//cout << kolekcijaKopija << endl;
+
+
+	////DodajNaPoziciju dodaje novi par na lokaciju definisanu prvim parametrom. metoda vraca trenutno stanje kolekcije.
+	////u slucaju popunjene kolekcije ili neispravne lokacije potrebno je baciti izuzetak (za potrebe testiranja mozete dodati try catch blok).
+
+	//Kolekcija<char, 10> kolekcijaInsertAt = kolekcijaOriginal.InsertAt(2, 'X');
+
+	////try {
+	////	//za neispravan raspon potrebno je baciti izuzetak
+	////	kolekcijaInsertAt.InsertAt(15, 'Z');
+	////}
+	////catch (exception& e) {
+	////	cout << "Exception: " << e.what() << endl;
+	////}
+
+	//cout << "KOLEKCIJA INSERT AT: " << endl;
+	//cout << kolekcijaInsertAt << endl;
+
+
+	///*UkloniRaspon uklanja broj elemenata definisan drugim parametrom, pocevsi od lokacije
+	//definisane prvim parametrom (ukljucujuci tu lokaciju). metoda vraca pokazivac na novu kolekciju sa uklonjenim
+	//elementima.*/
+	//Kolekcija<char, 10>* kolekcijaRemoveRange = kolekcijaOriginal.RemoveRange(3, 2);
+
+	//cout << "KOLEKCIJA REMOVE RANGE: " << endl;
+	//cout << *kolekcijaRemoveRange << endl;
+
+	//cout << "PREOSTALI ELEMENTI: " << endl;
+	//cout << kolekcijaOriginal << endl;
+
+
+
+	//Zivotinja zivotinja1("Maca", 4);
+	//Zivotinja zivotinja2("Cuko", 10);
+	//Zivotinja zivotinja3("Ptica", 1);
+	//Zivotinja zivotinja4("Slon", 4000);
+	//Zivotinja zivotinja5("Konj", 500);
+
+
+	//Kolekcija<Zivotinja, 10> zooloski;
+
+	//zooloski.AddElement(zivotinja1);
+	//zooloski.AddElement(zivotinja2);
+	//zooloski.AddElement(zivotinja3);
+	//zooloski.AddElement(zivotinja4);
+	//zooloski.AddElement(zivotinja5);
+
+
+	//cout << zooloski;
+
+
+	system("pause>0");
+}

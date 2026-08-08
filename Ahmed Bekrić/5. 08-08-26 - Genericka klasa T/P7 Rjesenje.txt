@@ -1,0 +1,479 @@
+#include <iostream>
+using namespace std;
+
+char* GetNizKaraktera(const char* tekst) {
+	if (tekst == nullptr)
+		return nullptr;
+	int vel = strlen(tekst) + 1;
+	char* novi = new char[vel];
+	strcpy_s(novi, vel, tekst);
+	return novi;
+}
+
+
+template<class T, int max>
+class Kolekcija { // Dicionary, Rjecnik , Parovi , Kolekcija
+public:
+	T* _niz;
+	int _trenutno;
+
+
+
+	Kolekcija() {
+
+		_trenutno = 0;
+
+		_niz = new T[max];
+
+
+	}
+
+	Kolekcija(const Kolekcija& obj) {
+
+		_trenutno = obj._trenutno;
+
+		_niz = new T[max];
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			_niz[i] = obj._niz[i];
+		}
+
+	}
+
+	Kolekcija& operator = (const Kolekcija& obj) {
+		if (this != &obj) {
+
+			delete[] _niz;
+
+
+			_trenutno = obj._trenutno;
+
+			_niz = new T[max];
+
+			for (int i = 0; i < _trenutno; i++)
+			{
+				_niz[i] = obj._niz[i];
+			}
+		}
+		return *this;
+	}
+
+	~Kolekcija() {
+
+		delete[] _niz;
+
+		_niz = nullptr;
+
+	}
+
+	friend ostream& operator << (ostream& COUT, const Kolekcija& obj) {
+
+		for (int i = 0; i < obj._trenutno; i++)
+		{
+			COUT << obj._niz[i] << endl;
+		}
+
+		return COUT;
+	}
+
+
+
+	void AddElement(T el) { // alt. Dodaj
+		// Dodaje element tipa T u niz
+		// Onemogućiti izlazak niza izvan opsega bacajem izuzetka tipa Exception
+		// Onemogućiti dupliranje elemenata bacajem izuzetka tipa Exception
+
+		if (max == _trenutno) {
+
+			throw exception("Niz je popunjen");
+
+
+		}
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+			//  int == int , 5 == 6 , char == char , A == B , Zivotinja == Zivotinja 
+			if (el == _niz[i]) {
+
+				throw exception("Duplikati nisu dozvoljeni");
+
+			}
+		}
+
+
+
+		_niz[_trenutno] = el;
+
+		_trenutno++;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*
+	* metoda prihvata indekse lokacije, te vraća elemente koji se u kolekciji nalaze na proslijedjenim lokacijama (ukljucujuci i te lokacije)
+	*/
+	//Kolekcija<char, 10> kolekcijaOP = kolekcijaKopija(2, 5);
+
+	///*clanovi objekta kolekcijaOP bi trebali biti:
+	//C
+	//D
+	//E
+	//F
+	//*/
+
+	Kolekcija operator () (int lokacijaOd , int lokacijaDo) {
+
+		Kolekcija kolekcijaOP;
+
+		for (int i = lokacijaOd; i <= lokacijaDo; i++) // 2 3 4 5 
+		{
+
+			kolekcijaOP.AddElement(_niz[i]);
+
+		}
+
+
+		return kolekcijaOP;
+
+	}
+
+
+	/* metoda RemoveAt treba da ukloni i vrati (kao povratnu vrijednost) clanove kolekcije koji se nalaze na lokaciji definisanoj prvim parametrom.
+	* Nakon izvrsenja metode RemoveAt, objekat kolekcijaKopija bi trebao posjedovati sljedeci sadrzaj:
+	* A
+	* B
+	* D
+	* E
+	* ....
+	*
+	* a objekat kolekcijaRemoveAt samo element:
+	* C
+	*/
+	//Kolekcija<char, 10> kolekcijaRemoveAt = kolekcijaKopija.RemoveAt(2);
+
+	Kolekcija RemoveAt(int lokacija) {
+
+		Kolekcija kolekcijaRemoveAt;
+
+		Kolekcija kolekcijaPreostaliElementi;
+
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+
+			if (i == lokacija) {
+
+				kolekcijaRemoveAt.AddElement(_niz[i]); // C 
+
+			}
+			else {
+
+				kolekcijaPreostaliElementi.AddElement(_niz[i]);
+
+			}
+
+
+		}
+
+		*this = kolekcijaPreostaliElementi;
+
+
+		return kolekcijaRemoveAt;
+
+	}
+
+
+
+
+
+
+	//InsertAt dodaje novi element na lokaciju definisanu prvim parametrom.
+	//u slucaju popunjene kolekcije ili neispravne lokacije potrebno je baciti izuzetak (za potrebe testiranja mozete dodati try catch blok).
+	//Kolekcija<char, 10> kolekcijaInsertAt = kolekcijaOriginal.InsertAt(2, 'X');
+
+	Kolekcija InsertAt(int lokacija, T el) {
+
+
+		if (max == _trenutno || lokacija < 0 || lokacija >= _trenutno) {
+
+			throw exception("Neispravan unos");
+
+		}
+
+
+		Kolekcija kolekcijaInsertAt;
+
+		for (int i = 0; i < _trenutno; i++) // 0 1 2 3 4 ... 
+		{
+			if (i == lokacija) { // 2 == 2 
+				
+				kolekcijaInsertAt.AddElement(el);
+
+			}
+
+			kolekcijaInsertAt.AddElement(_niz[i]);
+
+		}
+
+
+		return kolekcijaInsertAt;
+
+	}
+
+
+	/*RemoveRange uklanja broj elemenata definisan drugim parametrom, pocevsi od lokacije
+	definisane prvim parametrom (ukljucujuci tu lokaciju). metoda vraca pokazivac na novu kolekciju sa uklonjenim
+	elementima.*/
+	//Kolekcija<char, 10>* kolekcijaRemoveRange = kolekcijaOriginal.RemoveRange(3, 2);
+
+	Kolekcija* RemoveRange(int lokacijaOd, int brojElementa) {
+
+
+		Kolekcija* kolekcijaRemoveRange = new Kolekcija();
+
+		Kolekcija kolekcijaPreostaliElementi;
+
+		for (int i = 0; i < _trenutno; i++)
+		{
+
+			if (i >= lokacijaOd && i < lokacijaOd + brojElementa) {
+
+				kolekcijaRemoveRange->AddElement(_niz[i]);
+
+			}
+			else {
+
+				kolekcijaPreostaliElementi.AddElement(_niz[i]);
+
+			}
+
+		}
+
+		*this = kolekcijaPreostaliElementi;
+
+
+		return kolekcijaRemoveRange;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+};
+
+class Zivotinja {
+	char* _naziv;
+	int _tezina;
+public:
+
+
+	Zivotinja(const char* naziv = "---", int tezina = 0) {
+
+		_naziv = GetNizKaraktera(naziv);
+		_tezina = tezina;
+
+
+	}
+
+	Zivotinja(const Zivotinja& obj) {
+
+		_naziv = GetNizKaraktera(obj._naziv);
+		_tezina = obj._tezina;
+
+	}
+
+	Zivotinja& operator = (const Zivotinja& obj) {
+		if (this != &obj) {
+
+			delete[] _naziv;
+
+			_naziv = GetNizKaraktera(obj._naziv);
+			_tezina = obj._tezina;
+
+		}
+		return *this;
+	}
+
+	bool operator == (const Zivotinja& obj) {
+
+		return strcmp(_naziv, obj._naziv) == 0;
+
+	}
+
+	~Zivotinja() {
+
+		delete[] _naziv;
+		_naziv = nullptr;
+
+	}
+	friend ostream& operator << (ostream& COUT, const Zivotinja& obj) {
+
+		COUT << obj._naziv << " [" << obj._tezina << "kg]";
+
+		return COUT;
+	}
+
+
+
+};
+
+void main() {
+
+
+	Kolekcija<int , 10> kolekcijaBrojeva; 
+
+	for (int i = 0; i < 10; i++)
+	{
+		kolekcijaBrojeva.AddElement(i);
+	}
+
+	cout << kolekcijaBrojeva << endl;
+
+
+	Kolekcija<char, 10> kolekcijaOriginal;
+
+
+	int ascii = 65; // 65 -> A , 66 -> B 
+
+	for (int i = 0; i < 9; i++)
+	{
+		kolekcijaOriginal.AddElement(ascii + i); // 65 , 66 , 67 .. A B C ..
+	}
+
+
+
+	try {
+
+		kolekcijaOriginal.AddElement('C'); // --> exception 
+		
+	}
+	catch (exception& err) {
+
+		cout << err.what() << endl;
+
+	}
+
+
+	cout << "ORIGINALNA KOLEKCIJA: " << endl;
+	cout << kolekcijaOriginal << endl;
+
+
+	Kolekcija<char, 10> kolekcijaKopija = kolekcijaOriginal;
+
+
+
+
+	/*
+	* metoda prihvata indekse lokacije, te vraća elemente koji se u kolekciji nalaze na proslijedjenim lokacijama (ukljucujuci i te lokacije)
+	*/
+	Kolekcija<char, 10> kolekcijaOP = kolekcijaKopija(2, 5);
+
+
+	///*clanovi objekta kolekcijaOP bi trebali biti:
+	//C
+	//D
+	//E
+	//F
+	//*/
+
+	cout << "KOLEKCIJA OPERATOR ( ): " << endl;
+	cout << kolekcijaOP << endl;
+
+
+
+	/* metoda RemoveAt treba da ukloni i vrati (kao povratnu vrijednost) clanove kolekcije koji se nalaze na lokaciji definisanoj prvim parametrom.
+	* Nakon izvrsenja metode RemoveAt, objekat kolekcijaKopija bi trebao posjedovati sljedeci sadrzaj:
+	* A 
+	* B 
+	* D 
+	* E 
+	* ....
+	*
+	* a objekat kolekcijaRemoveAt samo element:
+	* C
+	*/
+	Kolekcija<char, 10> kolekcijaRemoveAt = kolekcijaKopija.RemoveAt(2);
+
+
+	cout << "KOLEKCIJA REMOVE AT: " << endl;
+	cout << kolekcijaRemoveAt << endl;
+
+	cout << "PREOSTALI ELEMENTI: " << endl;
+	cout << kolekcijaKopija << endl;
+
+
+
+
+	//InsertAt dodaje novi element na lokaciju definisanu prvim parametrom.
+	//u slucaju popunjene kolekcije ili neispravne lokacije potrebno je baciti izuzetak (za potrebe testiranja mozete dodati try catch blok).
+
+	Kolekcija<char, 10> kolekcijaInsertAt = kolekcijaOriginal.InsertAt(2, 'X');
+
+	try {
+		//za neispravan raspon potrebno je baciti izuzetak
+		kolekcijaInsertAt.InsertAt(15, 'Z');
+	}
+	catch (exception& e) {
+		cout << "Exception: " << e.what() << endl;
+	}
+
+	cout << "KOLEKCIJA INSERT AT: " << endl;
+	cout << kolekcijaInsertAt << endl;
+
+
+	/*RemoveRange uklanja broj elemenata definisan drugim parametrom, pocevsi od lokacije
+	definisane prvim parametrom (ukljucujuci tu lokaciju). metoda vraca pokazivac na novu kolekciju sa uklonjenim
+	elementima.*/
+	Kolekcija<char, 10>* kolekcijaRemoveRange = kolekcijaOriginal.RemoveRange(3, 2);
+
+
+	cout << "KOLEKCIJA REMOVE RANGE: " << endl;
+	cout << *kolekcijaRemoveRange << endl;
+
+	cout << "PREOSTALI ELEMENTI: " << endl;
+	cout << kolekcijaOriginal << endl;
+
+
+
+	Zivotinja zivotinja1("Maca", 4);
+	Zivotinja zivotinja2("Cuko", 10);
+	Zivotinja zivotinja3("Ptica", 1);
+	Zivotinja zivotinja4("Slon", 4000);
+	Zivotinja zivotinja5("Konj", 500);
+
+
+	Kolekcija<Zivotinja, 10> zooloski;
+
+	zooloski.AddElement(zivotinja1);
+	zooloski.AddElement(zivotinja2);
+	zooloski.AddElement(zivotinja3);
+	zooloski.AddElement(zivotinja4);
+	zooloski.AddElement(zivotinja5);
+
+	zooloski.RemoveAt(3);
+
+
+	cout << zooloski;
+
+
+	system("pause>0");
+}
