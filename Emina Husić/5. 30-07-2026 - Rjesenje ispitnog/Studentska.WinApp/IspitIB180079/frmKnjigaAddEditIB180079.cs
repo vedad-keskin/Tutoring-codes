@@ -35,34 +35,75 @@ namespace Studentska.WinApp.IspitIB180079
         private void btnSacuvaj_Click(object sender, EventArgs e)
         {
 
-            var naziv = txtNaziv.Text;
-
-            var autor = txtAutor.Text;
-
-            // STRING -> INT 
-            var brojPrimjeraka = int.Parse(txtBrojPrimjeraka.Text);
-
-            // IMAGE -> BYTE[] 
-            var slika = ImageHelper.ImageToByte(pbSlika.Image);
-
-
-            var novaKnjiga = new KnjigeIB180079()
+            if (ValidirajUnos())
             {
-                //Id = 4, autoinc. ne smije se pohranjivati
-                Naziv = naziv,
-                Autor = autor,  
-                BrojPrimjeraka = brojPrimjeraka,
-                Slika = slika
-            };
 
-            knjigaServis.Add(novaKnjiga);
 
-            DialogResult = DialogResult.OK;
+                var naziv = txtNaziv.Text;
 
-            //var novaKnjiga1 = new KnjigeIB180079();
+                var autor = txtAutor.Text;
 
-            //novaKnjiga1.Naziv = naziv;
+                // STRING -> INT 
+                var brojPrimjeraka = int.Parse(txtBrojPrimjeraka.Text);
 
+                // IMAGE -> BYTE[] 
+                var slika = ImageHelper.ImageToByte(pbSlika.Image);
+
+
+                // Lista svih knjiga -> 
+
+
+                if (knjigaServis.GetAll().Exists( x => x.Naziv.ToLower() == naziv.ToLower() && x.Autor.ToLower() == autor.ToLower()) )
+                {
+
+                    MessageBox.Show($"Knjiga sa nazivom {naziv} i autorom {autor} već postoji","Upozorenje",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }else if (brojPrimjeraka <= 0)
+                {
+
+                    MessageBox.Show($"Broj primjeraka mora biti veći od 0", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+
+
+
+                    var novaKnjiga = new KnjigeIB180079()
+                    {
+                        //Id = 4, autoinc. ne smije se pohranjivati
+                        Naziv = naziv,
+                        Autor = autor,
+                        BrojPrimjeraka = brojPrimjeraka,
+                        Slika = slika
+                    };
+
+                    knjigaServis.Add(novaKnjiga);
+
+                    DialogResult = DialogResult.OK;
+
+                    //var novaKnjiga1 = new KnjigeIB180079();
+
+                    //novaKnjiga1.Naziv = naziv;
+
+
+                }
+
+
+
+
+            }
+
+
+
+
+        }
+
+        private bool ValidirajUnos()
+        {
+            return Validator.ValidanUnos(pbSlika, err, "Obavezan unos") &&
+                Validator.ValidanUnos(txtNaziv, err, "Obavezan unos") &&
+                Validator.ValidanUnos(txtAutor, err, "Obavezan unos") &&
+                Validator.ValidanUnos(txtBrojPrimjeraka, err, "Obavezan unos");
 
         }
     }

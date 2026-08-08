@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             pbSlika = new PictureBox();
             label1 = new Label();
             label2 = new Label();
@@ -37,7 +38,9 @@
             txtBrojPrimjeraka = new TextBox();
             btnSacuvaj = new Button();
             ofd = new OpenFileDialog();
+            err = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)pbSlika).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)err).BeginInit();
             SuspendLayout();
             // 
             // pbSlika
@@ -113,6 +116,10 @@
             // 
             ofd.FileName = "openFileDialog1";
             // 
+            // err
+            // 
+            err.ContainerControl = this;
+            // 
             // frmKnjigaAddEditIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -129,6 +136,7 @@
             Name = "frmKnjigaAddEditIB180079";
             Text = "Podaci o knjizi";
             ((System.ComponentModel.ISupportInitialize)pbSlika).EndInit();
+            ((System.ComponentModel.ISupportInitialize)err).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -144,5 +152,6 @@
         private TextBox txtBrojPrimjeraka;
         private Button btnSacuvaj;
         private OpenFileDialog ofd;
+        private ErrorProvider err;
     }
 }

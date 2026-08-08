@@ -120,5 +120,18 @@ namespace Studentska.WinApp.IspitIB180079
             }
 
         }
+
+        private void btnIznajmljivanja_Click(object sender, EventArgs e)
+        {
+
+            var frmIznajmljivanja = new frmIznajmljivanjaIB180079();
+
+
+            if (frmIznajmljivanja.ShowDialog() == DialogResult.OK)
+            {
+                UcitajStudentiKnjige();
+            }
+
+        }
     }
 }

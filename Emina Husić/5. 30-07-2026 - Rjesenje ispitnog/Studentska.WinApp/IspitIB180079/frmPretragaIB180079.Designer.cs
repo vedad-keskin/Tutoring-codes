@@ -89,6 +89,7 @@
             btnIznajmljivanja.TabIndex = 3;
             btnIznajmljivanja.Text = "Iznajmljivanja";
             btnIznajmljivanja.UseVisualStyleBackColor = true;
+            btnIznajmljivanja.Click += btnIznajmljivanja_Click;
             // 
             // dgvStudentiKnjige
             // 
