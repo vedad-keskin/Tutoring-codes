@@ -38,7 +38,12 @@
             Knjiga = new DataGridViewTextBoxColumn();
             DatumIznajmljivanja = new DataGridViewTextBoxColumn();
             Vracena = new DataGridViewCheckBoxColumn();
+            btnGenerisi = new Button();
+            btnPotvrda = new Button();
+            groupBox1 = new GroupBox();
+            txtInfo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvStudentiKnjige).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -137,11 +142,52 @@
             Vracena.ReadOnly = true;
             Vracena.Width = 125;
             // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(12, 327);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(289, 29);
+            btnGenerisi.TabIndex = 4;
+            btnGenerisi.Text = "Generiši iznajmljivanja";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // btnPotvrda
+            // 
+            btnPotvrda.Location = new Point(786, 327);
+            btnPotvrda.Name = "btnPotvrda";
+            btnPotvrda.Size = new Size(202, 29);
+            btnPotvrda.TabIndex = 4;
+            btnPotvrda.Text = "Potvrda";
+            btnPotvrda.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Location = new Point(12, 362);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(976, 233);
+            groupBox1.TabIndex = 5;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator info";
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(6, 26);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(964, 201);
+            txtInfo.TabIndex = 0;
+            // 
             // frmIznajmljivanjaIB180079
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1000, 333);
+            ClientSize = new Size(1000, 607);
+            Controls.Add(groupBox1);
+            Controls.Add(btnPotvrda);
+            Controls.Add(btnGenerisi);
             Controls.Add(dgvStudentiKnjige);
             Controls.Add(btnIznajmi);
             Controls.Add(cmbKnjiga);
@@ -153,6 +199,8 @@
             FormClosing += frmIznajmljivanjaIB180079_FormClosing;
             Load += frmIznajmljivanjaIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStudentiKnjige).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -169,5 +217,9 @@
         private DataGridViewTextBoxColumn Knjiga;
         private DataGridViewTextBoxColumn DatumIznajmljivanja;
         private DataGridViewCheckBoxColumn Vracena;
+        private Button btnGenerisi;
+        private Button btnPotvrda;
+        private GroupBox groupBox1;
+        private TextBox txtInfo;
     }
 }
