@@ -30,7 +30,7 @@ namespace Studentska.Data.Entiteti
         public override string ToString()
         {
             // COUT << Ime << " " << Prezime << endl .. 
-            return $"{Ime} {Prezime}";
+            return $"({Indeks}) {Ime} {Prezime}";
         }
 
        
