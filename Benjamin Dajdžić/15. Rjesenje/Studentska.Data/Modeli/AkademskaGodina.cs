@@ -1,4 +1,4 @@
-﻿namespace Studentska.Data.Entiteti
+﻿namespace Studentska.Data.Modeli
 {
     public class AkademskaGodina
     {
@@ -6,6 +6,16 @@
         public string Naziv { get; set; }
         public string Oznaka { get; set; }
         public bool Aktivan { get; set; }
+
+
+        // friend ostream& oper << 
+
+        public override string ToString()
+        {
+            return Naziv;
+        }
+
+
         
     }
 }
