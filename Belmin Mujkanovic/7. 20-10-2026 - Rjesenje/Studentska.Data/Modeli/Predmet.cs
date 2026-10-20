@@ -8,5 +8,11 @@
         public int Semestar { get; set; }
         public bool Aktivan { get; set; }
 
+
+        public override string ToString()
+        {
+            return Naziv;
+        }
+
      }
 }

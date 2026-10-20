@@ -1,4 +1,4 @@
-﻿using Studentska.Data.Entiteti;
+﻿using Studentska.Data.Modeli;
 
 namespace Studentska.Servis.Servisi
 {
