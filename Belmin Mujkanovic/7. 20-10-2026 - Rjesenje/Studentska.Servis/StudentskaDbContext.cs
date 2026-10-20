@@ -51,8 +51,5 @@ namespace Studentska.Servis
         public DbSet<StudentiKnjigeIB180079> StudentiKnjigeIB180079 { get; set; }
 
 
-
-
-
     }
 }
