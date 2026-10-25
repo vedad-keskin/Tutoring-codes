@@ -36,14 +36,18 @@ namespace Studentska.WinApp.IspitIB180079
             dgvPodaci.AutoGenerateColumns = false;
 
 
+            UcitajComboBox();
+
+            UcitajPodatke();
+
+        }
+
+        private void UcitajComboBox()
+        {
             cmbKnjige.DataSource = knjigaServis.GetAll();
 
 
             cmbVracena.SelectedIndex = 0;
-
-
-            UcitajPodatke();
-
         }
 
         private void UcitajPodatke()
@@ -164,7 +168,7 @@ namespace Studentska.WinApp.IspitIB180079
         {
 
 
-            if(e.ColumnIndex == 5)
+            if (e.ColumnIndex == 5)
             {
 
                 var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
@@ -185,6 +189,20 @@ namespace Studentska.WinApp.IspitIB180079
             }
 
 
+
+        }
+
+        private void btnDodaj_Click(object sender, EventArgs e)
+        {
+
+            var frmKnjigaAdd = new frmKnjigaAddEditIB180079();
+
+            if (frmKnjigaAdd.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajComboBox();
+
+            }
 
         }
     }

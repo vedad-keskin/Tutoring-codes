@@ -89,6 +89,7 @@
             btnDodaj.TabIndex = 3;
             btnDodaj.Text = "Dodaj knjigu";
             btnDodaj.UseVisualStyleBackColor = true;
+            btnDodaj.Click += btnDodaj_Click;
             // 
             // btnIznajmljivanja
             // 
