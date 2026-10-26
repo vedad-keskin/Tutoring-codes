@@ -17,6 +17,7 @@ namespace Studentska.Data.IspitIB180079
 
         public string StudentInfo => $"({Student?.Indeks ?? "N/A"}) {Student?.Ime ?? "N/A"} {Student?.Prezime ?? "N/A"}";
 
+        public bool AktivanInfo => Student?.Aktivan ?? false;
 
 
         public int KnjigaId { get; set; }
