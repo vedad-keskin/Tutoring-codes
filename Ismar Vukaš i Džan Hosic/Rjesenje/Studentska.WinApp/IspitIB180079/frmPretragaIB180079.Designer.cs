@@ -40,6 +40,7 @@
             DatumVracanja = new DataGridViewTextBoxColumn();
             Vracena = new DataGridViewCheckBoxColumn();
             Povrat = new DataGridViewButtonColumn();
+            Ukloni = new DataGridViewButtonColumn();
             label1 = new Label();
             cmbKnjige = new ComboBox();
             label2 = new Label();
@@ -99,13 +100,14 @@
             btnIznajmljivanja.TabIndex = 3;
             btnIznajmljivanja.Text = "Iznajmljivanja";
             btnIznajmljivanja.UseVisualStyleBackColor = true;
+            btnIznajmljivanja.Click += btnIznajmljivanja_Click;
             // 
             // dgvPodaci
             // 
             dgvPodaci.AllowUserToAddRows = false;
             dgvPodaci.AllowUserToDeleteRows = false;
             dgvPodaci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { StudentInfo, Knjiga, DatumIznajmljivanja, DatumVracanja, Vracena, Povrat });
+            dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { StudentInfo, Knjiga, DatumIznajmljivanja, DatumVracanja, Vracena, Povrat, Ukloni });
             dgvPodaci.Location = new Point(12, 140);
             dgvPodaci.Name = "dgvPodaci";
             dgvPodaci.ReadOnly = true;
@@ -169,6 +171,16 @@
             Povrat.Text = "Povrat";
             Povrat.UseColumnTextForButtonValue = true;
             Povrat.Width = 125;
+            // 
+            // Ukloni
+            // 
+            Ukloni.HeaderText = "";
+            Ukloni.MinimumWidth = 6;
+            Ukloni.Name = "Ukloni";
+            Ukloni.ReadOnly = true;
+            Ukloni.Text = "Ukloni";
+            Ukloni.UseColumnTextForButtonValue = true;
+            Ukloni.Width = 125;
             // 
             // label1
             // 
@@ -279,12 +291,6 @@
         private Button btnDodaj;
         private Button btnIznajmljivanja;
         private DataGridView dgvPodaci;
-        private DataGridViewTextBoxColumn StudentInfo;
-        private DataGridViewTextBoxColumn Knjiga;
-        private DataGridViewTextBoxColumn DatumIznajmljivanja;
-        private DataGridViewTextBoxColumn DatumVracanja;
-        private DataGridViewCheckBoxColumn Vracena;
-        private DataGridViewButtonColumn Povrat;
         private Label label1;
         private ComboBox cmbKnjige;
         private Label label2;
@@ -293,5 +299,12 @@
         private Label label4;
         private DateTimePicker dtpDatumOd;
         private DateTimePicker dtpDatumDo;
+        private DataGridViewTextBoxColumn StudentInfo;
+        private DataGridViewTextBoxColumn Knjiga;
+        private DataGridViewTextBoxColumn DatumIznajmljivanja;
+        private DataGridViewTextBoxColumn DatumVracanja;
+        private DataGridViewCheckBoxColumn Vracena;
+        private DataGridViewButtonColumn Povrat;
+        private DataGridViewButtonColumn Ukloni;
     }
 }

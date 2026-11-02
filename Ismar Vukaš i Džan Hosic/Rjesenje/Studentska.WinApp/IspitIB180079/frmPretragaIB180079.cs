@@ -187,6 +187,22 @@ namespace Studentska.WinApp.IspitIB180079
 
 
             }
+            else if (e.ColumnIndex == 6)
+            {
+
+                var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+
+                if (MessageBox.Show("Da li ste sigurni da želite pobrisati odabrani zapis?", "Pitanje", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+
+                    studentiKnjigeServis.Remove(odabranaStudentKnjiga);
+
+                    UcitajPodatke();
+
+                }
+
+            }
 
 
 
@@ -204,6 +220,18 @@ namespace Studentska.WinApp.IspitIB180079
 
             }
 
+        }
+
+        private void btnIznajmljivanja_Click(object sender, EventArgs e)
+        {
+            var frmIznajmljivanje = new frmIznajmljivanjaIB180079();
+
+            if (frmIznajmljivanje.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajPodatke();
+
+            }
         }
     }
 }
