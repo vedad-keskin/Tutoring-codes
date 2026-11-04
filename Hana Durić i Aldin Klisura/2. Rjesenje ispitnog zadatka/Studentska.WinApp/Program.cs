@@ -1,3 +1,5 @@
+using Studentska.WinApp.IspitIB180079;
+
 namespace Studentska.WinApp
 {
     internal static class Program
@@ -18,7 +20,7 @@ namespace Studentska.WinApp
 
 
 
-            Application.Run(new frmPocetna());
+            Application.Run(new frmPretragaIB180079());
 
 
 

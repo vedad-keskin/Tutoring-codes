@@ -17,7 +17,7 @@ namespace Studentska.Data.IspitIB180079
 
         public override string ToString()
         {
-            return Naziv;
+            return $"{Naziv} ({Autor})";
         }
 
 
