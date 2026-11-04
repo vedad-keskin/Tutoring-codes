@@ -41,6 +41,7 @@
             DatumVracanja = new DataGridViewTextBoxColumn();
             Vracena = new DataGridViewCheckBoxColumn();
             Povrat = new DataGridViewButtonColumn();
+            Ukloni = new DataGridViewButtonColumn();
             label1 = new Label();
             cbKnjiga = new ComboBox();
             label2 = new Label();
@@ -84,16 +85,17 @@
             // 
             // btnDodajKnjigu
             // 
-            btnDodajKnjigu.Location = new Point(859, 34);
+            btnDodajKnjigu.Location = new Point(1034, 34);
             btnDodajKnjigu.Name = "btnDodajKnjigu";
             btnDodajKnjigu.Size = new Size(154, 29);
             btnDodajKnjigu.TabIndex = 3;
             btnDodajKnjigu.Text = "Dodaj knjigu";
             btnDodajKnjigu.UseVisualStyleBackColor = true;
+            btnDodajKnjigu.Click += btnDodajKnjigu_Click;
             // 
             // btnIznajmljivanje
             // 
-            btnIznajmljivanje.Location = new Point(1018, 34);
+            btnIznajmljivanje.Location = new Point(1193, 34);
             btnIznajmljivanje.Name = "btnIznajmljivanje";
             btnIznajmljivanje.Size = new Size(154, 29);
             btnIznajmljivanje.TabIndex = 3;
@@ -105,13 +107,13 @@
             dgvPodaci.AllowUserToAddRows = false;
             dgvPodaci.AllowUserToDeleteRows = false;
             dgvPodaci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { Student, AktivanInfo, Knjiga, DatumIznajmljivanja, DatumVracanja, Vracena, Povrat });
+            dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { Student, AktivanInfo, Knjiga, DatumIznajmljivanja, DatumVracanja, Vracena, Povrat, Ukloni });
             dgvPodaci.Location = new Point(8, 128);
             dgvPodaci.Name = "dgvPodaci";
             dgvPodaci.ReadOnly = true;
             dgvPodaci.RowHeadersWidth = 51;
             dgvPodaci.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPodaci.Size = new Size(1164, 347);
+            dgvPodaci.Size = new Size(1342, 347);
             dgvPodaci.TabIndex = 4;
             dgvPodaci.CellContentClick += dgvPodaci_CellContentClick;
             // 
@@ -180,6 +182,16 @@
             Povrat.Text = "Povrat";
             Povrat.UseColumnTextForButtonValue = true;
             Povrat.Width = 125;
+            // 
+            // Ukloni
+            // 
+            Ukloni.HeaderText = "";
+            Ukloni.MinimumWidth = 6;
+            Ukloni.Name = "Ukloni";
+            Ukloni.ReadOnly = true;
+            Ukloni.Text = "Ukloni";
+            Ukloni.UseColumnTextForButtonValue = true;
+            Ukloni.Width = 125;
             // 
             // label1
             // 
@@ -260,7 +272,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(1179, 487);
+            ClientSize = new Size(1359, 487);
             Controls.Add(dtpDatumDo);
             Controls.Add(dtpDatumOd);
             Controls.Add(cbAktivan);
@@ -293,6 +305,12 @@
         private DataGridView dgvPodaci;
         private Label label1;
         private ComboBox cbKnjiga;
+        private Label label2;
+        private ComboBox cbAktivan;
+        private Label label3;
+        private Label label4;
+        private DateTimePicker dtpDatumOd;
+        private DateTimePicker dtpDatumDo;
         private DataGridViewTextBoxColumn Student;
         private DataGridViewCheckBoxColumn AktivanInfo;
         private DataGridViewTextBoxColumn Knjiga;
@@ -300,11 +318,6 @@
         private DataGridViewTextBoxColumn DatumVracanja;
         private DataGridViewCheckBoxColumn Vracena;
         private DataGridViewButtonColumn Povrat;
-        private Label label2;
-        private ComboBox cbAktivan;
-        private Label label3;
-        private Label label4;
-        private DateTimePicker dtpDatumOd;
-        private DateTimePicker dtpDatumDo;
+        private DataGridViewButtonColumn Ukloni;
     }
 }

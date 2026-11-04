@@ -197,7 +197,7 @@ namespace Studentska.WinApp.IspitIB180079
         private void dgvPodaci_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex == 6)
+            if (e.ColumnIndex == 6)
             {
 
                 var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
@@ -214,6 +214,38 @@ namespace Studentska.WinApp.IspitIB180079
                 //MessageBox.Show($"{odabranaStudentKnjiga.Student} - {odabranaStudentKnjiga.Knjiga}");
 
             }
+            else if (e.ColumnIndex == 7)
+            {
+
+                var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+
+                if (MessageBox.Show("Da li ste sigurni da želite pobrisati odabrani zapis?", "Pitanje", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+
+                    studentiKnjigeServis.Remove(odabranaStudentKnjiga);
+
+                    UcitajPodatke();
+
+                }
+
+
+            }
+
+        }
+
+        private void btnDodajKnjigu_Click(object sender, EventArgs e)
+        {
+
+            var frmAddKnjiga = new frmKnjigaAddIB180079();
+
+            if (frmAddKnjiga.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajComboBox();
+
+            }
+
 
         }
     }
