@@ -34,7 +34,7 @@ namespace Studentska.Data.IspitIB180079
         public bool VracenaInfo => DatumVracanja == null ? false : true;
         public bool Vracena { get; set; }
 
-
+        public bool AktivanInfo => Student?.Aktivan ?? false;
 
 
 
