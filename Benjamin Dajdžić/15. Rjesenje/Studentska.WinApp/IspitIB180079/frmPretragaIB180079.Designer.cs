@@ -101,6 +101,7 @@
             btnIznajmljivanje.TabIndex = 3;
             btnIznajmljivanje.Text = "Iznajmljivanje";
             btnIznajmljivanje.UseVisualStyleBackColor = true;
+            btnIznajmljivanje.Click += btnIznajmljivanje_Click;
             // 
             // dgvPodaci
             // 
