@@ -38,24 +38,28 @@
             Knjiga = new DataGridViewTextBoxColumn();
             DatumIznajmljivanja = new DataGridViewTextBoxColumn();
             Vracena = new DataGridViewCheckBoxColumn();
+            btnGenerisi = new Button();
+            groupBox1 = new GroupBox();
+            txtInfo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvPodaci).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(397, 9);
+            label1.Location = new Point(347, 7);
             label1.Name = "label1";
-            label1.Size = new Size(54, 20);
+            label1.Size = new Size(43, 15);
             label1.TabIndex = 0;
             label1.Text = "Knjiga:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 9);
+            label2.Location = new Point(10, 7);
             label2.Name = "label2";
-            label2.Size = new Size(63, 20);
+            label2.Size = new Size(51, 15);
             label2.TabIndex = 0;
             label2.Text = "Student:";
             // 
@@ -63,25 +67,28 @@
             // 
             cmbStudent.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStudent.FormattingEnabled = true;
-            cmbStudent.Location = new Point(12, 32);
+            cmbStudent.Location = new Point(10, 24);
+            cmbStudent.Margin = new Padding(3, 2, 3, 2);
             cmbStudent.Name = "cmbStudent";
-            cmbStudent.Size = new Size(365, 28);
+            cmbStudent.Size = new Size(320, 23);
             cmbStudent.TabIndex = 1;
             // 
             // cmbKnjiga
             // 
             cmbKnjiga.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbKnjiga.FormattingEnabled = true;
-            cmbKnjiga.Location = new Point(397, 32);
+            cmbKnjiga.Location = new Point(347, 24);
+            cmbKnjiga.Margin = new Padding(3, 2, 3, 2);
             cmbKnjiga.Name = "cmbKnjiga";
-            cmbKnjiga.Size = new Size(365, 28);
+            cmbKnjiga.Size = new Size(320, 23);
             cmbKnjiga.TabIndex = 1;
             // 
             // btnIznajmi
             // 
-            btnIznajmi.Location = new Point(778, 32);
+            btnIznajmi.Location = new Point(681, 24);
+            btnIznajmi.Margin = new Padding(3, 2, 3, 2);
             btnIznajmi.Name = "btnIznajmi";
-            btnIznajmi.Size = new Size(172, 29);
+            btnIznajmi.Size = new Size(150, 22);
             btnIznajmi.TabIndex = 2;
             btnIznajmi.Text = "Iznajmi";
             btnIznajmi.UseVisualStyleBackColor = true;
@@ -93,12 +100,13 @@
             dgvPodaci.AllowUserToDeleteRows = false;
             dgvPodaci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { StudentInfo, Knjiga, DatumIznajmljivanja, Vracena });
-            dgvPodaci.Location = new Point(12, 71);
+            dgvPodaci.Location = new Point(10, 53);
+            dgvPodaci.Margin = new Padding(3, 2, 3, 2);
             dgvPodaci.Name = "dgvPodaci";
             dgvPodaci.ReadOnly = true;
             dgvPodaci.RowHeadersWidth = 51;
             dgvPodaci.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPodaci.Size = new Size(938, 291);
+            dgvPodaci.Size = new Size(821, 218);
             dgvPodaci.TabIndex = 5;
             // 
             // StudentInfo
@@ -137,21 +145,56 @@
             Vracena.ReadOnly = true;
             Vracena.Width = 75;
             // 
+            // btnGenerisi
+            // 
+            btnGenerisi.Location = new Point(10, 276);
+            btnGenerisi.Name = "btnGenerisi";
+            btnGenerisi.Size = new Size(171, 23);
+            btnGenerisi.TabIndex = 6;
+            btnGenerisi.Text = "Generiši iznajmljivanja";
+            btnGenerisi.UseVisualStyleBackColor = true;
+            btnGenerisi.Click += btnGenerisi_Click;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtInfo);
+            groupBox1.Location = new Point(12, 305);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(819, 187);
+            groupBox1.TabIndex = 7;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Generator info";
+            // 
+            // txtInfo
+            // 
+            txtInfo.Location = new Point(6, 22);
+            txtInfo.Multiline = true;
+            txtInfo.Name = "txtInfo";
+            txtInfo.ScrollBars = ScrollBars.Vertical;
+            txtInfo.Size = new Size(807, 159);
+            txtInfo.TabIndex = 0;
+            // 
             // frmIznajmljivanjaIB180079
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(961, 374);
+            ClientSize = new Size(841, 504);
+            Controls.Add(groupBox1);
+            Controls.Add(btnGenerisi);
             Controls.Add(dgvPodaci);
             Controls.Add(btnIznajmi);
             Controls.Add(cmbKnjiga);
             Controls.Add(cmbStudent);
             Controls.Add(label2);
             Controls.Add(label1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "frmIznajmljivanjaIB180079";
             Text = "Iznajmljivanja knjiga";
+            FormClosed += frmIznajmljivanjaIB180079_FormClosed;
             Load += frmIznajmljivanjaIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)dgvPodaci).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -168,5 +211,8 @@
         private DataGridViewTextBoxColumn Knjiga;
         private DataGridViewTextBoxColumn DatumIznajmljivanja;
         private DataGridViewCheckBoxColumn Vracena;
+        private Button btnGenerisi;
+        private GroupBox groupBox1;
+        private TextBox txtInfo;
     }
 }

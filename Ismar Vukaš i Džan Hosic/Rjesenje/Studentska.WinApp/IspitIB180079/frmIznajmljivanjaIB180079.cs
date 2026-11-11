@@ -76,9 +76,9 @@ namespace Studentska.WinApp.IspitIB180079
 
 
             if (studentiKnjigeServis.GetAll()
-                .Exists(x => x.StudentId == student.Id && 
-                x.KnjigaId == knjiga.Id && 
-                x.Vracena == false ))
+                .Exists(x => x.StudentId == student.Id &&
+                x.KnjigaId == knjiga.Id &&
+                x.Vracena == false))
             {
 
                 MessageBox.Show($"Student {student} je već iznajmio knjigu {knjiga}!", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -86,7 +86,7 @@ namespace Studentska.WinApp.IspitIB180079
             }
             else if (
                 studentiKnjigeServis.GetAll()
-                .Where(x => x.Vracena == false && x.KnjigaId == knjiga.Id).Count() >= knjiga.BrojPrimjeraka    )
+                .Where(x => x.Vracena == false && x.KnjigaId == knjiga.Id).Count() >= knjiga.BrojPrimjeraka)
             {
 
 
@@ -118,6 +118,101 @@ namespace Studentska.WinApp.IspitIB180079
 
 
 
+
+        }
+
+        private async void btnGenerisi_Click(object sender, EventArgs e)
+        {
+
+            // 1. DIO
+            // - THREAD
+            // - VALIDACIJE
+            // - AKO IMAMO COMBO BOX KOJI HOCEMO DA PRISTUPIMO MORAMO MU PRISTUPITI I IZVADITI GA PRIJE NEGO STO THREAD POKRENEMO
+
+            var student = cmbStudent.SelectedItem as Student;
+
+            await Task.Run(() => GenerisiIznajmljivanja(student));
+
+
+        }
+
+        private void GenerisiIznajmljivanja(Student? student)
+        {
+
+            // 2. DIO 
+            // - POHRANE
+            // - KALKULACIJE
+            // - SLEEP THREADA (300ms)
+
+
+            var sveKnjige = knjigaServis.GetAll();
+
+            var info = "";
+
+            var redniBroj = 1;
+
+
+            for (int i = 0; i < sveKnjige.Count(); i++)
+            {
+
+                if (!studentiKnjigeServis.GetAll()
+                    .Exists(x => x.StudentId == student.Id &&
+                    x.KnjigaId == sveKnjige[i].Id ))
+                {
+
+
+                    Thread.Sleep(300);
+
+
+                    var novoIznajmljivanje = new StudentiKnjigeIB180079()
+                    {
+                        StudentId = student.Id,
+                        KnjigaId = sveKnjige[i].Id,
+                        DatumIznajmljivanja = DateTime.Now,
+                        Vracena = false,
+                        //DatumVracanja = null
+
+                    };
+
+                    studentiKnjigeServis.Add(novoIznajmljivanje);
+
+                    info += $"{redniBroj++}. {student} dodato zaduženje {sveKnjige[i]}{Environment.NewLine}";
+
+
+                }
+
+
+
+
+            }
+
+
+
+
+            Action action = () =>
+            {
+
+                // 3. DIO
+                // - MBOX
+                // - ISPIS
+                // - UCITAVANJE 
+
+                MessageBox.Show($"Uspješno generisanje iznajmljivanja studenta {student}", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                txtInfo.Text = info;
+
+                UcitajPodatke();
+
+            };
+            BeginInvoke(action);
+
+
+
+        }
+
+        private void frmIznajmljivanjaIB180079_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DialogResult = DialogResult.OK;
 
         }
     }
