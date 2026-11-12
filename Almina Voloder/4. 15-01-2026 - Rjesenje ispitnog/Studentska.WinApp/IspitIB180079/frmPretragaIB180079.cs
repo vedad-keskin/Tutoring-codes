@@ -30,6 +30,18 @@ namespace Studentska.WinApp.IspitIB180079
         {
             dgvPodaci.AutoGenerateColumns = false;
 
+
+            UcitajComboBox();
+
+
+
+
+            UcitajPodatke();
+
+        }
+
+        private void UcitajComboBox()
+        {
             // 3.1 COMBO BOX KOJI SE POPUNJAVA IZ BAZE
 
             cbKnjiga.DataSource = knjigeServis.GetAll();
@@ -39,10 +51,6 @@ namespace Studentska.WinApp.IspitIB180079
             // 3.2 COMBO BOX KOJI SE NE POPUNJAVA IZ BAZE
 
             cbAktivan.SelectedIndex = 0;
-
-
-            UcitajPodatke();
-
         }
 
         private void UcitajPodatke()
@@ -148,7 +156,7 @@ namespace Studentska.WinApp.IspitIB180079
         private void dgvPodaci_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if(e.ColumnIndex == 6)
+            if (e.ColumnIndex == 6)
             {
 
                 var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
@@ -164,6 +172,39 @@ namespace Studentska.WinApp.IspitIB180079
                 //MessageBox.Show($"{odabranaStudentKnjiga.Student} - {odabranaStudentKnjiga.Knjiga}");
 
             }
+            else if (e.ColumnIndex == 7)
+            {
+
+                if (MessageBox.Show($"Da li ste sigurni da želite izbrisati odabrani zapis ?", "Pitanje", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+
+                    var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+
+                    studentiKnjigeServis.Remove(odabranaStudentKnjiga);
+
+                    UcitajPodatke();
+
+                }
+
+
+            }
+
+        }
+
+        private void btnDodajKnjigu_Click(object sender, EventArgs e)
+        {
+
+            var frmKnjigaAdd = new frmKnjigaAddIB180079();
+
+            if (frmKnjigaAdd.ShowDialog() == DialogResult.OK)
+            {
+
+                UcitajComboBox();
+                UcitajPodatke();
+
+            }
+
 
         }
     }
