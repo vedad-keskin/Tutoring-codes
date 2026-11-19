@@ -29,7 +29,7 @@ namespace Studentska.WinApp
 
         private void btnIzvjestaj_Click(object sender, EventArgs e)
         {
-            new frmIzvjestaji().ShowDialog();
+            //new frmIzvjestaji().ShowDialog();
         }
     }
 }

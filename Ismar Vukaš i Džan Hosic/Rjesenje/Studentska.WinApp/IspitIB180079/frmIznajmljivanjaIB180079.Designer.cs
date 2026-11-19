@@ -41,6 +41,7 @@
             btnGenerisi = new Button();
             groupBox1 = new GroupBox();
             txtInfo = new TextBox();
+            btnPotvrda = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvPodaci).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -174,11 +175,22 @@
             txtInfo.Size = new Size(807, 159);
             txtInfo.TabIndex = 0;
             // 
+            // btnPotvrda
+            // 
+            btnPotvrda.Location = new Point(681, 281);
+            btnPotvrda.Name = "btnPotvrda";
+            btnPotvrda.Size = new Size(150, 23);
+            btnPotvrda.TabIndex = 8;
+            btnPotvrda.Text = "Potvrda";
+            btnPotvrda.UseVisualStyleBackColor = true;
+            btnPotvrda.Click += btnPotvrda_Click;
+            // 
             // frmIznajmljivanjaIB180079
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(841, 504);
+            Controls.Add(btnPotvrda);
             Controls.Add(groupBox1);
             Controls.Add(btnGenerisi);
             Controls.Add(dgvPodaci);
@@ -214,5 +226,6 @@
         private Button btnGenerisi;
         private GroupBox groupBox1;
         private TextBox txtInfo;
+        private Button btnPotvrda;
     }
 }

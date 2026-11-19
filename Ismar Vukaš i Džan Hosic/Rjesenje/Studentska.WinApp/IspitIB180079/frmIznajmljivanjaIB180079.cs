@@ -1,6 +1,7 @@
 ﻿using Studentska.Data.Entiteti;
 using Studentska.Data.IspitIB180079;
 using Studentska.Servis.Servisi;
+using Studentska.WinApp.Izvjestaji;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -157,7 +158,7 @@ namespace Studentska.WinApp.IspitIB180079
 
                 if (!studentiKnjigeServis.GetAll()
                     .Exists(x => x.StudentId == student.Id &&
-                    x.KnjigaId == sveKnjige[i].Id ))
+                    x.KnjigaId == sveKnjige[i].Id))
                 {
 
 
@@ -213,6 +214,18 @@ namespace Studentska.WinApp.IspitIB180079
         private void frmIznajmljivanjaIB180079_FormClosed(object sender, FormClosedEventArgs e)
         {
             DialogResult = DialogResult.OK;
+
+        }
+
+        private void btnPotvrda_Click(object sender, EventArgs e)
+        {
+
+            var student = cmbStudent.SelectedItem as Student;
+
+            var izvjestaj = new frmIzvjestaji(student);
+
+            izvjestaj.Show();
+
 
         }
     }
