@@ -1,13 +1,24 @@
-﻿namespace Studentska.Servis.Servisi
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Studentska.Servis.Servisi
 {
+
+
+    //                    BaseServis<KnjigeIB180079>
     public abstract class BaseServis<T> where T : class
     {
         protected StudentskaDbContext _dbContext = new StudentskaDbContext();
 
+
+
+        //     List<KnjigeIB180079> 
         public List<T> GetAll()
         {
-            return _dbContext.Set<T>().ToList();
+            //     db.KnjigeIB180079.ToList();
+            return _dbContext.Set<T>()
+                .ToList();
         }       
+
 
         public void Add(T obj)
         {
