@@ -49,18 +49,18 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(10, 7);
+            label1.Location = new Point(11, 9);
             label1.Name = "label1";
-            label1.Size = new Size(51, 15);
+            label1.Size = new Size(63, 20);
             label1.TabIndex = 0;
             label1.Text = "Student:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(354, 7);
+            label2.Location = new Point(405, 9);
             label2.Name = "label2";
-            label2.Size = new Size(43, 15);
+            label2.Size = new Size(54, 20);
             label2.TabIndex = 0;
             label2.Text = "Knjiga:";
             // 
@@ -68,28 +68,25 @@
             // 
             cbStudent.DropDownStyle = ComboBoxStyle.DropDownList;
             cbStudent.FormattingEnabled = true;
-            cbStudent.Location = new Point(10, 24);
-            cbStudent.Margin = new Padding(3, 2, 3, 2);
+            cbStudent.Location = new Point(11, 32);
             cbStudent.Name = "cbStudent";
-            cbStudent.Size = new Size(335, 23);
+            cbStudent.Size = new Size(382, 28);
             cbStudent.TabIndex = 1;
             // 
             // cbKnjiga
             // 
             cbKnjiga.DropDownStyle = ComboBoxStyle.DropDownList;
             cbKnjiga.FormattingEnabled = true;
-            cbKnjiga.Location = new Point(354, 24);
-            cbKnjiga.Margin = new Padding(3, 2, 3, 2);
+            cbKnjiga.Location = new Point(405, 32);
             cbKnjiga.Name = "cbKnjiga";
-            cbKnjiga.Size = new Size(335, 23);
+            cbKnjiga.Size = new Size(382, 28);
             cbKnjiga.TabIndex = 1;
             // 
             // btnIznajmi
             // 
-            btnIznajmi.Location = new Point(693, 23);
-            btnIznajmi.Margin = new Padding(3, 2, 3, 2);
+            btnIznajmi.Location = new Point(792, 31);
             btnIznajmi.Name = "btnIznajmi";
-            btnIznajmi.Size = new Size(171, 22);
+            btnIznajmi.Size = new Size(195, 29);
             btnIznajmi.TabIndex = 2;
             btnIznajmi.Text = "Iznajmi";
             btnIznajmi.UseVisualStyleBackColor = true;
@@ -101,13 +98,12 @@
             dgvPodaci.AllowUserToDeleteRows = false;
             dgvPodaci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { Student, Knjiga, DatumIznajmljivanja, Vracena });
-            dgvPodaci.Location = new Point(10, 50);
-            dgvPodaci.Margin = new Padding(3, 2, 3, 2);
+            dgvPodaci.Location = new Point(11, 67);
             dgvPodaci.Name = "dgvPodaci";
             dgvPodaci.ReadOnly = true;
             dgvPodaci.RowHeadersWidth = 51;
             dgvPodaci.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPodaci.Size = new Size(853, 260);
+            dgvPodaci.Size = new Size(975, 347);
             dgvPodaci.TabIndex = 5;
             // 
             // Student
@@ -150,9 +146,10 @@
             // 
             // btnGenerisi
             // 
-            btnGenerisi.Location = new Point(10, 315);
+            btnGenerisi.Location = new Point(11, 420);
+            btnGenerisi.Margin = new Padding(3, 4, 3, 4);
             btnGenerisi.Name = "btnGenerisi";
-            btnGenerisi.Size = new Size(152, 23);
+            btnGenerisi.Size = new Size(174, 31);
             btnGenerisi.TabIndex = 6;
             btnGenerisi.Text = "Generiši iznajmljivanja";
             btnGenerisi.UseVisualStyleBackColor = true;
@@ -160,37 +157,42 @@
             // 
             // btnPotvrda
             // 
-            btnPotvrda.Location = new Point(712, 315);
+            btnPotvrda.Location = new Point(814, 420);
+            btnPotvrda.Margin = new Padding(3, 4, 3, 4);
             btnPotvrda.Name = "btnPotvrda";
-            btnPotvrda.Size = new Size(152, 23);
+            btnPotvrda.Size = new Size(174, 31);
             btnPotvrda.TabIndex = 6;
             btnPotvrda.Text = "Potvrda";
             btnPotvrda.UseVisualStyleBackColor = true;
+            btnPotvrda.Click += btnPotvrda_Click;
             // 
             // groupBox1
             // 
             groupBox1.Controls.Add(txtInfo);
-            groupBox1.Location = new Point(12, 344);
+            groupBox1.Location = new Point(14, 459);
+            groupBox1.Margin = new Padding(3, 4, 3, 4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(852, 186);
+            groupBox1.Padding = new Padding(3, 4, 3, 4);
+            groupBox1.Size = new Size(974, 248);
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
             groupBox1.Text = "Generator info";
             // 
             // txtInfo
             // 
-            txtInfo.Location = new Point(6, 22);
+            txtInfo.Location = new Point(7, 29);
+            txtInfo.Margin = new Padding(3, 4, 3, 4);
             txtInfo.Multiline = true;
             txtInfo.Name = "txtInfo";
             txtInfo.ScrollBars = ScrollBars.Vertical;
-            txtInfo.Size = new Size(840, 149);
+            txtInfo.Size = new Size(959, 197);
             txtInfo.TabIndex = 0;
             // 
             // frmIznajmljivanjaIB180079
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(872, 542);
+            ClientSize = new Size(997, 723);
             Controls.Add(groupBox1);
             Controls.Add(btnPotvrda);
             Controls.Add(btnGenerisi);
@@ -200,7 +202,6 @@
             Controls.Add(cbStudent);
             Controls.Add(label2);
             Controls.Add(label1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "frmIznajmljivanjaIB180079";
             Text = "Iznajmljivanje knjiga";
             FormClosed += frmIznajmljivanjaIB180079_FormClosed;

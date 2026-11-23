@@ -2,6 +2,7 @@
 using Studentska.Data.Entiteti;
 using Studentska.Data.IspitIB180079;
 using Studentska.Servis.Servisi;
+using Studentska.WinApp.Izvjestaji;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -155,7 +156,7 @@ namespace Studentska.WinApp.IspitIB180079
             {
 
                 if (!studentiKnjigeServis.GetAll()
-                    .Exists(x => x.StudentId == student.Id && 
+                    .Exists(x => x.StudentId == student.Id &&
                     x.KnjigaId == sveKnjige[i].Id))
                 {
 
@@ -188,15 +189,28 @@ namespace Studentska.WinApp.IspitIB180079
                 // -- ucitavanja
                 // -- ispis
 
-                MessageBox.Show($"Studentu {student} su generisana iznajmljivanja","Informacija", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show($"Studentu {student} su generisana iznajmljivanja", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 UcitajPodatke();
 
                 txtInfo.Text = info;
-                
+
 
             };
             BeginInvoke(action);
+
+        }
+
+        private void btnPotvrda_Click(object sender, EventArgs e)
+        {
+
+            var student = cbStudent.SelectedItem as Student;
+
+
+            var frmIzvjestaj = new frmIzvjestaji(student);
+
+            frmIzvjestaj.Show();
+
 
         }
     }

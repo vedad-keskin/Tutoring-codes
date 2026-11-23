@@ -11,7 +11,18 @@
   </xs:annotation>
   <xs:element name="dsIzvjestaji" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="dsIzvjestaji" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsIzvjestaji">
     <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dsIznajmljivanja" msprop:Generator_RowEvHandlerName="dsIznajmljivanjaRowChangeEventHandler" msprop:Generator_RowDeletedName="dsIznajmljivanjaRowDeleted" msprop:Generator_RowDeletingName="dsIznajmljivanjaRowDeleting" msprop:Generator_RowEvArgName="dsIznajmljivanjaRowChangeEvent" msprop:Generator_TablePropName="dsIznajmljivanja" msprop:Generator_RowChangedName="dsIznajmljivanjaRowChanged" msprop:Generator_RowChangingName="dsIznajmljivanjaRowChanging" msprop:Generator_TableClassName="dsIznajmljivanjaDataTable" msprop:Generator_RowClassName="dsIznajmljivanjaRow" msprop:Generator_TableVarName="tabledsIznajmljivanja" msprop:Generator_UserTableName="dsIznajmljivanja">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Rb" msprop:Generator_ColumnPropNameInRow="Rb" msprop:Generator_ColumnPropNameInTable="RbColumn" msprop:Generator_ColumnVarNameInTable="columnRb" msprop:Generator_UserColumnName="Rb" type="xs:string" minOccurs="0" />
+              <xs:element name="Knjiga" msprop:Generator_ColumnPropNameInRow="Knjiga" msprop:Generator_ColumnPropNameInTable="KnjigaColumn" msprop:Generator_ColumnVarNameInTable="columnKnjiga" msprop:Generator_UserColumnName="Knjiga" type="xs:string" minOccurs="0" />
+              <xs:element name="Vracena" msprop:Generator_ColumnPropNameInRow="Vracena" msprop:Generator_ColumnPropNameInTable="VracenaColumn" msprop:Generator_ColumnVarNameInTable="columnVracena" msprop:Generator_UserColumnName="Vracena" type="xs:string" minOccurs="0" />
+              <xs:element name="BrojDana" msprop:Generator_ColumnPropNameInRow="BrojDana" msprop:Generator_ColumnPropNameInTable="BrojDanaColumn" msprop:Generator_ColumnVarNameInTable="columnBrojDana" msprop:Generator_UserColumnName="BrojDana" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
 </xs:schema>
