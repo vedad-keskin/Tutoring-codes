@@ -56,18 +56,17 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(10, 7);
+            label1.Location = new Point(11, 9);
             label1.Name = "label1";
-            label1.Size = new Size(208, 15);
+            label1.Size = new Size(263, 20);
             label1.TabIndex = 0;
             label1.Text = "Ime i prezime korisnika ili naziv knjige:";
             // 
             // tbPretraga
             // 
-            tbPretraga.Location = new Point(10, 24);
-            tbPretraga.Margin = new Padding(3, 2, 3, 2);
+            tbPretraga.Location = new Point(11, 32);
             tbPretraga.Name = "tbPretraga";
-            tbPretraga.Size = new Size(431, 23);
+            tbPretraga.Size = new Size(492, 27);
             tbPretraga.TabIndex = 1;
             tbPretraga.TextChanged += tbPretraga_TextChanged;
             // 
@@ -76,10 +75,9 @@
             chbVracena.AutoSize = true;
             chbVracena.Checked = true;
             chbVracena.CheckState = CheckState.Checked;
-            chbVracena.Location = new Point(446, 26);
-            chbVracena.Margin = new Padding(3, 2, 3, 2);
+            chbVracena.Location = new Point(510, 35);
             chbVracena.Name = "chbVracena";
-            chbVracena.Size = new Size(68, 19);
+            chbVracena.Size = new Size(83, 24);
             chbVracena.TabIndex = 2;
             chbVracena.Text = "Vraćena";
             chbVracena.UseVisualStyleBackColor = true;
@@ -87,10 +85,9 @@
             // 
             // btnDodajKnjigu
             // 
-            btnDodajKnjigu.Location = new Point(837, 25);
-            btnDodajKnjigu.Margin = new Padding(3, 2, 3, 2);
+            btnDodajKnjigu.Location = new Point(957, 33);
             btnDodajKnjigu.Name = "btnDodajKnjigu";
-            btnDodajKnjigu.Size = new Size(149, 22);
+            btnDodajKnjigu.Size = new Size(170, 29);
             btnDodajKnjigu.TabIndex = 3;
             btnDodajKnjigu.Text = "Dodaj knjigu";
             btnDodajKnjigu.UseVisualStyleBackColor = true;
@@ -98,14 +95,14 @@
             // 
             // btnIznajmljivanja
             // 
-            btnIznajmljivanja.Location = new Point(991, 25);
-            btnIznajmljivanja.Margin = new Padding(3, 2, 3, 2);
+            btnIznajmljivanja.Location = new Point(1133, 33);
             btnIznajmljivanja.Name = "btnIznajmljivanja";
-            btnIznajmljivanja.Size = new Size(149, 22);
+            btnIznajmljivanja.Size = new Size(170, 29);
             btnIznajmljivanja.TabIndex = 3;
             btnIznajmljivanja.Tag = "";
             btnIznajmljivanja.Text = "Iznajmljivanja";
             btnIznajmljivanja.UseVisualStyleBackColor = true;
+            btnIznajmljivanja.Click += btnIznajmljivanja_Click;
             // 
             // dgvPodaci
             // 
@@ -113,13 +110,12 @@
             dgvPodaci.AllowUserToDeleteRows = false;
             dgvPodaci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPodaci.Columns.AddRange(new DataGridViewColumn[] { Student, AktivanInfo, Knjiga, DatumIznajmljivanja, DatumVracanja, Vracena, Povrat, Ukloni });
-            dgvPodaci.Location = new Point(5, 95);
-            dgvPodaci.Margin = new Padding(3, 2, 3, 2);
+            dgvPodaci.Location = new Point(6, 127);
             dgvPodaci.Name = "dgvPodaci";
             dgvPodaci.ReadOnly = true;
             dgvPodaci.RowHeadersWidth = 51;
             dgvPodaci.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPodaci.Size = new Size(1135, 268);
+            dgvPodaci.Size = new Size(1297, 357);
             dgvPodaci.TabIndex = 4;
             dgvPodaci.CellContentClick += dgvPodaci_CellContentClick;
             // 
@@ -190,17 +186,19 @@
             // Ukloni
             // 
             Ukloni.HeaderText = "";
+            Ukloni.MinimumWidth = 6;
             Ukloni.Name = "Ukloni";
             Ukloni.ReadOnly = true;
             Ukloni.Text = "Ukloni";
             Ukloni.UseColumnTextForButtonValue = true;
+            Ukloni.Width = 125;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(10, 46);
+            label2.Location = new Point(11, 61);
             label2.Name = "label2";
-            label2.Size = new Size(43, 15);
+            label2.Size = new Size(54, 20);
             label2.TabIndex = 0;
             label2.Text = "Knjiga:";
             // 
@@ -208,19 +206,18 @@
             // 
             cbKnjiga.DropDownStyle = ComboBoxStyle.DropDownList;
             cbKnjiga.FormattingEnabled = true;
-            cbKnjiga.Location = new Point(10, 64);
-            cbKnjiga.Margin = new Padding(3, 2, 3, 2);
+            cbKnjiga.Location = new Point(11, 85);
             cbKnjiga.Name = "cbKnjiga";
-            cbKnjiga.Size = new Size(259, 23);
+            cbKnjiga.Size = new Size(295, 28);
             cbKnjiga.TabIndex = 5;
             cbKnjiga.SelectedIndexChanged += cbKnjiga_SelectedIndexChanged;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(274, 46);
+            label3.Location = new Point(313, 61);
             label3.Name = "label3";
-            label3.Size = new Size(109, 15);
+            label3.Size = new Size(134, 20);
             label3.TabIndex = 0;
             label3.Text = "Aktivnost studenta:";
             // 
@@ -229,19 +226,18 @@
             cbAktivan.DropDownStyle = ComboBoxStyle.DropDownList;
             cbAktivan.FormattingEnabled = true;
             cbAktivan.Items.AddRange(new object[] { "Svi", "Aktivni", "Neaktivni" });
-            cbAktivan.Location = new Point(274, 64);
-            cbAktivan.Margin = new Padding(3, 2, 3, 2);
+            cbAktivan.Location = new Point(313, 85);
             cbAktivan.Name = "cbAktivan";
-            cbAktivan.Size = new Size(259, 23);
+            cbAktivan.Size = new Size(295, 28);
             cbAktivan.TabIndex = 5;
             cbAktivan.SelectedIndexChanged += cbAktivan_SelectedIndexChanged;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(641, 46);
+            label4.Location = new Point(733, 61);
             label4.Name = "label4";
-            label4.Size = new Size(138, 15);
+            label4.Size = new Size(174, 20);
             label4.TabIndex = 0;
             label4.Text = "Datum iznajmljivanja od:";
             label4.TextAlign = ContentAlignment.MiddleCenter;
@@ -249,36 +245,34 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(899, 47);
+            label5.Location = new Point(1027, 63);
             label5.Name = "label5";
-            label5.Size = new Size(24, 15);
+            label5.Size = new Size(30, 20);
             label5.TabIndex = 0;
             label5.Text = "do:";
             // 
             // dtpDatumOd
             // 
-            dtpDatumOd.Location = new Point(642, 64);
-            dtpDatumOd.Margin = new Padding(3, 2, 3, 2);
+            dtpDatumOd.Location = new Point(734, 85);
             dtpDatumOd.Name = "dtpDatumOd";
-            dtpDatumOd.Size = new Size(241, 23);
+            dtpDatumOd.Size = new Size(275, 27);
             dtpDatumOd.TabIndex = 6;
             dtpDatumOd.Value = new DateTime(2000, 10, 23, 15, 55, 0, 0);
             dtpDatumOd.ValueChanged += dtpDatumOd_ValueChanged;
             // 
             // dtpDatumDo
             // 
-            dtpDatumDo.Location = new Point(897, 64);
-            dtpDatumDo.Margin = new Padding(3, 2, 3, 2);
+            dtpDatumDo.Location = new Point(1025, 85);
             dtpDatumDo.Name = "dtpDatumDo";
-            dtpDatumDo.Size = new Size(243, 23);
+            dtpDatumDo.Size = new Size(277, 27);
             dtpDatumDo.TabIndex = 6;
             dtpDatumDo.ValueChanged += dtpDatumDo_ValueChanged;
             // 
             // frmPretragaIB180079
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1148, 373);
+            ClientSize = new Size(1312, 497);
             Controls.Add(dtpDatumDo);
             Controls.Add(dtpDatumOd);
             Controls.Add(cbAktivan);
@@ -293,7 +287,6 @@
             Controls.Add(tbPretraga);
             Controls.Add(label2);
             Controls.Add(label1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "frmPretragaIB180079";
             Text = "Broj prikazanih podataka: placeholder";
             Load += frmPretragaIB180079_Load;

@@ -16,6 +16,7 @@ namespace Studentska.Servis.Servisi
         {
             //     db.AkademskaGodina.ToList();
             return _dbContext.Set<T>()
+                .AsNoTracking()
                 .ToList();
         }       
 

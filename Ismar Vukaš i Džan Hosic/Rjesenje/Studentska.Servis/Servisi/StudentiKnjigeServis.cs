@@ -17,6 +17,7 @@ namespace Studentska.Servis.Servisi
         {
             //     db.StudentiKnjigeIB180079.ToList();
             return _dbContext.Set<StudentiKnjigeIB180079>()
+                .AsNoTracking()
                 .Include(x => x.Student)
                 .Include(x => x.Knjiga)
                 .ToList();

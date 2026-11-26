@@ -18,10 +18,22 @@ namespace Studentska.WinApp.IspitIB180079
     {
 
         KnjigaServis knjigaServis = new KnjigaServis();
+        private KnjigeIB180079 knjiga;
 
+
+
+        // radi dodavanje 
         public frmKnjigaAddEditIB180079()
         {
             InitializeComponent();
+        }
+
+
+        // radi editovanja
+        public frmKnjigaAddEditIB180079(KnjigeIB180079 knjiga)
+        {
+            InitializeComponent();
+            this.knjiga = knjiga;
         }
 
         private void pbSlika_DoubleClick(object sender, EventArgs e)
@@ -57,10 +69,10 @@ namespace Studentska.WinApp.IspitIB180079
                 //novaKnjiga.BrojPrimjeraka = brojPrimjeraka;
                 //novaKnjiga.Slika = slika;
 
-                if(brojPrimjeraka <= 0)
+                if (brojPrimjeraka <= 0)
                 {
 
-                    MessageBox.Show("Broj primjeraka ne smije biti 0 ili negativna vrijednost","Upozorenje",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show("Broj primjeraka ne smije biti 0 ili negativna vrijednost", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 }
                 else if (knjigaServis.GetAll().Exists(x => x.Naziv.ToLower() == naziv.ToLower() && x.Autor.ToLower() == autor.ToLower()))
@@ -69,7 +81,7 @@ namespace Studentska.WinApp.IspitIB180079
                     MessageBox.Show("Knjiga istog naziva i istog autora već postoji", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 }
-                else
+                else if(knjiga == null) // dodavanje 
                 {
 
                     var novaKnjiga = new KnjigeIB180079()
@@ -88,6 +100,24 @@ namespace Studentska.WinApp.IspitIB180079
 
 
                 }
+                else if (knjiga != null) // editovanje
+                {
+
+                    var untrackanaKnjiga = knjigaServis.GetById(knjiga.Id);
+                    //var untrackanaKnjiga = knjigaServis.GetAll().Where(x => x.Id == knjiga.Id).FirstOrDefault();
+                    //var untrackanaKnjiga = knjigaServis.GetAll().Find(knjiga.Id);
+
+                    untrackanaKnjiga.Naziv = naziv;
+                    untrackanaKnjiga.Autor = autor;
+                    untrackanaKnjiga.BrojPrimjeraka = brojPrimjeraka;
+
+                    untrackanaKnjiga.Slika = slika;
+
+                    knjigaServis.Update(untrackanaKnjiga);
+
+                    DialogResult = DialogResult.OK;
+
+                }
 
 
 
@@ -103,6 +133,28 @@ namespace Studentska.WinApp.IspitIB180079
                 Helpers.Validator.ValidanUnos(txtNaziv, err, "Ovo polje je obavezno") &&
                 Helpers.Validator.ValidanUnos(txtAutor, err, "Ovo polje je obavezno") &&
                 Helpers.Validator.ValidanUnos(txtBrojPrimjeraka, err, "Ovo polje je obavezno");
+        }
+
+        private void frmKnjigaAddEditIB180079_Load(object sender, EventArgs e)
+        {
+            UcitajInfo();
+        }
+
+        private void UcitajInfo()
+        {
+
+            if (knjiga != null) // ovako znamo da je editovanje u pitanju
+            {
+                txtNaziv.Text = knjiga.Naziv;
+                txtAutor.Text = knjiga.Autor;
+
+                // INT -> STRING
+                txtBrojPrimjeraka.Text = knjiga.BrojPrimjeraka.ToString();
+
+                // BYTE[] -> IMAGE
+                pbSlika.Image = ImageHelper.ByteToImage(knjiga.Slika);
+            }
+
         }
     }
 }

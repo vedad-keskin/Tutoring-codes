@@ -233,5 +233,33 @@ namespace Studentska.WinApp.IspitIB180079
 
             }
         }
+
+        private void dgvPodaci_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            //if (e.ColumnIndex != 5 && e.ColumnIndex != 6)
+            if (e.ColumnIndex >= 0 && e.ColumnIndex < 5)
+            {
+
+                var odabranaStudentKnjiga = dgvPodaci.SelectedRows[0].DataBoundItem as StudentiKnjigeIB180079;
+
+
+                var frmKnjigaEdit = new frmKnjigaAddEditIB180079(odabranaStudentKnjiga.Knjiga);
+
+
+                if (frmKnjigaEdit.ShowDialog() == DialogResult.OK)
+                {
+
+                    UcitajComboBox();
+                    UcitajPodatke();
+
+
+                }
+
+
+            }
+
+
+        }
     }
 }

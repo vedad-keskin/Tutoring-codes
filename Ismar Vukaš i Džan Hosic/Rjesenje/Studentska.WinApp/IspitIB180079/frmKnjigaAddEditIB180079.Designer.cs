@@ -136,6 +136,7 @@
             Name = "frmKnjigaAddEditIB180079";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Podaci o knjizi";
+            Load += frmKnjigaAddEditIB180079_Load;
             ((System.ComponentModel.ISupportInitialize)pbSlika).EndInit();
             ((System.ComponentModel.ISupportInitialize)err).EndInit();
             ResumeLayout(false);
